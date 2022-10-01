@@ -26,34 +26,8 @@ namespace ArborFamiliae
 
 
             DatabaseSelectionForm databaseSelectionForm = new DatabaseSelectionForm();
-            if(databaseSelectionForm.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
+            Application.Run(databaseSelectionForm);
 
-            var builder = new HostBuilder();
-            builder.ConfigureServices((hostcontext, services) =>
-            {
-                services.AddScoped<ArborFamiliaeMainForm>();
-            });
-
-            var host = builder.Build();
-            ServiceProvider = host.Services;
-
-
-            using(var serviceScope = host.Services.CreateScope())
-            {
-                var services = serviceScope.ServiceProvider;
-                try
-                {
-                    var form = services.GetRequiredService<ArborFamiliaeMainForm>();
-                    Application.Run(form);
-                }
-                catch(Exception ex)
-                {
-                    
-                }
-            }
 
             
         }
