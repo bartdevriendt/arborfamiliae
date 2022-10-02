@@ -18,7 +18,7 @@ namespace ArborFamiliae.Data.Mysql
 
             serviceCollection.AddDbContext<ArborFamiliaeContext>(config =>
             {
-                config.UseMySql(builder.ConnectionString, ServerVersion.AutoDetect(builder.ConnectionString));
+                config.UseMySql(builder.ConnectionString, ServerVersion.AutoDetect(builder.ConnectionString), x => x.MigrationsAssembly(typeof(DependencyInjection).Assembly.GetName().Name));
 
             });
         }

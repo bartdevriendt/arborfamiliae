@@ -49,6 +49,7 @@
             this.btnPerson});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
             this.ribbonControl1.MaxItemId = 2;
+            this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.ribbonPage1});
@@ -56,7 +57,7 @@
             // 
             // btnPerson
             // 
-            this.btnPerson.Caption = "Person";
+            this.btnPerson.Caption = "People";
             this.btnPerson.Id = 1;
             this.btnPerson.Name = "btnPerson";
             this.btnPerson.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPerson_ItemClick);
@@ -78,18 +79,19 @@
             // 
             this.documentManager1.MdiParent = this;
             this.documentManager1.MenuManager = this.ribbonControl1;
+            this.documentManager1.RibbonAndBarsMergeStyle = DevExpress.XtraBars.Docking2010.Views.RibbonAndBarsMergeStyle.Always;
             this.documentManager1.View = this.tabbedView1;
             this.documentManager1.ViewCollection.AddRange(new DevExpress.XtraBars.Docking2010.Views.BaseView[] {
             this.tabbedView1});
             // 
-            // Form1
+            // ArborFamiliaeMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1429, 872);
             this.Controls.Add(this.ribbonControl1);
             this.IsMdiContainer = true;
-            this.Name = "Form1";
+            this.Name = "ArborFamiliaeMainForm";
             this.Ribbon = this.ribbonControl1;
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).EndInit();
