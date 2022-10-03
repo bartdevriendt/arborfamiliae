@@ -9,15 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ArborFamiliae
+namespace ArborFamiliae.Forms.Persons
 {
-    public partial class PersonListForm : DevExpress.XtraEditors.XtraForm
+    public partial class AddEditPersonForm : DevExpress.XtraEditors.XtraForm
     {
-        public PersonListForm()
+        public AddEditPersonForm()
         {
             InitializeComponent();
         }
-
-        
     }
 }

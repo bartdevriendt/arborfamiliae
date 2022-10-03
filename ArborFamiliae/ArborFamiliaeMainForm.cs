@@ -1,4 +1,6 @@
-﻿using DevExpress.XtraBars.Docking2010.Views;
+﻿using ArborFamiliae.Forms.Persons;
+using DevExpress.Data.Utils;
+using DevExpress.XtraBars.Docking2010.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,11 +16,12 @@ namespace ArborFamiliae
     {
 
         private PersonListForm _personList = null;
+        private IServiceProvider _serviceProvider = null;
 
-
-        public ArborFamiliaeMainForm()
+        public ArborFamiliaeMainForm(IServiceProvider serviceProvider)
         {
             InitializeComponent();
+            _serviceProvider = serviceProvider;
         }
 
         private void btnPerson_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -26,7 +29,7 @@ namespace ArborFamiliae
 
             if(_personList == null || _personList.IsDisposed)
             {
-                _personList = new PersonListForm();
+                _personList = _serviceProvider.GetService<PersonListForm>();
             }
 
             OpenOrShowForm(_personList);

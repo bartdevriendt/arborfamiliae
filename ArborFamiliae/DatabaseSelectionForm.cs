@@ -50,25 +50,7 @@ namespace ArborFamiliae
 
             var database = gridView1.GetRow(gridView1.FocusedRowHandle) as FamilyTreeDatabase;
 
-            var builder = new HostBuilder();
-            builder.ConfigureServices((hostcontext, services) =>
-            {
-                services.AddScoped<ArborFamiliaeMainForm>();
-                if(database.DatabaseType == Provider.MySql.Name)
-                {
-                    services.RegisterMySqlContext(database.Server, database.Username, database.Password, database.Database);
-                }
-                
-            });
-
-            var host = builder.Build();
-            ServiceContext.ServiceProvider = host.Services;
-
-            using(var serviceScope = ServiceContext.ServiceProvider.CreateScope())
-            {
-                var db = serviceScope.ServiceProvider.GetRequiredService<ArborFamiliaeContext>();
-                ArborFamiliaeContext.InitializeAsync(db);
-            }
+            ServiceContext.BuildServices(database);
             
         }
 
