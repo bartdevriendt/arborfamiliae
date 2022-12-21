@@ -1,4 +1,4 @@
-﻿using ArborFamiliae.Services;
+﻿using ArborFamiliae.Services.Genealogy;
 using DevExpress.Data.Utils;
 using DevExpress.XtraEditors;
 using System;

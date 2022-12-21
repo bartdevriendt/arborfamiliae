@@ -456,3 +456,4 @@ $RECYCLE.BIN/
 # Contains secret stuff used by system tests
 .env
 .runsettings
+/ArborFamiliae.Data/ArborFamiliae.Data.csproj.bak

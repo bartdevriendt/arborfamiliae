@@ -7,9 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae", "ArborFamil
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Data", "ArborFamiliae.Data\ArborFamiliae.Data.csproj", "{EACBC9B3-7228-42A4-892C-F68B36C635F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Data.Mysql", "ArborFamiliae.Data.Mysql\ArborFamiliae.Data.Mysql.csproj", "{36404B37-152F-4ED1-99E5-3F3B846426B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Data.Mysql", "ArborFamiliae.Data.Mysql\ArborFamiliae.Data.Mysql.csproj", "{36404B37-152F-4ED1-99E5-3F3B846426B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Web", "ArborFamiliae.Web\ArborFamiliae.Web.csproj", "{855452DB-E749-4F6E-BB84-5D89DBC01072}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Web", "ArborFamiliae.Web\ArborFamiliae.Web.csproj", "{855452DB-E749-4F6E-BB84-5D89DBC01072}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Services", "ArborFamiliae.Services\ArborFamiliae.Services.csproj", "{5662A3D8-FF57-457A-A6EC-897ACE2C8E69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Domain", "ArborFamiliae.Domain\ArborFamiliae.Domain.csproj", "{74FA1723-E319-499C-B7B9-B107CC74014A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{855452DB-E749-4F6E-BB84-5D89DBC01072}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{855452DB-E749-4F6E-BB84-5D89DBC01072}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{855452DB-E749-4F6E-BB84-5D89DBC01072}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5662A3D8-FF57-457A-A6EC-897ACE2C8E69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5662A3D8-FF57-457A-A6EC-897ACE2C8E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5662A3D8-FF57-457A-A6EC-897ACE2C8E69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5662A3D8-FF57-457A-A6EC-897ACE2C8E69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74FA1723-E319-499C-B7B9-B107CC74014A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74FA1723-E319-499C-B7B9-B107CC74014A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74FA1723-E319-499C-B7B9-B107CC74014A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74FA1723-E319-499C-B7B9-B107CC74014A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

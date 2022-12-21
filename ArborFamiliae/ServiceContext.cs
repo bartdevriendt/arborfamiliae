@@ -49,11 +49,13 @@ namespace ArborFamiliae
             services.AddScoped<ArborFamiliaeMainForm>();
             services.AddTransient<PersonListForm>();
             services.AddTransient<AddEditPersonForm>();
+
+            
         }
 
         private static void RegisterServices(IServiceCollection services)
         {
-            services.AddScoped<PersonService>();
+            services.RegisterServices();
         }
     }
 }

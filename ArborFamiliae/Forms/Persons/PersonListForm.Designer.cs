@@ -37,6 +37,7 @@ partial class PersonListForm
             this.colGender = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colDateOfBirth = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colDateOfDeath = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
             this.btnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.btnEdit = new DevExpress.XtraBars.BarButtonItem();
@@ -53,19 +54,17 @@ partial class PersonListForm
             // 
             this.gridControl1.DataSource = this.personListModelBindingSource;
             this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gridControl1.Location = new System.Drawing.Point(0, 0);
             this.gridControl1.MainView = this.gridView1;
-            this.gridControl1.Margin = new System.Windows.Forms.Padding(4);
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1348, 1060);
+            this.gridControl1.Size = new System.Drawing.Size(1155, 861);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
             // 
             // personListModelBindingSource
             // 
-            this.personListModelBindingSource.DataSource = typeof(ArborFamiliae.Models.Genealogy.PersonListModel);
+            this.personListModelBindingSource.DataSource = typeof(ArborFamiliae.Domain.Person.PersonListModel);
             // 
             // gridView1
             // 
@@ -74,8 +73,8 @@ partial class PersonListForm
             this.colFullName,
             this.colGender,
             this.colDateOfBirth,
-            this.colDateOfDeath});
-            this.gridView1.DetailHeight = 431;
+            this.colDateOfDeath,
+            this.gridColumn1});
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.GroupCount = 1;
             this.gridView1.Name = "gridView1";
@@ -85,53 +84,50 @@ partial class PersonListForm
             // colSurname
             // 
             this.colSurname.FieldName = "Surname";
-            this.colSurname.MinWidth = 23;
             this.colSurname.Name = "colSurname";
             this.colSurname.Visible = true;
             this.colSurname.VisibleIndex = 0;
-            this.colSurname.Width = 87;
             // 
             // colFullName
             // 
             this.colFullName.Caption = "Name";
             this.colFullName.FieldName = "FullName";
-            this.colFullName.MinWidth = 23;
             this.colFullName.Name = "colFullName";
             this.colFullName.OptionsColumn.ReadOnly = true;
             this.colFullName.Visible = true;
             this.colFullName.VisibleIndex = 0;
-            this.colFullName.Width = 87;
             // 
             // colGender
             // 
             this.colGender.FieldName = "Gender";
-            this.colGender.MinWidth = 23;
             this.colGender.Name = "colGender";
             this.colGender.Visible = true;
-            this.colGender.VisibleIndex = 1;
-            this.colGender.Width = 87;
+            this.colGender.VisibleIndex = 2;
             // 
             // colDateOfBirth
             // 
-            this.colDateOfBirth.FieldName = "DateOfBirth";
-            this.colDateOfBirth.MinWidth = 23;
+            this.colDateOfBirth.FieldName = "BirthDate";
             this.colDateOfBirth.Name = "colDateOfBirth";
             this.colDateOfBirth.Visible = true;
-            this.colDateOfBirth.VisibleIndex = 2;
-            this.colDateOfBirth.Width = 87;
+            this.colDateOfBirth.VisibleIndex = 3;
             // 
             // colDateOfDeath
             // 
-            this.colDateOfDeath.FieldName = "DateOfDeath";
-            this.colDateOfDeath.MinWidth = 23;
+            this.colDateOfDeath.FieldName = "DeathDate";
             this.colDateOfDeath.Name = "colDateOfDeath";
             this.colDateOfDeath.Visible = true;
-            this.colDateOfDeath.VisibleIndex = 3;
-            this.colDateOfDeath.Width = 87;
+            this.colDateOfDeath.VisibleIndex = 4;
+            // 
+            // gridColumn1
+            // 
+            this.gridColumn1.Caption = "ID";
+            this.gridColumn1.FieldName = "ArborId";
+            this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.Visible = true;
+            this.gridColumn1.VisibleIndex = 1;
             // 
             // ribbonControl1
             // 
-            this.ribbonControl1.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(35, 37, 35, 37);
             this.ribbonControl1.ExpandCollapseItem.Id = 0;
             this.ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.ribbonControl1.ExpandCollapseItem,
@@ -140,14 +136,12 @@ partial class PersonListForm
             this.btnEdit,
             this.btnDelete});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.Margin = new System.Windows.Forms.Padding(4);
             this.ribbonControl1.MaxItemId = 4;
             this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
-            this.ribbonControl1.OptionsMenuMinWidth = 385;
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.ribbonPage1});
-            this.ribbonControl1.Size = new System.Drawing.Size(1348, 183);
+            this.ribbonControl1.Size = new System.Drawing.Size(1155, 146);
             // 
             // btnAdd
             // 
@@ -185,12 +179,11 @@ partial class PersonListForm
             // 
             // PersonListForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1348, 1060);
+            this.ClientSize = new System.Drawing.Size(1155, 861);
             this.Controls.Add(this.ribbonControl1);
             this.Controls.Add(this.gridControl1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "PersonListForm";
             this.Text = "People";
             this.Load += new System.EventHandler(this.PersonListForm_Load);
@@ -219,4 +212,5 @@ partial class PersonListForm
     private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
     private DevExpress.XtraBars.BarButtonItem btnEdit;
     private DevExpress.XtraBars.BarButtonItem btnDelete;
+    private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
 }
