@@ -22,16 +22,21 @@ namespace ArborFamiliae.Services.Genealogy
         public List<PersonListModel> GetAllPersons()
         {
             var persons = context.Persons.ToList();
-            return persons.Select(p => new PersonListModel
-            {
-                BirthDate = "",
-                Gender = p.Gender.Description,
-                Id = p.Id,
-                Surname = p.PrimaryName.Surnames[0].SurnameValue,
-                FirstName = p.PrimaryName.FirstName,
-                DeathDate = "",
-                ArborId = p.ArborId
-            }).ToList();
+            return persons
+                .Select(
+                    p =>
+                        new PersonListModel
+                        {
+                            BirthDate = "",
+                            Gender = p.Gender.Description,
+                            Id = p.Id,
+                            Surname = p.PrimaryName.Surnames[0].SurnameValue,
+                            FirstName = p.PrimaryName.FirstName,
+                            DeathDate = "",
+                            ArborId = p.ArborId
+                        }
+                )
+                .ToList();
         }
     }
 }
