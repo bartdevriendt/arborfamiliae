@@ -8,10 +8,9 @@ namespace ArborFamiliae.Data.Models
 {
     public class Name : BaseModel
     {
-
         public bool IsPrivate { get; set; }
         public string FirstName { get; set; }
-        public List<Surname> Surnames { get; set; }
+        public List<Surname> Surnames { get; set; } = new();
         public string Suffix { get; set; }
         public string Title { get; set; }
         public string Call { get; set; }
@@ -19,5 +18,7 @@ namespace ArborFamiliae.Data.Models
         public string FamiliyNickName { get; set; }
         public NameType NameType { get; set; }
         public Guid NameTypeId { get; set; }
+
+        public Surname PrimarySurname => Surnames.First(x => x.Primary);
     }
 }

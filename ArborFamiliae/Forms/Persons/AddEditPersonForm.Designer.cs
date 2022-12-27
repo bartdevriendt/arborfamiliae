@@ -62,6 +62,7 @@
             this.tabbedControlGroup1 = new DevExpress.XtraLayout.TabbedControlGroup();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.genderModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataLayoutControl1)).BeginInit();
             this.dataLayoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -96,6 +97,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.genderModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // dataLayoutControl1
@@ -226,7 +228,10 @@
             this.GenderLookUpEdit.Name = "GenderLookUpEdit";
             this.GenderLookUpEdit.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.GenderLookUpEdit.Properties.DataSource = this.genderModelBindingSource;
+            this.GenderLookUpEdit.Properties.DisplayMember = "Description";
             this.GenderLookUpEdit.Properties.NullText = "";
+            this.GenderLookUpEdit.Properties.ValueMember = "Id";
             this.GenderLookUpEdit.Size = new System.Drawing.Size(229, 20);
             this.GenderLookUpEdit.StyleController = this.dataLayoutControl1;
             this.GenderLookUpEdit.TabIndex = 9;
@@ -415,6 +420,10 @@
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
+            // genderModelBindingSource
+            // 
+            this.genderModelBindingSource.DataSource = typeof(ArborFamiliae.Domain.Person.GenderModel);
+            // 
             // AddEditPersonForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -458,6 +467,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.genderModelBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -497,5 +507,6 @@
         private DevExpress.XtraLayout.TabbedControlGroup tabbedControlGroup1;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
+        private System.Windows.Forms.BindingSource genderModelBindingSource;
     }
 }

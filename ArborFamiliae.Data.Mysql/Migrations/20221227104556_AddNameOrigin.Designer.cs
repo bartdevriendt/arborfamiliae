@@ -3,6 +3,7 @@ using System;
 using ArborFamiliae.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArborFamiliae.Data.Mysql.Migrations
 {
     [DbContext(typeof(ArborFamiliaeContext))]
-    partial class ArborFamiliaeContextModelSnapshot : ModelSnapshot
+    [Migration("20221227104556_AddNameOrigin")]
+    partial class AddNameOrigin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,24 +125,6 @@ namespace ArborFamiliae.Data.Mysql.Migrations
                     b.HasIndex("PrimaryNameId");
 
                     b.ToTable("Persons");
-                });
-
-            modelBuilder.Entity("ArborFamiliae.Data.Models.Sequence", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("NextValue")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SequenceType")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Sequences");
                 });
 
             modelBuilder.Entity("ArborFamiliae.Data.Models.Surname", b =>

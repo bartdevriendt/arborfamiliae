@@ -1,7 +1,7 @@
 ﻿using ArborFamiliae.Data;
 using ArborFamiliae.Data.Models;
 using ArborFamiliae.Domain.Person;
-using ArborFamiliae.Services.Common;
+using ArborFamiliae.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArborFamiliae.Services.Genealogy;
