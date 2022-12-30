@@ -8,7 +8,7 @@ namespace ArborFamiliae.Data.Models
 {
     public class Gender : BaseModel
     {
-        
-        public string Description { get; set; }
+        public virtual int SortOrder { get; set; }
+        public virtual string Description { get; set; }
     }
 }

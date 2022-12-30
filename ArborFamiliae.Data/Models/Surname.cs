@@ -26,13 +26,13 @@ namespace ArborFamiliae.Data.Models
 
     public class Surname : BaseModel
     {
-        public Name Name { get; set; }
-        public Guid NameId { get; set; }
+        public virtual Name Name { get; set; }
+        public virtual Guid NameId { get; set; }
 
-        public string SurnameValue { get; set; }
-        public string Prefix { get; set; }
-        public bool Primary { get; set; }
-        public string Connector { get; set; }
-        public SurnameType OriginType { get; set; }
+        public virtual string SurnameValue { get; set; }
+        public virtual string Prefix { get; set; }
+        public virtual bool Primary { get; set; }
+        public virtual string Connector { get; set; }
+        public virtual SurnameType OriginType { get; set; }
     }
 }

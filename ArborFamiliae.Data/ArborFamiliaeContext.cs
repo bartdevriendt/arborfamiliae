@@ -21,9 +21,9 @@ public class ArborFamiliaeContext : DbContext
     {
         if (!db.Genders.Any())
         {
-            db.Genders.Add(new Gender { Id = Guid.NewGuid(), Description = "Male" });
-            db.Genders.Add(new Gender { Id = Guid.NewGuid(), Description = "Female" });
-            db.Genders.Add(new Gender { Id = Guid.NewGuid(), Description = "Unknown" });
+            db.Genders.Add(new Gender { Id = Guid.NewGuid(), SortOrder = 1, Description = "Male" });
+            db.Genders.Add(new Gender { Id = Guid.NewGuid(), SortOrder = 2, Description = "Female" });
+            db.Genders.Add(new Gender { Id = Guid.NewGuid(), SortOrder = 3, Description = "Unknown" });
             db.SaveChanges();
         }
     }

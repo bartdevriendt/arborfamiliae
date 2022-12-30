@@ -7,18 +7,17 @@ namespace ArborFamiliae.Services.Sequences;
 
 public class SequenceGeneratorService : ISequenceGeneratorService
 {
-    private ArborRepository<Sequence> _sequenceRepository;
+    private ArborFamiliaeContext _context;
 
-    public SequenceGeneratorService(ArborRepository<Sequence> sequenceRepository)
+    public SequenceGeneratorService(ArborFamiliaeContext context)
     {
-        _sequenceRepository = sequenceRepository;
+        _context = context;
     }
 
     public async Task<int> GenerateSequence(string type)
     {
-        var sequence = await _sequenceRepository.FirstOrDefaultAsync(
-            new SequenceSpecification(type)
-        );
+
+        var sequence = _context.Sequences.FirstOrDefault(x => x.SequenceType == type);
 
         if (sequence == null)
         {
@@ -26,13 +25,13 @@ public class SequenceGeneratorService : ISequenceGeneratorService
             sequence.Id = Guid.NewGuid();
             sequence.SequenceType = type;
             sequence.NextValue = 1;
-            await _sequenceRepository.AddAsync(sequence);
+            _context.Sequences.Add(sequence);
         }
 
         int result = sequence.NextValue;
         sequence.NextValue += 1;
 
-        await _sequenceRepository.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 
         return result;
     }

@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArborFamiliae.Data.Models
+namespace ArborFamiliae.Services
 {
-    public class NameType : BaseModel
+    public interface IServicesMarker
     {
-
-        public virtual string Description { get; set; }
-
     }
 }

@@ -19,6 +19,7 @@ public class GenderService : IScoped
     {
         return await (
             from Gender g in context.Genders
+            orderby g.SortOrder
             select new GenderModel { Description = g.Description, Id = g.Id }
         ).ToListAsync();
     }

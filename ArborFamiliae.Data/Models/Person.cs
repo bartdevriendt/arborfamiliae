@@ -10,15 +10,15 @@ namespace ArborFamiliae.Data.Models
 {
     public class Person : BaseModel, IAggregateRoot, IHasSequence
     {
-        public string ArborId { get; set; }
+        public virtual string ArborId { get; set; }
         public virtual Guid GenderId { get; set; }
-        public Gender Gender { get; set; }
+        public virtual Gender Gender { get; set; }
 
-        public Name PrimaryName { get; set; }
+        public virtual Name PrimaryName { get; set; }
 
-        public List<Name> AlternateNames { get; set; }
+        public virtual List<Name> AlternateNames { get; set; }
 
-        public bool IsPrivate { get; set; }
+        public virtual bool IsPrivate { get; set; }
         public string SequenceType
         {
             get => "person";

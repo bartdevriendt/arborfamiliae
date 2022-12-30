@@ -1,4 +1,5 @@
 ﻿using ArborFamiliae.Data;
+using ArborFamiliae.Services.Sequences;
 using ArborFamiliae.Shared.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +11,7 @@ namespace ArborFamiliae.Services
         {
             services.Scan(
                 scan =>
-                    scan.FromAssemblyOf<ITransient>()
+                    scan.FromAssemblyOf<IServicesMarker>()
                         .AddClasses(classes => classes.AssignableTo<ITransient>())
                         .AsSelf()
                         .WithTransientLifetime()
@@ -19,6 +20,7 @@ namespace ArborFamiliae.Services
                         .WithScopedLifetime()
             );
 
+            services.AddScoped<ISequenceGeneratorService, SequenceGeneratorService>();
             services.AddScoped(typeof(IRepository<>), typeof(ArborRepository<>));
             services.AddScoped(typeof(IReadRepository<>), typeof(ArborRepository<>));
 

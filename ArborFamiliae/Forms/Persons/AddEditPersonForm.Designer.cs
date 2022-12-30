@@ -43,6 +43,7 @@
             this.PreferredSurnamePrefixTextEdit = new DevExpress.XtraEditors.TextEdit();
             this.PreferredSurnameTextEdit = new DevExpress.XtraEditors.TextEdit();
             this.GenderLookUpEdit = new DevExpress.XtraEditors.LookUpEdit();
+            this.genderModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.IdTextEdit = new DevExpress.XtraEditors.TextEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -62,7 +63,6 @@
             this.tabbedControlGroup1 = new DevExpress.XtraLayout.TabbedControlGroup();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.genderModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataLayoutControl1)).BeginInit();
             this.dataLayoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -78,6 +78,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.PreferredSurnamePrefixTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PreferredSurnameTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GenderLookUpEdit.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.genderModelBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.IdTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
@@ -97,7 +98,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.genderModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // dataLayoutControl1
@@ -208,6 +208,7 @@
             this.PreferredSurnamePrefixTextEdit.DataBindings.Add(new System.Windows.Forms.Binding("EditValue", this.personAddEditModelBindingSource, "PreferredSurnamePrefix", true));
             this.PreferredSurnamePrefixTextEdit.Location = new System.Drawing.Point(139, 117);
             this.PreferredSurnamePrefixTextEdit.Name = "PreferredSurnamePrefixTextEdit";
+            this.PreferredSurnamePrefixTextEdit.Properties.NullValuePrompt = "prefix";
             this.PreferredSurnamePrefixTextEdit.Size = new System.Drawing.Size(229, 20);
             this.PreferredSurnamePrefixTextEdit.StyleController = this.dataLayoutControl1;
             this.PreferredSurnamePrefixTextEdit.TabIndex = 7;
@@ -228,6 +229,8 @@
             this.GenderLookUpEdit.Name = "GenderLookUpEdit";
             this.GenderLookUpEdit.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.GenderLookUpEdit.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] {
+            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Description", "Gender", 62, DevExpress.Utils.FormatType.None, "", true, DevExpress.Utils.HorzAlignment.Near, DevExpress.Data.ColumnSortOrder.None, DevExpress.Utils.DefaultBoolean.Default)});
             this.GenderLookUpEdit.Properties.DataSource = this.genderModelBindingSource;
             this.GenderLookUpEdit.Properties.DisplayMember = "Description";
             this.GenderLookUpEdit.Properties.NullText = "";
@@ -235,6 +238,10 @@
             this.GenderLookUpEdit.Size = new System.Drawing.Size(229, 20);
             this.GenderLookUpEdit.StyleController = this.dataLayoutControl1;
             this.GenderLookUpEdit.TabIndex = 9;
+            // 
+            // genderModelBindingSource
+            // 
+            this.genderModelBindingSource.DataSource = typeof(ArborFamiliae.Domain.Person.GenderModel);
             // 
             // IdTextEdit
             // 
@@ -420,10 +427,6 @@
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
-            // genderModelBindingSource
-            // 
-            this.genderModelBindingSource.DataSource = typeof(ArborFamiliae.Domain.Person.GenderModel);
-            // 
             // AddEditPersonForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -433,6 +436,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AddEditPersonForm";
             this.Text = "AddEditPersonForm";
+            this.Load += new System.EventHandler(this.AddEditPersonForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataLayoutControl1)).EndInit();
             this.dataLayoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
@@ -448,6 +452,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.PreferredSurnamePrefixTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PreferredSurnameTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GenderLookUpEdit.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.genderModelBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.IdTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
@@ -467,7 +472,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.genderModelBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
