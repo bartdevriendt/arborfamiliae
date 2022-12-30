@@ -34,7 +34,6 @@
             this.eventsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.personAddEditModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.PreferredNameTypeTextEdit = new DevExpress.XtraEditors.TextEdit();
             this.PreferredTitleTextEdit = new DevExpress.XtraEditors.TextEdit();
             this.PreferredNickTextEdit = new DevExpress.XtraEditors.TextEdit();
             this.PreferredCallTextEdit = new DevExpress.XtraEditors.TextEdit();
@@ -63,13 +62,13 @@
             this.tabbedControlGroup1 = new DevExpress.XtraLayout.TabbedControlGroup();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.PreferredNameTypeTextEdit = new DevExpress.XtraEditors.LookUpEdit();
             ((System.ComponentModel.ISupportInitialize)(this.dataLayoutControl1)).BeginInit();
             this.dataLayoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eventsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.personAddEditModelBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PreferredNameTypeTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PreferredTitleTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PreferredNickTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PreferredCallTextEdit.Properties)).BeginInit();
@@ -98,12 +97,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreferredNameTypeTextEdit.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // dataLayoutControl1
             // 
             this.dataLayoutControl1.Controls.Add(this.gridControl1);
-            this.dataLayoutControl1.Controls.Add(this.PreferredNameTypeTextEdit);
             this.dataLayoutControl1.Controls.Add(this.PreferredTitleTextEdit);
             this.dataLayoutControl1.Controls.Add(this.PreferredNickTextEdit);
             this.dataLayoutControl1.Controls.Add(this.PreferredCallTextEdit);
@@ -113,6 +112,7 @@
             this.dataLayoutControl1.Controls.Add(this.PreferredSurnameTextEdit);
             this.dataLayoutControl1.Controls.Add(this.GenderLookUpEdit);
             this.dataLayoutControl1.Controls.Add(this.IdTextEdit);
+            this.dataLayoutControl1.Controls.Add(this.PreferredNameTypeTextEdit);
             this.dataLayoutControl1.DataSource = this.personAddEditModelBindingSource;
             this.dataLayoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataLayoutControl1.Location = new System.Drawing.Point(0, 0);
@@ -148,15 +148,6 @@
             // 
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
-            // 
-            // PreferredNameTypeTextEdit
-            // 
-            this.PreferredNameTypeTextEdit.DataBindings.Add(new System.Windows.Forms.Binding("EditValue", this.personAddEditModelBindingSource, "PreferredNameType", true));
-            this.PreferredNameTypeTextEdit.Location = new System.Drawing.Point(487, 45);
-            this.PreferredNameTypeTextEdit.Name = "PreferredNameTypeTextEdit";
-            this.PreferredNameTypeTextEdit.Size = new System.Drawing.Size(229, 20);
-            this.PreferredNameTypeTextEdit.StyleController = this.dataLayoutControl1;
-            this.PreferredNameTypeTextEdit.TabIndex = 0;
             // 
             // PreferredTitleTextEdit
             // 
@@ -197,9 +188,10 @@
             // PreferredSuffixTextEdit
             // 
             this.PreferredSuffixTextEdit.DataBindings.Add(new System.Windows.Forms.Binding("EditValue", this.personAddEditModelBindingSource, "PreferredSuffix", true));
-            this.PreferredSuffixTextEdit.Location = new System.Drawing.Point(592, 93);
+            this.PreferredSuffixTextEdit.Location = new System.Drawing.Point(477, 93);
             this.PreferredSuffixTextEdit.Name = "PreferredSuffixTextEdit";
-            this.PreferredSuffixTextEdit.Size = new System.Drawing.Size(124, 20);
+            this.PreferredSuffixTextEdit.Properties.NullValuePrompt = "suffix";
+            this.PreferredSuffixTextEdit.Size = new System.Drawing.Size(239, 20);
             this.PreferredSuffixTextEdit.StyleController = this.dataLayoutControl1;
             this.PreferredSuffixTextEdit.TabIndex = 6;
             // 
@@ -352,7 +344,8 @@
             this.ItemForPreferredSuffix.Name = "ItemForPreferredSuffix";
             this.ItemForPreferredSuffix.Size = new System.Drawing.Size(243, 24);
             this.ItemForPreferredSuffix.Text = "Suffix";
-            this.ItemForPreferredSuffix.TextSize = new System.Drawing.Size(103, 13);
+            this.ItemForPreferredSuffix.TextSize = new System.Drawing.Size(0, 0);
+            this.ItemForPreferredSuffix.TextVisible = false;
             // 
             // ItemForPreferredSurnamePrefix
             // 
@@ -427,6 +420,18 @@
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
+            // PreferredNameTypeTextEdit
+            // 
+            this.PreferredNameTypeTextEdit.DataBindings.Add(new System.Windows.Forms.Binding("EditValue", this.personAddEditModelBindingSource, "PreferredNameType", true));
+            this.PreferredNameTypeTextEdit.Location = new System.Drawing.Point(487, 45);
+            this.PreferredNameTypeTextEdit.Name = "PreferredNameTypeTextEdit";
+            this.PreferredNameTypeTextEdit.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.PreferredNameTypeTextEdit.Properties.NullText = "";
+            this.PreferredNameTypeTextEdit.Size = new System.Drawing.Size(229, 20);
+            this.PreferredNameTypeTextEdit.StyleController = this.dataLayoutControl1;
+            this.PreferredNameTypeTextEdit.TabIndex = 0;
+            // 
             // AddEditPersonForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -443,7 +448,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.eventsBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.personAddEditModelBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PreferredNameTypeTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PreferredTitleTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PreferredNickTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PreferredCallTextEdit.Properties)).EndInit();
@@ -472,6 +476,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreferredNameTypeTextEdit.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -480,7 +485,6 @@
 
         private DevExpress.XtraDataLayout.DataLayoutControl dataLayoutControl1;
         private DevExpress.XtraLayout.LayoutControlGroup Root;
-        private DevExpress.XtraEditors.TextEdit PreferredNameTypeTextEdit;
         private System.Windows.Forms.BindingSource personAddEditModelBindingSource;
         private DevExpress.XtraEditors.TextEdit PreferredTitleTextEdit;
         private DevExpress.XtraEditors.TextEdit PreferredNickTextEdit;
@@ -512,5 +516,6 @@
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private System.Windows.Forms.BindingSource genderModelBindingSource;
+        private DevExpress.XtraEditors.LookUpEdit PreferredNameTypeTextEdit;
     }
 }
