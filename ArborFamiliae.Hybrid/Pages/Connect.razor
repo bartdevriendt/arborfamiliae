@@ -1,0 +1,61 @@
+﻿@page "/connect"
+@inherits BasePageComponent
+@layout ConnectLayout
+
+@using ArborFamiliae.Services.Common
+@using ArborFamiliae.Data.InternalModels
+@using ArborFamiliae.Hybrid.Services
+@using ArborFamiliae.Hybrid.Shared.Layouts
+@using ArborFamiliae.Hybrid.Shared.Models
+
+<h3>Load family tree</h3>
+
+<DxGrid Data="_databases"
+        SelectionMode="GridSelectionMode.Multiple"
+        AllowSelectRowByClick="true"
+        @bind-SelectedDataItem="@SelectedDatabase">
+    <Columns>
+        <DxGridDataColumn FieldName="@nameof(FamilyTreeDatabase.Name)"></DxGridDataColumn>
+    </Columns>
+</DxGrid>
+
+<p>
+    <DxButton RenderStyle="ButtonRenderStyle.Primary" Click="LoadDatabase">Load</DxButton>
+</p>
+
+@code {
+
+
+    private FamilyTreeDatabaseService _databaseService;
+
+    private List<FamilyTreeDatabase> _databases;
+    
+    private object SelectedDatabase { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _databaseService = new FamilyTreeDatabaseService();
+        _databases = _databaseService.LoadDatabases();
+        
+    }
+
+    private void LoadDatabase()
+    {
+        FamilyTreeDatabase db = SelectedDatabase as FamilyTreeDatabase;
+        if (db.DatabaseType == Provider.MySql.Name)
+        {
+            var builder = new MySqlConnector.MySqlConnectionStringBuilder();
+            builder.Database = db.Database;
+            builder.UserID = db.Username;
+            builder.Password = db.Password;
+            builder.Server = db.Server;
+
+            ConnectionStringService.ConnectionString = builder.ConnectionString;
+            ConnectionStringService.Provider = db.DatabaseType;
+
+        }
+        
+        NavigationManager.NavigateTo("/seed", forceLoad: true);   
+    }
+
+}

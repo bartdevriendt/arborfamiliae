@@ -21,10 +21,40 @@ public class ArborFamiliaeContext : DbContext
     {
         if (!db.Genders.Any())
         {
-            db.Genders.Add(new Gender { Id = Guid.NewGuid(), SortOrder = 1, Description = "Male" });
-            db.Genders.Add(new Gender { Id = Guid.NewGuid(), SortOrder = 2, Description = "Female" });
-            db.Genders.Add(new Gender { Id = Guid.NewGuid(), SortOrder = 3, Description = "Unknown" });
+            db.Genders.Add(
+                new Gender
+                {
+                    Id = Guid.NewGuid(),
+                    SortOrder = 1,
+                    Description = "Male"
+                }
+            );
+            db.Genders.Add(
+                new Gender
+                {
+                    Id = Guid.NewGuid(),
+                    SortOrder = 2,
+                    Description = "Female"
+                }
+            );
+            db.Genders.Add(
+                new Gender
+                {
+                    Id = Guid.NewGuid(),
+                    SortOrder = 3,
+                    Description = "Unknown"
+                }
+            );
             db.SaveChanges();
+        }
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
         }
     }
 }

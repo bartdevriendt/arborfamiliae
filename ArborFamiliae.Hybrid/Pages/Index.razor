@@ -1,0 +1,47 @@
+﻿@page "/"
+@page "/dashboard"
+@inherits BasePageComponent
+@using ArborFamiliae.Hybrid.Services
+@using ArborFamiliae.Data
+@using ArborFamiliae.Data.Models
+@inject ArborFamiliaeContext Context;
+
+<h3>Dashboard</h3>
+
+<DxGrid Data="_genders" 
+        KeyFieldName="Id">
+    <Columns>
+        <DxGridDataColumn FieldName="@nameof(Gender.Description)"></DxGridDataColumn>
+    </Columns>
+</DxGrid>
+
+
+@code {
+
+    private List<Gender> _genders = new List<Gender>(); 
+    
+    
+    
+    protected override async Task OnInitializedAsync()
+    {
+        if (ConnectionStringService.ConnectionString == "")
+        {
+            NavigationManager.NavigateTo("/connect");
+        }
+        else
+        {
+            
+            try
+            {
+                _genders = Context.Genders.ToList();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+                            
+        }
+    }
+
+}

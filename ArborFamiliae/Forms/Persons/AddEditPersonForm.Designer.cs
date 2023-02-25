@@ -44,6 +44,7 @@
             this.GenderLookUpEdit = new DevExpress.XtraEditors.LookUpEdit();
             this.genderModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.IdTextEdit = new DevExpress.XtraEditors.TextEdit();
+            this.PreferredNameTypeTextEdit = new DevExpress.XtraEditors.LookUpEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -62,7 +63,6 @@
             this.tabbedControlGroup1 = new DevExpress.XtraLayout.TabbedControlGroup();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.PreferredNameTypeTextEdit = new DevExpress.XtraEditors.LookUpEdit();
             ((System.ComponentModel.ISupportInitialize)(this.dataLayoutControl1)).BeginInit();
             this.dataLayoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -79,6 +79,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.GenderLookUpEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.genderModelBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.IdTextEdit.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreferredNameTypeTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
@@ -97,7 +98,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PreferredNameTypeTextEdit.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // dataLayoutControl1
@@ -243,6 +243,18 @@
             this.IdTextEdit.Size = new System.Drawing.Size(229, 20);
             this.IdTextEdit.StyleController = this.dataLayoutControl1;
             this.IdTextEdit.TabIndex = 10;
+            // 
+            // PreferredNameTypeTextEdit
+            // 
+            this.PreferredNameTypeTextEdit.DataBindings.Add(new System.Windows.Forms.Binding("EditValue", this.personAddEditModelBindingSource, "PreferredNameType", true));
+            this.PreferredNameTypeTextEdit.Location = new System.Drawing.Point(487, 45);
+            this.PreferredNameTypeTextEdit.Name = "PreferredNameTypeTextEdit";
+            this.PreferredNameTypeTextEdit.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.PreferredNameTypeTextEdit.Properties.NullText = "";
+            this.PreferredNameTypeTextEdit.Size = new System.Drawing.Size(229, 20);
+            this.PreferredNameTypeTextEdit.StyleController = this.dataLayoutControl1;
+            this.PreferredNameTypeTextEdit.TabIndex = 0;
             // 
             // Root
             // 
@@ -420,18 +432,6 @@
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
-            // PreferredNameTypeTextEdit
-            // 
-            this.PreferredNameTypeTextEdit.DataBindings.Add(new System.Windows.Forms.Binding("EditValue", this.personAddEditModelBindingSource, "PreferredNameType", true));
-            this.PreferredNameTypeTextEdit.Location = new System.Drawing.Point(487, 45);
-            this.PreferredNameTypeTextEdit.Name = "PreferredNameTypeTextEdit";
-            this.PreferredNameTypeTextEdit.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.PreferredNameTypeTextEdit.Properties.NullText = "";
-            this.PreferredNameTypeTextEdit.Size = new System.Drawing.Size(229, 20);
-            this.PreferredNameTypeTextEdit.StyleController = this.dataLayoutControl1;
-            this.PreferredNameTypeTextEdit.TabIndex = 0;
-            // 
             // AddEditPersonForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -458,6 +458,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.GenderLookUpEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.genderModelBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.IdTextEdit.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PreferredNameTypeTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
@@ -476,7 +477,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tabbedControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PreferredNameTypeTextEdit.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
