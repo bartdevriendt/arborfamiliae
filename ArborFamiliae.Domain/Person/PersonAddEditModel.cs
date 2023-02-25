@@ -21,6 +21,8 @@ namespace ArborFamiliae.Domain.Person
         public string PreferredSurname { get; set; }
         public Guid Gender { get; set; }
         
+        public string ArborId { get; set; }
+        
         public List<EventListModel> Events { get; set; }
         public List<NameListModel> Names { get; set; }
         public List<CitationListModel> SourceCitations { get; set; }

@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ArborFamiliae.Data.Mysql
 {
-    public static class DependencyInjection
+    public static class DependencyInjectionMySql
     {
         public static void RegisterMySqlContext(
             this IServiceCollection serviceCollection,
@@ -28,7 +28,7 @@ namespace ArborFamiliae.Data.Mysql
                     ServerVersion.AutoDetect(builder.ConnectionString),
                     x =>
                     {
-                        x.MigrationsAssembly(typeof(DependencyInjection).Assembly.GetName().Name);
+                        x.MigrationsAssembly(typeof(DependencyInjectionMySql).Assembly.GetName().Name);
                     }
                 );
             });

@@ -1,0 +1,35 @@
+﻿@page "/person/list"
+
+@using ArborFamiliae.Domain.Person
+@inherits BasePageComponent
+
+@inject PersonService PersonService
+
+<h3>Persons</h3>
+
+<DxButton RenderStyle="ButtonRenderStyle.Primary" Text="Add" IconCssClass="oi oi-plus" Click="OnAdd"></DxButton>
+
+<DxGrid>
+    <Columns>
+        <DxGridDataColumn Caption="Name" FieldName="@nameof(PersonListModel.FullName)"></DxGridDataColumn>
+        <DxGridDataColumn Caption="ID" FieldName="@nameof(PersonListModel.ArborId)"></DxGridDataColumn>
+        <DxGridDataColumn Caption="Gender" FieldName="@nameof(PersonListModel.Gender)"></DxGridDataColumn>
+        <DxGridDataColumn Caption="Birth Date" FieldName="@nameof(PersonListModel.BirthDate)"></DxGridDataColumn>
+        <DxGridDataColumn Caption="Death Date" FieldName="@nameof(PersonListModel.DeathDate)"></DxGridDataColumn>
+    </Columns>
+</DxGrid>
+
+@code {
+
+    private List<PersonListModel> _personList;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _personList = await PersonService.GetAllPersons();
+    }
+
+    private void OnAdd()
+    {
+        NavigationManager.NavigateTo("/person/add");
+    }
+}

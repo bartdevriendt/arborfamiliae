@@ -1,0 +1,51 @@
+﻿@using ArborFamiliae.Domain.Person
+@inject GenderService GenderService
+
+<EditForm Model="@Model">
+    <DxFormLayout>
+        <DxFormLayoutGroup Caption="Preferred">
+            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="Title"><DxTextBox @bind-Text="@Model.PreferredTitle"></DxTextBox></DxFormLayoutItem>    
+            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="Nick"><DxTextBox @bind-Text="@Model.PreferredNick"></DxTextBox></DxFormLayoutItem>    
+            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="Call"><DxTextBox @bind-Text="@Model.PreferredCall"></DxTextBox></DxFormLayoutItem>    
+            <DxFormLayoutItem ColSpanLg="8" ColSpanMd="8" Caption="Given"><DxTextBox @bind-Text="@Model.PreferredGivenName"></DxTextBox></DxFormLayoutItem>    
+            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="Suffix"><DxTextBox @bind-Text="@Model.PreferredSuffix"></DxTextBox></DxFormLayoutItem>    
+            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="Surname">
+                <DxTextBox @bind-Text="@Model.PreferredSurnamePrefix" NullText="prefix"></DxTextBox></DxFormLayoutItem>    
+            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="">
+                <DxTextBox @bind-Text="@Model.PreferredSurname"></DxTextBox>
+            </DxFormLayoutItem>    
+        </DxFormLayoutGroup>
+        <DxFormLayoutGroup Caption="General">
+            <DxFormLayoutItem Caption="Gender" ColSpanLg="4" ColSpanMd="4">
+                <DxComboBox Data="_genders" TData="GenderModel" TValue="Guid" @bind-Value="@Model.Gender" Text="Select Gender" ValueFieldName="Id" TextFieldName="Description"></DxComboBox>
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="ID" ColSpanLg="4" ColSpanMd="4">
+                <DxTextBox @bind-Text="@Model.ArborId"></DxTextBox>
+            </DxFormLayoutItem>
+        </DxFormLayoutGroup>
+    </DxFormLayout>
+
+    <DxButton SubmitFormOnClick="true" Text="Save" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public PersonAddEditModel Model { get; set; }
+
+    [Parameter]
+    public EventCallback PersonSave { get; set; }
+
+    private List<GenderModel> _genders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _genders = await GenderService.GetGenders();
+    }
+
+    private async Task OnSave()
+    {
+        await PersonSave.InvokeAsync();
+    }
+
+}

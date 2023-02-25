@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ArborFamiliae.Data.Mysql
 {
-    public class Marker
+    public class MySqlMarker
     {
     }
 }

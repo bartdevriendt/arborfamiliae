@@ -23,8 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6E1D143E-E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Hybrid", "ArborFamiliae.Hybrid\ArborFamiliae.Hybrid.csproj", "{AFF531E0-986B-472D-B5D2-10DB4FE97DEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Data.Registration", "ArborFamiliae.Data.Registration\ArborFamiliae.Data.Registration.csproj", "{4EA2D33B-D7DC-4F19-AF13-2AAEDC540BC4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,10 +61,6 @@ Global
 		{AFF531E0-986B-472D-B5D2-10DB4FE97DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFF531E0-986B-472D-B5D2-10DB4FE97DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFF531E0-986B-472D-B5D2-10DB4FE97DEC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4EA2D33B-D7DC-4F19-AF13-2AAEDC540BC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4EA2D33B-D7DC-4F19-AF13-2AAEDC540BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4EA2D33B-D7DC-4F19-AF13-2AAEDC540BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4EA2D33B-D7DC-4F19-AF13-2AAEDC540BC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,7 +74,6 @@ Global
 		{74FA1723-E319-499C-B7B9-B107CC74014A} = {27ACFA5A-EAF9-46DD-8A7F-F9382A2AFCEC}
 		{C6DCB437-D707-41CE-8C84-EBDC026824DF} = {27ACFA5A-EAF9-46DD-8A7F-F9382A2AFCEC}
 		{AFF531E0-986B-472D-B5D2-10DB4FE97DEC} = {27ACFA5A-EAF9-46DD-8A7F-F9382A2AFCEC}
-		{4EA2D33B-D7DC-4F19-AF13-2AAEDC540BC4} = {27ACFA5A-EAF9-46DD-8A7F-F9382A2AFCEC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64B4EBAC-6347-40D8-B65C-134F8BF9F13C}

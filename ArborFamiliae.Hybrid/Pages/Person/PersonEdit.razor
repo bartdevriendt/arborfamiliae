@@ -1,0 +1,24 @@
+﻿@page "/person/{PersonId:guid}/edit"
+@using ArborFamiliae.Domain.Person
+@inherits BasePageComponent
+@inject PersonService PersonService
+
+<h3>Edit Person</h3>
+
+<PersonEditForm Model="model">
+    
+</PersonEditForm>
+
+@code {
+    
+    [Parameter]
+    public Guid PersonId { get; set; }
+
+    private PersonAddEditModel model;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        model = await PersonService.GetPersonById(PersonId);
+    }
+
+}

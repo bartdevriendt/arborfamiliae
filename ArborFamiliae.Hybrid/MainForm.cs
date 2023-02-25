@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using ArborFamiliae.Data;
 using ArborFamiliae.Data.Mysql;
 using ArborFamiliae.Hybrid.Services;
 using ArborFamiliae.Hybrid.Shared.Models;
+using ArborFamiliae.Services;
 using DevExpress.Blazor;
 using Microsoft.AspNetCore.Components.WebView.WindowsForms;
 using Microsoft.EntityFrameworkCore;
@@ -56,7 +50,7 @@ namespace ArborFamiliae.Hybrid
                         ServerVersion.AutoDetect(connstring),
                         x =>
                         {
-                            x.MigrationsAssembly(typeof(DependencyInjection).Assembly.GetName().Name);
+                            x.MigrationsAssembly(typeof(MySqlMarker).Assembly.GetName().Name);
                         }
                     );    
                 }
@@ -64,6 +58,7 @@ namespace ArborFamiliae.Hybrid
             
 
             services.AddSingleton<ConnectionStringService>();
+            services.RegisterServices();
             
             blazorWebView1.HostPage = "wwwroot\\index.html";
             blazorWebView1.Services = services.BuildServiceProvider();

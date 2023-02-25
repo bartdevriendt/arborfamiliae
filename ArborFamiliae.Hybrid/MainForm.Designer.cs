@@ -46,11 +46,11 @@ namespace ArborFamiliae.Hybrid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(632, 278);
+            this.ClientSize = new System.Drawing.Size(1200, 800);
             this.Controls.Add(this.blazorWebView1);
             this.Name = "MainForm";
             this.Text = "Form1";
-            this.WindowState = FormWindowState.Maximized;
+            this.WindowState = FormWindowState.Normal;
             this.ResumeLayout(false);
 
         }

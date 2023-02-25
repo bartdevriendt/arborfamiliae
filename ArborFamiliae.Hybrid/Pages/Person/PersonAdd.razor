@@ -1,0 +1,23 @@
+﻿@page "/person/add"
+@using ArborFamiliae.Domain.Person
+
+<h3>Add Person</h3>
+
+<PersonEditForm Model="model" PersonSave="OnSave">
+    
+</PersonEditForm>
+
+@code {
+    private PersonAddEditModel model;
+
+    protected override void OnInitialized()
+    {
+        model = new PersonAddEditModel();
+    }
+
+    private void OnSave()
+    {
+        Console.WriteLine(model.PreferredTitle);
+    }
+
+}
