@@ -1,6 +1,8 @@
 ﻿using ArborFamiliae.Shared.Interfaces;
 using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace ArborFamiliae.Data;
 
@@ -28,12 +30,18 @@ public class ArborRepository<T> : RepositoryBase<T>, IReadRepository<T>, IReposi
         CancellationToken cancellationToken = new CancellationToken()
     )
     {
-        foreach (var entry in _context.ChangeTracker.Entries())
+        IEnumerable<EntityEntry> entities = _context
+            .ChangeTracker
+            .Entries()
+            .Where(t => t.Entity is IHasSequence && t.State == EntityState.Added);
+
+        if (entities.Any())
         {
-            if (entry.Entity is IHasSequence)
+            foreach (EntityEntry entry in entities.ToList())
             {
                 IHasSequence? model = entry.Entity as IHasSequence;
-                model.SetSequence(await _sequenceGeneratorService.GenerateSequence(model.SequenceType));
+                var sequence = await _sequenceGeneratorService.GenerateSequence(model.SequenceType);
+                model.SetSequence(sequence);
             }
         }
 

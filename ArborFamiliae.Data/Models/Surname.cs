@@ -29,10 +29,10 @@ namespace ArborFamiliae.Data.Models
         public virtual Name Name { get; set; }
         public virtual Guid NameId { get; set; }
 
-        public virtual string SurnameValue { get; set; }
-        public virtual string Prefix { get; set; }
+        public virtual string? SurnameValue { get; set; }
+        public virtual string? Prefix { get; set; }
         public virtual bool Primary { get; set; }
-        public virtual string Connector { get; set; }
+        public virtual string? Connector { get; set; }
         public virtual SurnameType OriginType { get; set; }
     }
 }

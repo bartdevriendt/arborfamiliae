@@ -1,5 +1,7 @@
 ﻿@page "/person/add"
+@inherits BasePageComponent
 @using ArborFamiliae.Domain.Person
+@inject PersonService PersonService
 
 <h3>Add Person</h3>
 
@@ -15,9 +17,10 @@
         model = new PersonAddEditModel();
     }
 
-    private void OnSave()
+    private async Task OnSave()
     {
-        Console.WriteLine(model.PreferredTitle);
+        await PersonService.AddEditPerson(model);
+        NavigationManager.NavigateTo("/person/list");
     }
 
 }

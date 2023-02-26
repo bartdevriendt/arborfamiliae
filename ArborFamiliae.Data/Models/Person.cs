@@ -16,7 +16,7 @@ namespace ArborFamiliae.Data.Models
 
         public virtual Name PrimaryName { get; set; }
 
-        public virtual List<Name> AlternateNames { get; set; }
+        public virtual List<Name> AlternateNames { get; set; } = new();
 
         public virtual bool IsPrivate { get; set; }
         public string SequenceType

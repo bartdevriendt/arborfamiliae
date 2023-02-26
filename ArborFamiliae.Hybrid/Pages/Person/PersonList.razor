@@ -9,13 +9,22 @@
 
 <DxButton RenderStyle="ButtonRenderStyle.Primary" Text="Add" IconCssClass="oi oi-plus" Click="OnAdd"></DxButton>
 
-<DxGrid>
+<DxGrid Data="_personList">
     <Columns>
         <DxGridDataColumn Caption="Name" FieldName="@nameof(PersonListModel.FullName)"></DxGridDataColumn>
         <DxGridDataColumn Caption="ID" FieldName="@nameof(PersonListModel.ArborId)"></DxGridDataColumn>
         <DxGridDataColumn Caption="Gender" FieldName="@nameof(PersonListModel.Gender)"></DxGridDataColumn>
         <DxGridDataColumn Caption="Birth Date" FieldName="@nameof(PersonListModel.BirthDate)"></DxGridDataColumn>
         <DxGridDataColumn Caption="Death Date" FieldName="@nameof(PersonListModel.DeathDate)"></DxGridDataColumn>
+        <DxGridCommandColumn Caption="Manage">
+            <HeaderTemplate Context="detail_context">
+                &nbsp;
+            </HeaderTemplate>
+            <CellDisplayTemplate Context="detail_context">
+        	    <a class="oi oi-pencil" style="text-decoration: none;" href="javascript:void(0);" 
+        	       @onclick="@(() => NavigationManager.NavigateTo($"/person/{((PersonListModel)detail_context.DataItem).Id}/edit"))"></a>
+            </CellDisplayTemplate>
+        </DxGridCommandColumn>
     </Columns>
 </DxGrid>
 

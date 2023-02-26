@@ -44,36 +44,30 @@ namespace ArborFamiliae.Data.Mysql.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Call")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("FamiliyNickName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<Guid>("NameTypeId")
+                    b.Property<Guid?>("NameTypeId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Nickname")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<Guid?>("PersonId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Suffix")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -153,7 +147,6 @@ namespace ArborFamiliae.Data.Mysql.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Connector")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<Guid>("NameId")
@@ -163,14 +156,12 @@ namespace ArborFamiliae.Data.Mysql.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Prefix")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("Primary")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("SurnameValue")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -184,9 +175,7 @@ namespace ArborFamiliae.Data.Mysql.Migrations
                 {
                     b.HasOne("ArborFamiliae.Data.Models.NameType", "NameType")
                         .WithMany()
-                        .HasForeignKey("NameTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("NameTypeId");
 
                     b.HasOne("ArborFamiliae.Data.Models.Person", null)
                         .WithMany("AlternateNames")

@@ -31,8 +31,6 @@ public class SequenceGeneratorService : ISequenceGeneratorService
         int result = sequence.NextValue;
         sequence.NextValue += 1;
 
-        await _context.SaveChangesAsync();
-
         return result;
     }
 }

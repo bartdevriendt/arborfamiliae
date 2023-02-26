@@ -11,7 +11,7 @@ namespace ArborFamiliae.Domain.Person
     public class PersonAddEditModel : BaseDomainModel
     {
 
-        public Guid PreferredNameType { get; set; }
+        public Guid? PreferredNameType { get; set; }
         public string PreferredTitle { get; set; }
         public string PreferredNick { get; set; }
         public string PreferredCall { get; set; }

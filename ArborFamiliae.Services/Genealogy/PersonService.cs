@@ -1,13 +1,6 @@
-﻿using ArborFamiliae.Data;
-using ArborFamiliae.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ArborFamiliae.Data.Models;
 using ArborFamiliae.Domain.Person;
 using ArborFamiliae.Shared.Interfaces;
-using DevExpress.Xpo;
 
 namespace ArborFamiliae.Services.Genealogy
 {
@@ -61,6 +54,7 @@ namespace ArborFamiliae.Services.Genealogy
                 PreferredNameType = p.PrimaryName.NameTypeId,
                 PreferredSurnamePrefix = p.PrimaryName.PrimarySurname.Prefix,
                 PreferredGivenName = p.PrimaryName.FirstName,
+                ArborId = p.ArborId
             };
         }
 

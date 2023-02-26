@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using ArborFamiliae.Data;
 using ArborFamiliae.Data.Mysql;
 using ArborFamiliae.Hybrid.Services;
@@ -45,6 +46,8 @@ namespace ArborFamiliae.Hybrid
                 var connstring = ConnectionStringService.ConnectionString;
                 if (ConnectionStringService.Provider == Provider.MySql.Name)
                 {
+                    config.UseLazyLoadingProxies();
+                    config.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
                     config.UseMySql(
                         connstring,
                         ServerVersion.AutoDetect(connstring),
@@ -64,6 +67,15 @@ namespace ArborFamiliae.Hybrid
             blazorWebView1.Services = services.BuildServiceProvider();
             blazorWebView1.RootComponents.Add<App>("#app");
             
+
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+#if DEBUG
+                MessageBox.Show(text: args.ExceptionObject.ToString(), caption: "Error");
+#else
+    MessageBox.Show(text: "An error has occurred.", caption: "Error");
+#endif
+            };
         }
     }
 }
