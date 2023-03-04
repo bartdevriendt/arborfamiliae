@@ -3,6 +3,7 @@ using System;
 using ArborFamiliae.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArborFamiliae.Data.Mysql.Migrations
 {
     [DbContext(typeof(ArborFamiliaeContext))]
-    partial class ArborFamiliaeContextModelSnapshot : ModelSnapshot
+    [Migration("20230304170515_AddEventsAndDates")]
+    partial class AddEventsAndDates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,10 +43,15 @@ namespace ArborFamiliae.Data.Mysql.Migrations
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<Guid?>("PersonId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid?>("PlaceId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
 
                     b.HasIndex("PlaceId");
 
@@ -244,6 +251,10 @@ namespace ArborFamiliae.Data.Mysql.Migrations
 
             modelBuilder.Entity("ArborFamiliae.Data.Models.ArborEvent", b =>
                 {
+                    b.HasOne("ArborFamiliae.Data.Models.Person", null)
+                        .WithMany("Events")
+                        .HasForeignKey("PersonId");
+
                     b.HasOne("ArborFamiliae.Data.Models.Place", "Place")
                         .WithMany()
                         .HasForeignKey("PlaceId");
@@ -292,7 +303,7 @@ namespace ArborFamiliae.Data.Mysql.Migrations
                         .IsRequired();
 
                     b.HasOne("ArborFamiliae.Data.Models.Person", "Person")
-                        .WithMany("Events")
+                        .WithMany()
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

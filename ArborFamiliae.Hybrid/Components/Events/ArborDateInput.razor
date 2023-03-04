@@ -1,0 +1,23 @@
+﻿<DxTextBox @bind-Text="@Text" BindValueMode="BindValueMode.OnInput">
+    <Buttons>
+        <DxEditorButton IconCssClass="oi oi-pencil" Tooltip="Advanced date" Click="OnAdvancedEdit"></DxEditorButton>
+    </Buttons>
+</DxTextBox>
+
+@code {
+    [Parameter]
+    public string Text { get; set; }
+
+    private bool IsAdvancedEditorVisible { get; set; }
+    
+    private void OnAdvancedEdit()
+    {
+        
+    }
+
+    private void ValidateDate()
+    {
+        Console.WriteLine("Validate date: " + Text);
+    }
+
+}

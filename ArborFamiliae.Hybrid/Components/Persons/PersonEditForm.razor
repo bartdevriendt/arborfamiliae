@@ -1,4 +1,5 @@
 ﻿@using ArborFamiliae.Domain.Person
+@using ArborFamiliae.Hybrid.Components.Events
 @inject GenderService GenderService
 
 <EditForm Model="@Model">
@@ -23,6 +24,11 @@
                 <DxTextBox @bind-Text="@Model.ArborId"></DxTextBox>
             </DxFormLayoutItem>
         </DxFormLayoutGroup>
+        <DxFormLayoutTabPages>
+            <DxFormLayoutTabPage Caption="Events">
+                <NestedEventList></NestedEventList>
+            </DxFormLayoutTabPage>
+        </DxFormLayoutTabPages>
     </DxFormLayout>
 
     <DxButton SubmitFormOnClick="true" Text="Save" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
