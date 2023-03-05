@@ -4,34 +4,34 @@
 
 <EditForm Model="@Model">
     <DxFormLayout>
-        <DxFormLayoutGroup Caption="Preferred">
-            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="Title"><DxTextBox @bind-Text="@Model.PreferredTitle"></DxTextBox></DxFormLayoutItem>    
-            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="Nick"><DxTextBox @bind-Text="@Model.PreferredNick"></DxTextBox></DxFormLayoutItem>    
-            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="Call"><DxTextBox @bind-Text="@Model.PreferredCall"></DxTextBox></DxFormLayoutItem>    
-            <DxFormLayoutItem ColSpanLg="8" ColSpanMd="8" Caption="Given"><DxTextBox @bind-Text="@Model.PreferredGivenName"></DxTextBox></DxFormLayoutItem>    
-            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="Suffix"><DxTextBox @bind-Text="@Model.PreferredSuffix"></DxTextBox></DxFormLayoutItem>    
-            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="Surname">
-                <DxTextBox @bind-Text="@Model.PreferredSurnamePrefix" NullText="prefix"></DxTextBox></DxFormLayoutItem>    
+        <DxFormLayoutGroup Caption="@Loc["Preferred"]">
+            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="@Loc["Title"]"><DxTextBox @bind-Text="@Model.PreferredTitle"></DxTextBox></DxFormLayoutItem>    
+            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="@Loc["Nick"]"><DxTextBox @bind-Text="@Model.PreferredNick"></DxTextBox></DxFormLayoutItem>    
+            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="@Loc["Call"]"><DxTextBox @bind-Text="@Model.PreferredCall"></DxTextBox></DxFormLayoutItem>    
+            <DxFormLayoutItem ColSpanLg="8" ColSpanMd="8" Caption="@Loc["Given"]"><DxTextBox @bind-Text="@Model.PreferredGivenName"></DxTextBox></DxFormLayoutItem>    
+            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="@Loc["Suffix"]"><DxTextBox @bind-Text="@Model.PreferredSuffix"></DxTextBox></DxFormLayoutItem>    
+            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="@Loc["Surname"]">
+                <DxTextBox @bind-Text="@Model.PreferredSurnamePrefix" NullText="@Loc["prefix"]"></DxTextBox></DxFormLayoutItem>    
             <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="">
                 <DxTextBox @bind-Text="@Model.PreferredSurname"></DxTextBox>
             </DxFormLayoutItem>    
         </DxFormLayoutGroup>
-        <DxFormLayoutGroup Caption="General">
-            <DxFormLayoutItem Caption="Gender" ColSpanLg="4" ColSpanMd="4">
-                <DxComboBox Data="_genders" TData="GenderModel" TValue="Guid" @bind-Value="@Model.Gender" Text="Select Gender" ValueFieldName="Id" TextFieldName="Description"></DxComboBox>
+        <DxFormLayoutGroup Caption="@Loc["General"]">
+            <DxFormLayoutItem Caption="@Loc["Gender"]" ColSpanLg="4" ColSpanMd="4">
+                <DxComboBox Data="_genders" TData="GenderModel" TValue="Guid" @bind-Value="@Model.Gender" Text="@Loc["Select Gender"]" ValueFieldName="Id" TextFieldName="Description"></DxComboBox>
             </DxFormLayoutItem>
             <DxFormLayoutItem Caption="ID" ColSpanLg="4" ColSpanMd="4">
                 <DxTextBox @bind-Text="@Model.ArborId"></DxTextBox>
             </DxFormLayoutItem>
         </DxFormLayoutGroup>
         <DxFormLayoutTabPages>
-            <DxFormLayoutTabPage Caption="Events">
+            <DxFormLayoutTabPage Caption="@Loc["Events"]">
                 <NestedEventList></NestedEventList>
             </DxFormLayoutTabPage>
         </DxFormLayoutTabPages>
     </DxFormLayout>
 
-    <DxButton SubmitFormOnClick="true" Text="Save" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
+    <DxButton SubmitFormOnClick="true" Text="@Loc["Save"]" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
 </EditForm>
 
 @code {

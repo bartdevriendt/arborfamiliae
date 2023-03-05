@@ -8,19 +8,19 @@
 @using ArborFamiliae.Hybrid.Shared.Layouts
 @using ArborFamiliae.Hybrid.Shared.Models
 
-<h3>Load family tree</h3>
+<h3>@Loc["Load family tree"]</h3>
 
 <DxGrid Data="_databases"
         SelectionMode="GridSelectionMode.Multiple"
         AllowSelectRowByClick="true"
         @bind-SelectedDataItem="@SelectedDatabase">
     <Columns>
-        <DxGridDataColumn FieldName="@nameof(FamilyTreeDatabase.Name)"></DxGridDataColumn>
+        <DxGridDataColumn FieldName="@nameof(FamilyTreeDatabase.Name)" Caption="@Loc["Name"]"></DxGridDataColumn>
     </Columns>
 </DxGrid>
 
 <p>
-    <DxButton RenderStyle="ButtonRenderStyle.Primary" Click="LoadDatabase">Load</DxButton>
+    <DxButton RenderStyle="ButtonRenderStyle.Primary" Click="LoadDatabase">@Loc["Load"]</DxButton>
 </p>
 
 @code {

@@ -12,6 +12,8 @@ public class ArborEvent : BaseModel, IAggregateRoot, IHasSequence
     public bool IsPrivate { get; set; }
     public string SequenceType => "Event";
 
+    public virtual List<PersonEvent> PersonEvents { get; set; }
+
     public void SetSequence(int sequence)
     {
         ArborId = $"E{sequence:0000}";

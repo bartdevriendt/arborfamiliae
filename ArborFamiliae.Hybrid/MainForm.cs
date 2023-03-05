@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using ArborFamiliae.Data;
 using ArborFamiliae.Data.Mysql;
@@ -14,6 +15,7 @@ using MudBlazor;
 using MudBlazor.Services;
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace ArborFamiliae.Hybrid
 {
@@ -27,10 +29,12 @@ namespace ArborFamiliae.Hybrid
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Debug)
                 .Enrich.FromLogContext()
-                .WriteTo.Debug()
-                .WriteTo.Console()
+                //.WriteTo.Debug(LogEventLevel.Debug)
+                .WriteTo.Console(LogEventLevel.Debug, theme: AnsiConsoleTheme.Code, outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+                //.WriteTo.File("D:\\Temp\\ArborLogs\\ArborLogs.txt")
                 .CreateLogger();
-            
+            Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
+            //Serilog.Debugging.SelfLog.Enable(Console.Error);
             
             
             //TODO: Remove this once .NET 8 upgrade has been done
@@ -46,7 +50,8 @@ namespace ArborFamiliae.Hybrid
             services.AddLogging(logging =>
             {
                 logging.AddSerilog(dispose: true, logger: Log.Logger);
-                logging.AddDebug();
+                // logging.AddDebug();
+                // logging.AddConsole();
             });
             services.AddDevExpressBlazor(configure => configure.BootstrapVersion = BootstrapVersion.v5);
             services.AddMudServices(configuration =>

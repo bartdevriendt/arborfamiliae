@@ -8,6 +8,9 @@ namespace ArborFamiliae.Data.Models
 {
     public class Name : BaseModel
     {
+        public virtual Person Person { get; set; }
+        public virtual Guid PersonId { get; set; }
+
         public virtual bool IsPrivate { get; set; }
         public virtual string? FirstName { get; set; }
         public virtual List<Surname> Surnames { get; set; } = new();
