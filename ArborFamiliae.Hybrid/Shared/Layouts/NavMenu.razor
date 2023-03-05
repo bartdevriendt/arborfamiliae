@@ -1,7 +1,9 @@
-﻿<MudNavMenu>
+﻿
+
+<MudNavMenu>
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Home">Home</MudNavLink>
-    <MudNavGroup Title="Person" Icon="oi oi-people">
-        <MudNavLink Href="/person/list" Icon="@Icons.Material.Outlined.Computer">List</MudNavLink>           
+    <MudNavGroup Title="@Loc["Person"]" Icon="oi oi-people">
+        <MudNavLink Href="/person/list" Icon="@Icons.Material.Outlined.Computer">@Loc["List"]</MudNavLink>           
     </MudNavGroup>
 
 </MudNavMenu>

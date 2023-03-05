@@ -9,8 +9,11 @@ using DevExpress.Blazor;
 using Microsoft.AspNetCore.Components.WebView.WindowsForms;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using MudBlazor;
 using MudBlazor.Services;
+using Serilog;
+using Serilog.Events;
 
 namespace ArborFamiliae.Hybrid
 {
@@ -20,6 +23,16 @@ namespace ArborFamiliae.Hybrid
         {
             InitializeComponent();
 
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Debug)
+                .Enrich.FromLogContext()
+                .WriteTo.Debug()
+                .WriteTo.Console()
+                .CreateLogger();
+            
+            
+            
             //TODO: Remove this once .NET 8 upgrade has been done
             // See: https://github.com/dotnet/maui/issues/7997
             this.FormClosing += (sender, args) => { Environment.Exit(0); };
@@ -29,6 +42,12 @@ namespace ArborFamiliae.Hybrid
             #if DEBUG
             services.AddBlazorWebViewDeveloperTools();
             #endif
+            services.AddLocalization();
+            services.AddLogging(logging =>
+            {
+                logging.AddSerilog(dispose: true, logger: Log.Logger);
+                logging.AddDebug();
+            });
             services.AddDevExpressBlazor(configure => configure.BootstrapVersion = BootstrapVersion.v5);
             services.AddMudServices(configuration =>
             {
@@ -67,7 +86,8 @@ namespace ArborFamiliae.Hybrid
             blazorWebView1.Services = services.BuildServiceProvider();
             blazorWebView1.RootComponents.Add<App>("#app");
             
-
+            Log.Information("Starting application");
+            
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
 #if DEBUG
