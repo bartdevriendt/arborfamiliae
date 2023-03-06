@@ -457,3 +457,4 @@ $RECYCLE.BIN/
 .env
 .runsettings
 /ArborFamiliae.Data/ArborFamiliae.Data.csproj.bak
+*.received.*

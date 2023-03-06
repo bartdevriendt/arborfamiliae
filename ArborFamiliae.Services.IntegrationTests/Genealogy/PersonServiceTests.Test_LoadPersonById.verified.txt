@@ -1,0 +1,11 @@
+﻿{
+  PreferredTitle: qui,
+  PreferredNick: omnis,
+  PreferredCall: nihil,
+  PreferredGivenName: Halie,
+  PreferredSuffix: Jr.,
+  PreferredSurname: Turner,
+  Gender: Guid_1,
+  ArborId: atque,
+  Id: Guid_2
+}

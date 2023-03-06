@@ -37,57 +37,9 @@ public static class DbContextExtensions
 
         context.SaveChanges();
 
-
         PersonFaker personFaker = new PersonFaker();
         var persons = personFaker.Generate(5);
         context.Set<Person>().AddRange(persons);
         context.SaveChanges();
-
-        // context
-        //     .Set<Person>()
-        //     .AddRange(
-        //         new Person()
-        //         {
-        //             Id = Guid.NewGuid(),
-        //             Gender = context.Genders.First(x => x.Description == "Male"),
-        //             ArborId = "P0001",
-        //             PrimaryName = new Name()
-        //             {
-        //                 Id = Guid.NewGuid(),
-        //                 FirstName = "Jan",
-        //                 Surnames = new List<Surname>()
-        //                 {
-        //                     new Surname()
-        //                     {
-        //                         Primary = true,
-        //                         Id = new Guid(),
-        //                         SurnameValue = "Smit"
-        //                     }
-        //                 }
-        //             }
-        //         },
-        //         new Person()
-        //         {
-        //             Id = Guid.NewGuid(),
-        //             Gender = context.Genders.First(x => x.Description == "Female"),
-        //             ArborId = "P0002",
-        //             PrimaryName = new Name()
-        //             {
-        //                 Id = Guid.NewGuid(),
-        //                 FirstName = "Jane",
-        //                 Surnames = new List<Surname>()
-        //                 {
-        //                     new Surname()
-        //                     {
-        //                         Primary = true,
-        //                         Id = new Guid(),
-        //                         SurnameValue = "Doe"
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     );
-        //
-        // context.SaveChanges();
     }
 }

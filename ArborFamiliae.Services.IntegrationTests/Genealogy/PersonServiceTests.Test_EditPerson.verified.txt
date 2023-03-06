@@ -1,0 +1,12 @@
+﻿{
+  PreferredTitle: TestTitle,
+  PreferredNick: TestNick,
+  PreferredCall: TestCall,
+  PreferredGivenName: TestGiven,
+  PreferredSuffix: Jr.,
+  PreferredSurnamePrefix: TestSurnamePrefix,
+  PreferredSurname: TestSurname,
+  Gender: Guid_1,
+  ArborId: atque,
+  Id: Guid_2
+}

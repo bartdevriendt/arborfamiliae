@@ -1,5 +1,6 @@
 ﻿using ArborFamiliae.Data;
 using ArborFamiliae.Data.Mysql;
+using ArborFamiliae.Services.IntegrationTests.Fixtures;
 using Bogus;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
@@ -41,7 +42,7 @@ public class TestingSetup
     public async Task RunBeforeAnyTests()
     {
         Randomizer.Seed = new Random(8573497);
-        
+
         await _dbContainer.StartAsync();
         while (_dbContainer.State != TestcontainersStates.Running)
         {
@@ -123,5 +124,14 @@ public class TestingSetup
     {
         var scope = _scopeFactory.CreateScope();
         return scope.ServiceProvider.GetService<T>();
+    }
+
+    public static void SeedData()
+    {
+        using (var scope = _scopeFactory.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<ArborFamiliaeContext>();
+            context.SeedBasicData();
+        }
     }
 }
