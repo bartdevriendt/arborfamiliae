@@ -23,7 +23,7 @@ public class PersonServiceTests
         var persons = await personService.GetAllPersons();
 
         // assert
-        persons.Count.Should().Be(2);
+        persons.Count.Should().Be(5);
         persons.Any(x => x.Surname == "Doe" && x.FirstName == "Jane").Should().BeTrue();
         persons.Any(x => x.Surname == "Smit" && x.FirstName == "Jan").Should().BeTrue();
     }

@@ -10,6 +10,7 @@ namespace ArborFamiliae.Data.Models
     {
         public virtual Person Person { get; set; }
         public virtual Guid PersonId { get; set; }
+        public virtual bool IsPrimary { get; set; }
 
         public virtual bool IsPrivate { get; set; }
         public virtual string? FirstName { get; set; }

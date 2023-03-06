@@ -37,6 +37,12 @@ public static class DbContextExtensions
 
         context.SaveChanges();
 
+
+        PersonFaker personFaker = new PersonFaker();
+        var persons = personFaker.Generate(5);
+        context.Set<Person>().AddRange(persons);
+        context.SaveChanges();
+
         // context
         //     .Set<Person>()
         //     .AddRange(

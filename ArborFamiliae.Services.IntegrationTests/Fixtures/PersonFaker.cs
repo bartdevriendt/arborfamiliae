@@ -11,7 +11,6 @@ public sealed class PersonFaker : Faker<Person>
         RuleFor(x => x.ArborId, f => f.Lorem.Text());
         RuleFor(x => x.GenderId, f => f.PickRandom(HelperStuff.Genders));
         RuleFor(x => x.IsPrivate, f => f.Random.Bool());
-        RuleFor(x => x.PrimaryName, (faker, person) => new ArborNameFaker(person).Generate(1).First());
-
+        RuleFor(x => x.Names, (faker, person) => new ArborNameFaker(person, true).Generate(1));
     }
 }

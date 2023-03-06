@@ -66,9 +66,11 @@ namespace ArborFamiliae.Services.Genealogy
             {
                 p = new Person();
                 p.Id = Guid.NewGuid();
-                p.PrimaryName = new Name();
-                p.PrimaryName.Id = Guid.NewGuid();
-                p.PrimaryName.Surnames.Add(new Surname() { Id = Guid.NewGuid(), Primary = true });
+                var name = new Name();
+                name.Id = Guid.NewGuid();
+                name.IsPrimary = true;
+                name.Surnames.Add(new Surname() { Id = Guid.NewGuid(), Primary = true });
+                p.Names.Add(name);
                 isNew = true;
             }
             else
