@@ -1,52 +1,42 @@
 ﻿[
   {
-    ArborId: temporibus,
-    Surname: Padberg,
-    FirstName: Kamren,
+    ArborId: P00001,
+    Surname: van Meissen,
+    FirstName: Albrecht II,
     Gender: Male,
     BirthDate: ,
     DeathDate: ,
-    FullName: Padberg, Kamren,
+    FullName: van Meissen, Albrecht II,
     Id: Guid_1
   },
   {
-    ArborId: officiis,
-    Surname: Kohler,
-    FirstName: Pasquale,
-    Gender: Unknown,
-    BirthDate: ,
-    DeathDate: ,
-    FullName: Kohler, Pasquale,
-    Id: Guid_2
-  },
-  {
-    ArborId: fugit,
-    Surname: Sauer,
-    FirstName: Neva,
+    ArborId: P00002,
+    Surname: van Sicilië,
+    FirstName: Margaretha,
     Gender: Female,
     BirthDate: ,
     DeathDate: ,
-    FullName: Sauer, Neva,
+    FullName: van Sicilië, Margaretha,
+    Id: Guid_2
+  },
+  {
+    ArborId: P00003,
+    Surname: van Meissen,
+    FirstName: Frederik I,
+    Gender: Male,
+    BirthDate: ,
+    DeathDate: ,
+    FullName: van Meissen, Frederik I,
     Id: Guid_3
   },
   {
-    ArborId: dolor,
-    Surname: Jerde,
-    FirstName: Oswald,
+    ArborId: P00004,
+    Surname: van Thüringen,
+    FirstName: Diezmann,
     Gender: Male,
     BirthDate: ,
     DeathDate: ,
-    FullName: Jerde, Oswald,
+    FullName: van Thüringen, Diezmann,
     Id: Guid_4
-  },
-  {
-    ArborId: atque,
-    Surname: Turner,
-    FirstName: Halie,
-    Gender: Male,
-    BirthDate: ,
-    DeathDate: ,
-    FullName: Turner, Halie,
-    Id: Guid_5
   }
 ]

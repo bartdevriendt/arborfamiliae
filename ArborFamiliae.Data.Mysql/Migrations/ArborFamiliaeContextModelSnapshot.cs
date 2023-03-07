@@ -51,6 +51,55 @@ namespace ArborFamiliae.Data.Mysql.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("ArborFamiliae.Data.Models.Family", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ArborId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("FatherId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid?>("MotherId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FatherId");
+
+                    b.HasIndex("MotherId");
+
+                    b.ToTable("Families");
+                });
+
+            modelBuilder.Entity("ArborFamiliae.Data.Models.FamilyChild", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ChildId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("FamilyId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChildId");
+
+                    b.HasIndex("FamilyId");
+
+                    b.ToTable("FamilyChildren");
+                });
+
             modelBuilder.Entity("ArborFamiliae.Data.Models.Gender", b =>
                 {
                     b.Property<Guid>("Id")
@@ -249,6 +298,40 @@ namespace ArborFamiliae.Data.Mysql.Migrations
                     b.Navigation("Place");
                 });
 
+            modelBuilder.Entity("ArborFamiliae.Data.Models.Family", b =>
+                {
+                    b.HasOne("ArborFamiliae.Data.Models.Person", "Father")
+                        .WithMany()
+                        .HasForeignKey("FatherId");
+
+                    b.HasOne("ArborFamiliae.Data.Models.Person", "Mother")
+                        .WithMany()
+                        .HasForeignKey("MotherId");
+
+                    b.Navigation("Father");
+
+                    b.Navigation("Mother");
+                });
+
+            modelBuilder.Entity("ArborFamiliae.Data.Models.FamilyChild", b =>
+                {
+                    b.HasOne("ArborFamiliae.Data.Models.Person", "Child")
+                        .WithMany()
+                        .HasForeignKey("ChildId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ArborFamiliae.Data.Models.Family", "Family")
+                        .WithMany("Children")
+                        .HasForeignKey("FamilyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Child");
+
+                    b.Navigation("Family");
+                });
+
             modelBuilder.Entity("ArborFamiliae.Data.Models.Name", b =>
                 {
                     b.HasOne("ArborFamiliae.Data.Models.NameType", "NameType")
@@ -310,6 +393,11 @@ namespace ArborFamiliae.Data.Mysql.Migrations
             modelBuilder.Entity("ArborFamiliae.Data.Models.ArborEvent", b =>
                 {
                     b.Navigation("PersonEvents");
+                });
+
+            modelBuilder.Entity("ArborFamiliae.Data.Models.Family", b =>
+                {
+                    b.Navigation("Children");
                 });
 
             modelBuilder.Entity("ArborFamiliae.Data.Models.Name", b =>

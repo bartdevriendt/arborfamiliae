@@ -1,12 +1,13 @@
 ﻿{
+  PreferredNameType: BIRTH,
   PreferredTitle: TestTitle,
   PreferredNick: TestNick,
   PreferredCall: TestCall,
   PreferredGivenName: TestGiven,
-  PreferredSuffix: Jr.,
+  PreferredSuffix: ,
   PreferredSurnamePrefix: TestSurnamePrefix,
   PreferredSurname: TestSurname,
   Gender: Guid_1,
-  ArborId: atque,
+  ArborId: P00001,
   Id: Guid_2
 }

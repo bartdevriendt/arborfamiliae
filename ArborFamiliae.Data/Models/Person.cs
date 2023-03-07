@@ -32,5 +32,7 @@ namespace ArborFamiliae.Data.Models
         {
             ArborId = $"I{sequence:0000}";
         }
+
+        public bool NeedsSequence => String.IsNullOrEmpty(ArborId);
     }
 }

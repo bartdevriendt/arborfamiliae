@@ -25,4 +25,9 @@
       <ProjectReference Include="..\ArborFamiliae.Services\ArborFamiliae.Services.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="TestData\base_data.json" />
+      <EmbeddedResource Include="TestData\base_data.json" />
+    </ItemGroup>
+
 </Project>

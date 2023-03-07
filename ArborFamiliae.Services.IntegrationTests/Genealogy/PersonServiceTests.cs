@@ -1,6 +1,5 @@
 ﻿using ArborFamiliae.Domain.Person;
 using ArborFamiliae.Services.Genealogy;
-using ArborFamiliae.Services.IntegrationTests.Fixtures;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArborFamiliae.Services.IntegrationTests.Genealogy;
@@ -41,7 +40,7 @@ public class PersonServiceTests : TestBase
         var dbContext = GetDbContext();
         PersonAddEditModel model = new PersonAddEditModel();
         model.Id = Guid.Empty;
-        model.Gender = HelperStuff.Genders.First();
+        model.Gender = dbContext.Genders.First(g => g.Description == "Male").Id;
         model.PreferredCall = "TestCall";
         model.PreferredSurname = "TestSurname";
         model.PreferredGivenName = "TestGiven";
@@ -70,7 +69,7 @@ public class PersonServiceTests : TestBase
         model.PreferredNick = "TestNick";
         model.PreferredTitle = "TestTitle";
         model.PreferredSurnamePrefix = "TestSurnamePrefix";
-        model.Gender = HelperStuff.Genders.FirstOrDefault(x => x != model.Gender);
+        model.Gender = dbContext.Genders.First(g => g.Description == "Female").Id;
 
         // act
         var edited = await personService.AddEditPerson(model);

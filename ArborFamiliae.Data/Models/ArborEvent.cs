@@ -18,4 +18,6 @@ public class ArborEvent : BaseModel, IAggregateRoot, IHasSequence
     {
         ArborId = $"E{sequence:0000}";
     }
+
+    public bool NeedsSequence => String.IsNullOrEmpty(ArborId);
 }

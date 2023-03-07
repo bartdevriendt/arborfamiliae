@@ -1,11 +1,13 @@
 ﻿{
-  PreferredTitle: qui,
-  PreferredNick: omnis,
-  PreferredCall: nihil,
-  PreferredGivenName: Halie,
-  PreferredSuffix: Jr.,
-  PreferredSurname: Turner,
+  PreferredNameType: BIRTH,
+  PreferredTitle: ,
+  PreferredNick: de Ontaarde,
+  PreferredCall: ,
+  PreferredGivenName: Albrecht II,
+  PreferredSuffix: ,
+  PreferredSurnamePrefix: ,
+  PreferredSurname: van Meissen,
   Gender: Guid_1,
-  ArborId: atque,
+  ArborId: P00001,
   Id: Guid_2
 }

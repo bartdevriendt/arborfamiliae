@@ -1,0 +1,147 @@
+{
+  "genders": [
+    { "description": "Male" },
+    { "description": "Female" },
+    { "description": "Unkown" }
+  ],
+  "persons": [
+    { 
+      "arborid": "P00001", 
+      "gender": "Male", 
+      "names": [
+        { 
+          "primary": true,
+          "firstname": "Albrecht II",
+          "suffix": "",
+          "title": "",
+          "call": "",
+          "nickname": "de Ontaarde",
+          "familynick": "",
+          "nametype": 2,
+          "surnames": [
+            {
+              "namevalue": "van Meissen",
+              "prefix": "",
+              "primary": true,
+              "connector": "",
+              "surnametype": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arborid": "P00002",
+      "gender": "Female",
+      "names": [
+        {
+          "primary": true,
+          "firstname": "Margaretha",
+          "suffix": "",
+          "title": "",
+          "call": "",
+          "nickname": "",
+          "familynick": "",
+          "nametype": 2,
+          "surnames": [
+            {
+              "namevalue": "van Sicilië",
+              "prefix": "",
+              "primary": true,
+              "connector": "",
+              "surnametype": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arborid": "P00003",
+      "gender": "Male",
+      "names": [
+        {
+          "primary": true,
+          "firstname": "Frederik I",
+          "suffix": "",
+          "title": "",
+          "call": "",
+          "nickname": "",
+          "familynick": "",
+          "nametype": 2,
+          "surnames": [
+            {
+              "namevalue": "van Meissen",
+              "prefix": "",
+              "primary": true,
+              "connector": "",
+              "surnametype": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arborid": "P00004",
+      "gender": "Male",
+      "names": [
+        {
+          "primary": true,
+          "firstname": "Diezmann",
+          "suffix": "",
+          "title": "",
+          "call": "",
+          "nickname": "",
+          "familynick": "",
+          "nametype": 2,
+          "surnames": [
+            {
+              "namevalue": "van Thüringen",
+              "prefix": "",
+              "primary": true,
+              "connector": "",
+              "surnametype": 3
+            }
+          ]
+        },
+        {
+          "primary": false,
+          "firstname": "Diederik IV",
+          "suffix": "",
+          "title": "",
+          "call": "",
+          "nickname": "",
+          "familynick": "",
+          "nametype": 2,
+          "surnames": [
+            {
+              "namevalue": "van Lausitz",
+              "prefix": "",
+              "primary": true,
+              "connector": "",
+              "surnametype": 3
+            }
+          ]
+        }
+      ]
+    }
+    
+  ],
+  "families": [
+    {
+      "familyid": "F00001",
+      "father": "P00001",
+      "mother": "P00002",
+      "children": [
+        "P00003",
+        "P00004"
+      ]
+    }
+  ],
+  
+  "sequences": [
+    { "type": "person", "value": 100 },
+    { "type": "family", "value": 200 },
+    { "type": "Event", "value": 300 },
+    { "type": "Place", "value": 400 }
+  ]
+}

@@ -4,5 +4,6 @@
     {
         string SequenceType { get; }
         void SetSequence(int sequence);
+        bool NeedsSequence { get; }
     }
 }

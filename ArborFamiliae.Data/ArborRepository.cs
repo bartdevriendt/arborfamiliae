@@ -11,8 +11,12 @@ public class ArborRepository<T> : RepositoryBase<T>, IReadRepository<T>, IReposi
 {
     private ArborFamiliaeContext _context;
     private ISequenceGeneratorService _sequenceGeneratorService;
-    
-    public ArborRepository(ArborFamiliaeContext dbContext, ISequenceGeneratorService sequenceGeneratorService) : base(dbContext)
+
+    public ArborRepository(
+        ArborFamiliaeContext dbContext,
+        ISequenceGeneratorService sequenceGeneratorService
+    )
+        : base(dbContext)
     {
         _context = dbContext;
         _sequenceGeneratorService = sequenceGeneratorService;
@@ -20,7 +24,10 @@ public class ArborRepository<T> : RepositoryBase<T>, IReadRepository<T>, IReposi
 
     public ArborRepository(
         ArborFamiliaeContext dbContext,
-        ISpecificationEvaluator specificationEvaluator, ISequenceGeneratorService sequenceGeneratorService) : base(dbContext, specificationEvaluator)
+        ISpecificationEvaluator specificationEvaluator,
+        ISequenceGeneratorService sequenceGeneratorService
+    )
+        : base(dbContext, specificationEvaluator)
     {
         _context = dbContext;
         _sequenceGeneratorService = sequenceGeneratorService;
@@ -30,8 +37,7 @@ public class ArborRepository<T> : RepositoryBase<T>, IReadRepository<T>, IReposi
         CancellationToken cancellationToken = new CancellationToken()
     )
     {
-        IEnumerable<EntityEntry> entities = _context
-            .ChangeTracker
+        IEnumerable<EntityEntry> entities = _context.ChangeTracker
             .Entries()
             .Where(t => t.Entity is IHasSequence && t.State == EntityState.Added);
 
@@ -40,8 +46,13 @@ public class ArborRepository<T> : RepositoryBase<T>, IReadRepository<T>, IReposi
             foreach (EntityEntry entry in entities.ToList())
             {
                 IHasSequence? model = entry.Entity as IHasSequence;
-                var sequence = await _sequenceGeneratorService.GenerateSequence(model.SequenceType);
-                model.SetSequence(sequence);
+                if (model.NeedsSequence)
+                {
+                    var sequence = await _sequenceGeneratorService.GenerateSequence(
+                        model.SequenceType
+                    );
+                    model.SetSequence(sequence);
+                }
             }
         }
 

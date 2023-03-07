@@ -1,4 +1,5 @@
 ﻿using ArborFamiliae.Data.Models;
+using ArborFamiliae.Domain.Enums;
 using ArborFamiliae.Domain.Person;
 using ArborFamiliae.Shared.Interfaces;
 
@@ -36,6 +37,7 @@ namespace ArborFamiliae.Services.Genealogy
                             ArborId = p.ArborId
                         }
                 )
+                .OrderBy(p => p.ArborId)
                 .ToList();
         }
 
@@ -51,7 +53,7 @@ namespace ArborFamiliae.Services.Genealogy
                 PreferredSuffix = p.PrimaryName.Suffix,
                 PreferredSurname = p.PrimaryName.PrimarySurname.SurnameValue,
                 PreferredCall = p.PrimaryName.Call,
-                PreferredNameType = p.PrimaryName.NameTypeId,
+                PreferredNameType = (NameType)p.PrimaryName.NameType,
                 PreferredSurnamePrefix = p.PrimaryName.PrimarySurname.Prefix,
                 PreferredGivenName = p.PrimaryName.FirstName,
                 ArborId = p.ArborId
@@ -80,7 +82,7 @@ namespace ArborFamiliae.Services.Genealogy
 
             p.GenderId = model.Gender;
             p.IsPrivate = false;
-            p.PrimaryName.NameTypeId = model.PreferredNameType;
+            p.PrimaryName.NameType = (int)model.PreferredNameType;
             p.PrimaryName.FirstName = model.PreferredGivenName;
             p.PrimaryName.Call = model.PreferredCall;
             p.PrimaryName.Nickname = model.PreferredNick;

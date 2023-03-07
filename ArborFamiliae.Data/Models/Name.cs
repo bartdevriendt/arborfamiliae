@@ -20,8 +20,8 @@ namespace ArborFamiliae.Data.Models
         public virtual string? Call { get; set; }
         public virtual string? Nickname { get; set; }
         public virtual string? FamiliyNickName { get; set; }
-        public virtual NameType? NameType { get; set; }
-        public virtual Guid? NameTypeId { get; set; }
+
+        public virtual int NameType { get; set; }
 
         public Surname PrimarySurname => Surnames.First(x => x.Primary);
     }
