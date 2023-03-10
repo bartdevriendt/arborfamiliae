@@ -1,5 +1,6 @@
 ﻿using ArborFamiliae.Data;
 using ArborFamiliae.Data.Models;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -32,6 +33,33 @@ public class DataLoader
         {
             LoadPersons(dataObject["persons"]);
         }
+
+        if (dataObject.ContainsKey("personevents"))
+        {
+            LoadPersonEvents(dataObject["personevents"]);
+        }
+    }
+
+    private void LoadPersonEvents(JToken? personEvents)
+    {
+        foreach (var pe in personEvents)
+        {
+            PersonEvent personEvent = new PersonEvent();
+            personEvent.Person = FindPerson(pe["personid"].Value<string>());
+
+            ArborEvent arborEvent = new ArborEvent();
+            arborEvent.ArborId = pe["arborid"].Value<string>();
+            arborEvent.Description = pe["description"].Value<string>();
+            arborEvent.EventType = pe["eventtype"].Value<int>();
+            arborEvent.Place = null;
+            arborEvent.IsPrivate = pe["private"].Value<bool>();
+            arborEvent.EventDate = ConvertToDate(pe["date"]);
+            personEvent.Event = arborEvent;
+
+            _context.PersonEvents.Add(personEvent);
+        }
+
+        _context.SaveChanges();
     }
 
     private void LoadSequences(JToken sequences)
@@ -104,6 +132,26 @@ public class DataLoader
         _context.SaveChanges();
     }
 
+    private ArborDate ConvertToDate(JToken token)
+    {
+        return new ArborDate
+        {
+            Calendar = token["calendar"].Value<int>(),
+            Modifier = token["modifier"].Value<int>(),
+            Quality = token["quality"].Value<int>(),
+            Day = token["day"].Value<int>(),
+            Day2 = token["day2"].Value<int>(),
+            Month2 = token["month2"].Value<int>(),
+            Month = token["month"].Value<int>(),
+            Year = token["year"].Value<int>(),
+            Year2 = token["year2"].Value<int>(),
+            NewYear = token["newYear"].Value<int>(),
+            Text = token["text"].HasValues ? token["text"].Value<string?>() : null,
+            SlashDate2 = token["slashDate2"].Value<bool>(),
+            SlashDate1 = token["slashDate1"].Value<bool>(),
+        };
+    }
+
     private void LoadGenders(JToken genders)
     {
         int sortOrder = 0;
@@ -125,5 +173,10 @@ public class DataLoader
     private Gender FindGender(string gender)
     {
         return _context.Genders.First(g => g.Description == gender);
+    }
+
+    private Person FindPerson(string personId)
+    {
+        return _context.Persons.First(p => p.ArborId == personId);
     }
 }

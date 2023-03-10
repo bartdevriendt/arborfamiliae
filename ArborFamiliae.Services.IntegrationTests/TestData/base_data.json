@@ -137,7 +137,54 @@
       ]
     }
   ],
-  
+  "personevents": [
+    {
+      "personid": "I00001",
+      "eventtype": 12,
+      "arborid": "E00001",
+      "description": "",
+      "date": {
+        "calendar": 0,
+        "modifier": 6,
+        "quality": 0,
+        "year": 0,
+        "month": 0,
+        "day": 0,
+        "slashDate1": false,
+        "year2": 0,
+        "month2": 0,
+        "day2": 0,
+        "slashDate2": false,
+        "text": "estimated",
+        "newYear": 0
+      },
+      "place": null,
+      "private": false
+    },
+    {
+      "personid": "I00001",
+      "eventtype": 13,
+      "arborid": "E00002",
+      "description": "",
+      "date": {
+        "calendar": 0,
+        "modifier": 0,
+        "quality": 0,
+        "year": 1314,
+        "month": 11,
+        "day": 20,
+        "slashDate1": false,
+        "year2": 0,
+        "month2": 0,
+        "day2": 0,
+        "slashDate2": false,
+        "text": null,
+        "newYear": 0
+      },
+      "place": null,
+      "private": false
+    }
+  ],
   "sequences": [
     { "type": "person", "value": 100 },
     { "type": "family", "value": 200 },

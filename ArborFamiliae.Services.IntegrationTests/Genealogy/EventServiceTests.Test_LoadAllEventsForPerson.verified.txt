@@ -1,0 +1,18 @@
+﻿[
+  {
+    Id: Guid_1,
+    ArborId: E00001,
+    Description: ,
+    Type: BIRTH,
+    IsPrivate: false,
+    Category: Personal
+  },
+  {
+    Id: Guid_2,
+    ArborId: E00002,
+    Description: ,
+    Type: DEATH,
+    IsPrivate: false,
+    Category: Personal
+  }
+]
