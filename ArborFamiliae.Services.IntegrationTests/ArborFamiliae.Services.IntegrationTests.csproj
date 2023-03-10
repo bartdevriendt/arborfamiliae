@@ -28,6 +28,9 @@
     <ItemGroup>
       <None Remove="TestData\base_data.json" />
       <EmbeddedResource Include="TestData\base_data.json" />
+      <None Update="Genealogy\GenderServiceTests.Test_LoadAllGenders.verified.txt">
+        <DependentUpon>GenderServiceTests.cs</DependentUpon>
+      </None>
     </ItemGroup>
 
 </Project>

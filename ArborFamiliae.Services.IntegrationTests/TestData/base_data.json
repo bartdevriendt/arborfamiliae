@@ -6,7 +6,7 @@
   ],
   "persons": [
     { 
-      "arborid": "P00001", 
+      "arborid": "I00001", 
       "gender": "Male", 
       "names": [
         { 
@@ -31,7 +31,7 @@
       ]
     },
     {
-      "arborid": "P00002",
+      "arborid": "I00002",
       "gender": "Female",
       "names": [
         {
@@ -56,7 +56,7 @@
       ]
     },
     {
-      "arborid": "P00003",
+      "arborid": "I00003",
       "gender": "Male",
       "names": [
         {
@@ -81,7 +81,7 @@
       ]
     },
     {
-      "arborid": "P00004",
+      "arborid": "I00004",
       "gender": "Male",
       "names": [
         {
@@ -129,11 +129,11 @@
   "families": [
     {
       "familyid": "F00001",
-      "father": "P00001",
-      "mother": "P00002",
+      "father": "I00001",
+      "mother": "I00002",
       "children": [
-        "P00003",
-        "P00004"
+        "I00003",
+        "I00004"
       ]
     }
   ],

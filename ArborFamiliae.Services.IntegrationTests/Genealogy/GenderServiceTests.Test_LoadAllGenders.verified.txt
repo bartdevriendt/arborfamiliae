@@ -1,0 +1,14 @@
+﻿[
+  {
+    Description: Male,
+    Id: Guid_1
+  },
+  {
+    Description: Female,
+    Id: Guid_2
+  },
+  {
+    Description: Unkown,
+    Id: Guid_3
+  }
+]
