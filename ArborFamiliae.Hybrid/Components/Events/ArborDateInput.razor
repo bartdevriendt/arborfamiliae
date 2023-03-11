@@ -4,6 +4,12 @@
     </Buttons>
 </DxTextBox>
 
+<DxPopup @bind-Visible="IsAdvancedEditorVisible">
+    <BodyContentTemplate>
+        This is the advanced editor
+    </BodyContentTemplate>
+</DxPopup>
+
 @code {
     [Parameter]
     public string Text { get; set; }
@@ -12,7 +18,7 @@
     
     private void OnAdvancedEdit()
     {
-        
+        IsAdvancedEditorVisible = true;
     }
 
     private void ValidateDate()

@@ -2,6 +2,7 @@
 using ArborFamiliae.Domain.Enums;
 using ArborFamiliae.Domain.Events;
 using ArborFamiliae.Services.Common;
+using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
@@ -29,7 +30,7 @@ public class EventService : IScoped
 
     public async Task<List<EventListModel>> GetEventsForPerson(Guid personId)
     {
-        var personDetails = await _personReadRepository.GetByIdAsync(personId);
+        var personDetails = await _personReadRepository.SingleOrDefaultAsync(new PersenEventListSpecification(personId));
 
         var result = new List<EventListModel>();
 

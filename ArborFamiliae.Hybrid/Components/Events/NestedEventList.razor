@@ -1,7 +1,55 @@
-﻿<DxToolbar><DxToolbarItem Text="Add" IconCssClass="oi oi-plus"></DxToolbarItem> </DxToolbar>
-<DxGrid>
-    
-</DxGrid>
+﻿@using ArborFamiliae.Domain.Events
+@using ArborFamiliae.Domain.Enums
+@inject EventService _eventService
+
+
+<div class="row">
+    <div class="col-12">
+        <DxToolbar><DxToolbarItem Text="@Loc["Add"]" IconCssClass="oi oi-plus" Click="AddNewEvent"></DxToolbarItem></DxToolbar>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <DxGrid Data="_events">
+            <Columns>
+                <DxGridDataColumn GroupIndex="0" FieldName="Category" AllowGroup="true"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="ArborId" Caption="ID"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="Description" Caption="@Loc["Description"]"></DxGridDataColumn>
+            </Columns>
+        </DxGrid>
+    </div>
+</div>
+
+
+<DxPopup HeaderText="@Loc["Add Event"]" @bind-Visible="@PopupVisible">
+    <BodyTemplate>
+        <EditForm Model="_addEditModel">
+            
+        </EditForm>
+        <EventInput></EventInput>
+    </BodyTemplate>
+</DxPopup>
+
 @code {
+    [Parameter]
+    public Guid PersonId { get; set; }
+
+    private List<EventListModel> _events = new();
+    private EventAddEditModel _addEditModel = new();
     
+    bool PopupVisible { get; set; } = false;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        if(PersonId!=Guid.Empty)
+            _events = await _eventService.GetEventsForPerson(PersonId);
+    }
+
+    private void AddNewEvent()
+    {
+        _addEditModel.Role = EventRole.PRIMARY;
+        
+        PopupVisible = true;
+    }
+
 }

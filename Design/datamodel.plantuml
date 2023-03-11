@@ -1,0 +1,114 @@
+@startuml
+
+skinparam linetype ortho
+hide circle
+
+entity "Gender" as gender {
+    *Id: guid
+    --
+    Description: string
+}
+
+entity "Place" as place {
+    *Id: guid 
+    --
+    ArborId: string
+    Name: string
+}
+
+entity "Person" as person {
+    *Id : guid
+    --
+    *ArborId : string
+    *GenderId: Guid <<FK>>
+    IsPrivate: bool
+}
+
+entity "Name" as name {
+    *Id: guid
+    --
+    *PersonId: Guid <<FK>>
+    IsPrimary: bool
+    FirstName: string?
+    Suffix: string?
+    Title: string?
+    Call: string?
+    Nickname: string?
+    FamiliyNickname: string?
+    NameType: int
+}
+
+entity "Surname" as surname {
+    *Id: guid
+    --
+    *NameId: guid
+    SurnameValue: string?
+    Prefix: string?
+    Primary: bool
+    Connector: string?
+    OriginType: int
+}
+
+entity "ArborEvent" as arborEvent {
+    *Id: guid
+    --
+    *ArborId: string
+    EventDate: string?
+    EventType: int
+    Description: string
+    PlaceId: guid? <<FK>
+    IsPrivate: bool
+}
+
+entity "PersonEvent" as personEvent {
+    *Id: guid
+    --
+    PersonId: guid <<FK>>
+    EventId: guid <<FK>>
+}
+
+entity "Family" as family {
+    *Id: guid
+    --
+    *ArborId: string
+    FatherId: guid <<FK>>
+    MotherId: guid <<FK>>
+    IsPrivate: bool
+}
+
+entity "FamilyChild" as familyChild {
+    *Id: guid
+    --
+    FamilyId: guid <<FK>>
+    ChildId: guid <<FK>>
+}
+
+
+entity "Sequence" as sequence {
+    *Id: guid
+    --
+    SequenceType: string
+    NextValue: int
+}
+
+entity "FamilyEvent" as familyEvent {
+    *Id: guid
+    --
+    FamilyId: guid <<FK>>
+    EventId: guid <<FK>>
+}
+
+
+arborEvent ||..o{ personEvent
+person ||..o{ personEvent
+place ||..o{ arborEvent
+gender ||..o{ person
+person ||..o{ name
+name ||..o{ surname
+family ||..o{ familyChild
+person ||..o{ familyChild
+person ||..o{ family
+
+family ||..o{ familyEvent
+arborEvent ||..o{ familyEvent
+@enduml

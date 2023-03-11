@@ -30,8 +30,9 @@ namespace ArborFamiliae.Data.Mysql
                     {
                         x.MigrationsAssembly(typeof(DependencyInjectionMySql).Assembly.GetName().Name);
                     }
+                    
                 );
-            });
+            }, ServiceLifetime.Transient);
         }
     }
 }

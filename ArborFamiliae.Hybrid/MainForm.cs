@@ -81,7 +81,7 @@ namespace ArborFamiliae.Hybrid
                         }
                     );    
                 }
-            });
+            }, ServiceLifetime.Transient);
             
 
             services.AddSingleton<ConnectionStringService>();
