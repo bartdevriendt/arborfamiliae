@@ -28,7 +28,7 @@ namespace ArborFamiliae.Hybrid
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Debug)
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 //.WriteTo.Debug(LogEventLevel.Debug)
                 .WriteTo.Console(LogEventLevel.Debug, theme: AnsiConsoleTheme.Code, outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
@@ -66,7 +66,7 @@ namespace ArborFamiliae.Hybrid
             });
             services.AddSyncfusionBlazor();
             
-            services.AddDbContext<ArborFamiliaeContext>(config =>
+            services.AddDbContextFactory<ArborFamiliaeContext>(config =>
             {
                 var connstring = ConnectionStringService.ConnectionString;
                 if (ConnectionStringService.Provider == Provider.MySql.Name)
@@ -91,6 +91,7 @@ namespace ArborFamiliae.Hybrid
             
             blazorWebView1.HostPage = "wwwroot\\index.html";
             blazorWebView1.Services = services.BuildServiceProvider();
+            
             blazorWebView1.RootComponents.Add<App>("#app");
             
             Log.Information("Starting application");

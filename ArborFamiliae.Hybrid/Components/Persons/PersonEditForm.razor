@@ -41,7 +41,7 @@
 @code {
 
     [Parameter]
-    public PersonAddEditModel Model { get; set; }
+    public PersonAddEditModel Model { get; set; } = new PersonAddEditModel();
 
     [Parameter]
     public EventCallback PersonSave { get; set; }

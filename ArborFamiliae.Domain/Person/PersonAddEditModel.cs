@@ -29,5 +29,10 @@ namespace ArborFamiliae.Domain.Person
         public List<AttributeListModel> Attributes { get; set; }
         public List<AddressListModel> Addresses { get; set; }
         public List<NoteListModel> Notes { get; set; }
+
+        public string DisplayName
+        {
+            get => $"{PreferredSurname}, {PreferredGivenName}";
+        }
     }
 }

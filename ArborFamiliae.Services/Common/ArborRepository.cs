@@ -2,7 +2,6 @@
 using ArborFamiliae.Services.Sequences;
 using ArborFamiliae.Shared.Interfaces;
 using Ardalis.Specification;
-using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -14,18 +13,20 @@ public class ArborRepository<T> : RepositoryBase<T>, IReadRepository<T>, IReposi
     private ArborFamiliaeContext _context;
     private ISequenceGeneratorService _sequenceGeneratorService;
 
-    public ArborRepository(ArborFamiliaeContext dbContext) : base(dbContext)
+    public ArborRepository(IDbContextFactory<ArborFamiliaeContext> dbContextFactory)
+        : base(dbContextFactory.CreateDbContext())
     {
-        _context = dbContext;
+        _context = (ArborFamiliaeContext)Context;
         _sequenceGeneratorService = new SequenceGeneratorService(_context);
     }
 
     public ArborRepository(
-        ArborFamiliaeContext dbContext,
+        IDbContextFactory<ArborFamiliaeContext> dbContextFactory,
         ISpecificationEvaluator specificationEvaluator
-    ) : base(dbContext, specificationEvaluator)
+    )
+        : base(dbContextFactory.CreateDbContext(), specificationEvaluator)
     {
-        _context = dbContext;
+        _context = (ArborFamiliaeContext)Context;
         _sequenceGeneratorService = new SequenceGeneratorService(_context);
     }
 

@@ -15,7 +15,7 @@
     [Parameter]
     public Guid PersonId { get; set; }
 
-    private PersonAddEditModel model;
+    private PersonAddEditModel model = new PersonAddEditModel();
     
     protected override async Task OnInitializedAsync()
     {

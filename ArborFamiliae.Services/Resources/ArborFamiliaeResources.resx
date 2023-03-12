@@ -42,4 +42,13 @@
     <data name="Save" xml:space="preserve">
         <value>Save</value>
     </data>
+    <data name="Name" xml:space="preserve">
+        <value>Name</value>
+    </data>
+    <data name="Load family tree" xml:space="preserve">
+        <value>Load family tree</value>
+    </data>
+    <data name="Load" xml:space="preserve">
+        <value>Load</value>
+    </data>
 </root>

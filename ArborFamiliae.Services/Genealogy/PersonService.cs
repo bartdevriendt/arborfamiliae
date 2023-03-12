@@ -5,7 +5,7 @@ using ArborFamiliae.Shared.Interfaces;
 
 namespace ArborFamiliae.Services.Genealogy
 {
-    public class PersonService : IScoped
+    public class PersonService : ITransient
     {
         //private ArborFamiliaeContext context;
         private IReadRepository<Person> _personReadRepository;
@@ -23,22 +23,42 @@ namespace ArborFamiliae.Services.Genealogy
         public async Task<List<PersonListModel>> GetAllPersons()
         {
             var persons = await _personReadRepository.ListAsync();
-            return persons
-                .Select(
-                    p =>
-                        new PersonListModel
-                        {
-                            BirthDate = "",
-                            Gender = p.Gender.Description,
-                            Id = p.Id,
-                            Surname = p.PrimaryName.Surnames[0].SurnameValue,
-                            FirstName = p.PrimaryName.FirstName,
-                            DeathDate = "",
-                            ArborId = p.ArborId
-                        }
-                )
-                .OrderBy(p => p.ArborId)
-                .ToList();
+
+            var result = new List<PersonListModel>();
+
+            foreach (var p in persons)
+            {
+                var model = new PersonListModel
+                {
+                    BirthDate = "",
+                    Gender = p.Gender.Description,
+                    Id = p.Id,
+                    Surname = p.PrimaryName?.Surnames[0].SurnameValue,
+                    FirstName = p.PrimaryName?.FirstName,
+                    DeathDate = "",
+                    ArborId = p.ArborId
+                };
+
+                var birth = p.Events.FirstOrDefault(
+                    e => ((EventType)e.Event.EventType) == EventType.BIRTH
+                );
+                if (birth != null)
+                {
+                    model.BirthDate = birth.Event.EventDate?.Text;
+                }
+
+                var death = p.Events.FirstOrDefault(
+                    e => ((EventType)e.Event.EventType) == EventType.DEATH
+                );
+                if (death != null)
+                {
+                    model.DeathDate = death.Event.EventDate?.Text;
+                }
+
+                result.Add(model);
+            }
+
+            return result;
         }
 
         public async Task<PersonAddEditModel> GetPersonById(Guid id)

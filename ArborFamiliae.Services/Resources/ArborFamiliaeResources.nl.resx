@@ -42,4 +42,13 @@
     <data name="Save" xml:space="preserve">
         <value>Opslaan</value>
     </data>
+    <data name="Name" xml:space="preserve">
+        <value>Naam</value>
+    </data>
+    <data name="Load family tree" xml:space="preserve">
+        <value>Openen stamboom</value>
+    </data>
+    <data name="Load" xml:space="preserve">
+        <value>Laden</value>
+    </data>
 </root>

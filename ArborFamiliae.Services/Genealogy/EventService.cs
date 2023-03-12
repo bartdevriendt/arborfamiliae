@@ -13,46 +13,47 @@ public class EventService : ITransient
 {
     private DateCalculationService _dateCalculationService;
     private IRepository<ArborEvent> _eventRepository;
-    private IRepository<Person> _personRepository;
     private IReadRepository<Family> _familyReadRepository;
     private IStringLocalizer<ArborFamiliaeResources> _stringLocalizer;
+
+    private PersonService _personService;
 
     public EventService(
         DateCalculationService dateCalculationService,
         IRepository<ArborEvent> eventRepository,
-        IRepository<Person> personRepository,
         IReadRepository<Family> familyReadRepository,
-        IStringLocalizer<ArborFamiliaeResources> stringLocalizer
+        IStringLocalizer<ArborFamiliaeResources> stringLocalizer,
+        PersonService personService
     )
     {
         _dateCalculationService = dateCalculationService;
         _eventRepository = eventRepository;
-        _personRepository = personRepository;
         _familyReadRepository = familyReadRepository;
         _stringLocalizer = stringLocalizer;
+        _personService = personService;
     }
 
     public async Task<List<EventListModel>> GetEventsForPerson(Guid personId)
     {
         var events = await _eventRepository.ListAsync(new PersonEventListSpecification(personId));
 
-        var personDetails = await _eventRepository.SingleOrDefaultAsync(
-            new PersonEventListSpecification(personId)
-        );
+        var person = await _personService.GetPersonById(personId);
 
         var result = new List<EventListModel>();
 
-        foreach (var personEvent in events)
+        foreach (var arborEvent in events)
         {
             EventListModel model = new EventListModel();
-            model.Id = personEvent.Id;
-            model.ArborId = personEvent.ArborId;
+            model.Id = arborEvent.Id;
+            model.ArborId = arborEvent.ArborId;
             model.Category = "Personal";
-            model.Description = personEvent.Description;
-            model.Type = _stringLocalizer[((EventType)personEvent.EventType).ToString()];
-            //model.Role = _stringLocalizer[((EventRole)personEvent.EventRole).ToString()];
-            model.Place = personEvent.Place?.Name;
-            model.Date = personEvent.EventDate?.Text;
+            model.Description = arborEvent.Description;
+            model.Type = _stringLocalizer[((EventType)arborEvent.EventType).ToString()];
+            var personEvent = arborEvent.PersonEvents.First(x => x.PersonId == personId);
+            model.Role = _stringLocalizer[((EventRole)personEvent.EventRole).ToString()];
+            model.Place = arborEvent.Place?.Name;
+            model.Date = arborEvent.EventDate?.Text;
+            model.Participant = person.DisplayName;
             result.Add(model);
         }
 
