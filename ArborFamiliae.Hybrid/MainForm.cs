@@ -71,6 +71,7 @@ namespace ArborFamiliae.Hybrid
                 var connstring = ConnectionStringService.ConnectionString;
                 if (ConnectionStringService.Provider == Provider.MySql.Name)
                 {
+                    config.EnableSensitiveDataLogging();
                     config.UseLazyLoadingProxies();
                     config.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
                     config.UseMySql(

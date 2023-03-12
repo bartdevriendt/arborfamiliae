@@ -1,0 +1,94 @@
+﻿@using ArborFamiliae.Domain.Places
+@using Syncfusion.Blazor.Grids
+@inject PlaceService PlaceService
+
+
+<DxTextBox ReadOnly="true" @bind-Text="Text">
+    <Buttons>
+        <DxEditorButton IconCssClass="bi bi-hand-index-thumb" Click="OnSelectPlace"></DxEditorButton>
+    </Buttons>
+</DxTextBox>
+
+
+<DxPopup HeaderText="@Loc["Select Place"]" @bind-Visible="IsPopupVisible">
+    <BodyContentTemplate>
+        <div class="container-fluid">
+            <div class="row">
+
+            </div>
+            <div class="row">
+                <SfTreeGrid @ref="TreeGrid" DataSource="_places" IdMapping="Id" ParentIdMapping="ParentPlaceId" TreeColumnIndex="0" AllowSelection="true">
+                    <TreeGridSelectionSettings Type="SelectionType.Single" Mode="SelectionMode.Row"></TreeGridSelectionSettings>
+                    <TreeGridEvents RowSelected="RowSelectHandler" TValue="PlaceListModel"></TreeGridEvents>
+                    <TreeGridColumns>
+                        <TreeGridColumn Field="Name"></TreeGridColumn>
+                        <TreeGridColumn Field="ArborId"></TreeGridColumn>
+                        <TreeGridColumn Field="Type"></TreeGridColumn>
+                    </TreeGridColumns>
+                </SfTreeGrid>
+            </div>
+            <div class="row">
+                <DxButton Text="Select" Click="OnSelect"></DxButton>
+            </div>
+        </div>
+    </BodyContentTemplate>
+</DxPopup>
+
+@code {
+    
+    SfTreeGrid<PlaceListModel> TreeGrid;
+
+    private bool IsPopupVisible { get; set; } = false;
+    
+    [Parameter]
+    public string Text { get; set; }
+    
+    [Parameter]
+    public EventCallback<string> TextChanged { get; set; }
+    
+    [Parameter]
+    public Guid? PlaceId { get; set; }
+    
+    [Parameter]
+    public EventCallback<Guid?> PlaceIdChanged { get; set; }
+
+    private List<PlaceListModel> _places;
+
+    private PlaceListModel _selectedPlace;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _places = await PlaceService.GetAllPlaces();
+    }
+
+    private void OnSelectPlace()
+    {
+        IsPopupVisible = true;
+    }
+
+    private async Task RowSelectHandler(RowSelectEventArgs<PlaceListModel> args)
+    {
+        var selection = await TreeGrid.GetSelectedRecordsAsync();
+        _selectedPlace = selection.FirstOrDefault();
+    }
+
+    private async Task OnSelect()
+    {
+        IsPopupVisible = false;
+        if (_selectedPlace != null)
+        {
+            PlaceId = _selectedPlace.Id;
+            Text = _selectedPlace.Name;
+            
+        }
+        else
+        {
+            PlaceId = null;
+            Text = "";
+        }
+
+        await TextChanged.InvokeAsync(Text);
+        await PlaceIdChanged.InvokeAsync(PlaceId);
+    }
+
+}

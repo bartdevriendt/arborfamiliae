@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ArborFamiliae.Hybrid.Resources {
+namespace ArborFamiliae.Services.Resources {
     using System;
     
     
@@ -18,10 +18,10 @@ namespace ArborFamiliae.Hybrid.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ArborFamiliaeResources {
+    public class ArborFamiliaeResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -35,10 +35,10 @@ namespace ArborFamiliae.Hybrid.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ArborFamiliae.Hybrid.Resources.ArborFamiliaeResources", typeof(ArborFamiliaeResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ArborFamiliae.Services.Resources.ArborFamiliaeResources", typeof(ArborFamiliaeResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -50,7 +50,7 @@ namespace ArborFamiliae.Hybrid.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -60,9 +60,36 @@ namespace ArborFamiliae.Hybrid.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to City.
+        /// </summary>
+        public static string CITY {
+            get {
+                return ResourceManager.GetString("CITY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string COUNTRY {
+            get {
+                return ResourceManager.GetString("COUNTRY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List.
         /// </summary>
-        internal static string List {
+        public static string List {
             get {
                 return ResourceManager.GetString("List", resourceCulture);
             }
@@ -71,9 +98,27 @@ namespace ArborFamiliae.Hybrid.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Person.
         /// </summary>
-        internal static string Person {
+        public static string Person {
             get {
                 return ResourceManager.GetString("Person", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Province.
+        /// </summary>
+        public static string PROVINCE {
+            get {
+                return ResourceManager.GetString("PROVINCE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string UNKNOWN {
+            get {
+                return ResourceManager.GetString("UNKNOWN", resourceCulture);
             }
         }
     }

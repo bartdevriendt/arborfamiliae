@@ -1,17 +1,28 @@
 ﻿using ArborFamiliae.Data.Models;
 using ArborFamiliae.Domain.Enums;
 using ArborFamiliae.Domain.Places;
+using ArborFamiliae.Services.Resources;
 using ArborFamiliae.Shared.Interfaces;
+using Microsoft.Extensions.Localization;
 
 namespace ArborFamiliae.Services.Genealogy;
 
 public class PlaceService : IScoped
 {
     private IReadRepository<Place> _placeReadRepository;
+    private IRepository<Place> _placeRepository;
 
-    public PlaceService(IReadRepository<Place> placeReadRepository)
+    private IStringLocalizer<ArborFamiliaeResources> _stringLocalizer;
+
+    public PlaceService(
+        IReadRepository<Place> placeReadRepository,
+        IStringLocalizer<ArborFamiliaeResources> stringLocalizer,
+        IRepository<Place> placeRepository
+    )
     {
         _placeReadRepository = placeReadRepository;
+        _stringLocalizer = stringLocalizer;
+        _placeRepository = placeRepository;
     }
 
     public async Task<List<PlaceListModel>> GetAllPlaces()
@@ -26,10 +37,62 @@ public class PlaceService : IScoped
                         ArborId = p.ArborId,
                         Code = p.Code,
                         Name = p.Name,
-                        Type = ((PlaceType)p.PlaceType).ToString(),
+                        Type = _stringLocalizer[((PlaceType)p.PlaceType).ToString()],
                         ParentPlaceId = p.EnclosedById
                     }
             )
             .ToList();
+    }
+
+    public async Task<PlaceAddEditModel> GetPlaceById(Guid id)
+    {
+        var place = await _placeReadRepository.GetByIdAsync(id);
+        return new PlaceAddEditModel
+        {
+            Id = place.Id,
+            ArborId = place.ArborId,
+            Code = place.Code,
+            Name = place.Name,
+            PlaceType = (PlaceType)place.PlaceType,
+            Latitude = place.Latitude,
+            Longitude = place.Longitude,
+            ParentPlaceId = place.EnclosedById,
+            ParentPlaceName = place.EnclosedBy?.Name
+        };
+    }
+
+    public async Task<PlaceAddEditModel> AddEditPlace(PlaceAddEditModel model)
+    {
+        Place? p = null;
+        bool isNew = false;
+        if (model.Id == Guid.Empty)
+        {
+            p = new Place();
+            p.Id = Guid.NewGuid();
+            isNew = true;
+        }
+        else
+        {
+            p = await _placeReadRepository.GetByIdAsync(model.Id);
+        }
+
+        p.Code = model.Code;
+        p.Name = model.Name;
+        p.PlaceType = (int)model.PlaceType;
+        p.Latitude = model.Latitude;
+        p.Longitude = model.Longitude;
+        p.EnclosedById = model.ParentPlaceId;
+
+        if (isNew)
+        {
+            await _placeRepository.AddAsync(p);
+        }
+        else
+        {
+            await _placeRepository.UpdateAsync(p);
+        }
+
+        model.Id = p.Id;
+        return model;
     }
 }

@@ -10,12 +10,32 @@
     <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="6.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Scrutor" Version="4.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ArborFamiliae.Data.Mysql\ArborFamiliae.Data.Mysql.csproj" />
     <ProjectReference Include="..\ArborFamiliae.Data\ArborFamiliae.Data.csproj" />
     <ProjectReference Include="..\ArborFamiliae.Domain\ArborFamiliae.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\ArborFamiliaeResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ArborFamiliaeResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\ArborFamiliaeResources.nl.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ArborFamiliaeResources.nl.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ArborFamiliaeResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ArborFamiliaeResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

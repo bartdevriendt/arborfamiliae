@@ -24,4 +24,19 @@
     <data name="List" xml:space="preserve">
         <value>Lijst</value>
     </data>
+    <data name="Add" xml:space="preserve">
+        <value>Nieuw</value>
+    </data>
+    <data name="UNKNOWN" xml:space="preserve">
+        <value>Onbekend</value>
+    </data>
+    <data name="CITY" xml:space="preserve">
+        <value>Stad</value>
+    </data>
+    <data name="PROVINCE" xml:space="preserve">
+        <value>Provincie</value>
+    </data>
+    <data name="COUNTRY" xml:space="preserve">
+        <value>Land</value>
+    </data>
 </root>

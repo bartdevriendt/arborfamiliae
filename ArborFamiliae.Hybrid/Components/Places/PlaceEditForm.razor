@@ -1,6 +1,25 @@
 ﻿@using ArborFamiliae.Domain.Places
+@using ArborFamiliae.Services.Common
+@using ArborFamiliae.Domain.Enums
+@inject EnumService EnumService
 
-
+<EditForm Model="@Model" Context="edit_context">
+    <DxFormLayout >
+        <DxFormLayoutGroup Caption="@Loc["Place Information"]">
+            <DxFormLayoutItem Caption="@Loc["Name"]" ColSpanMd="8"><DxTextBox @bind-Text="@Model.Name"></DxTextBox></DxFormLayoutItem>
+            <DxFormLayoutItem Caption="@Loc["Type"]" ColSpanMd="4"><DxComboBox @bind-Value="@Model.PlaceType" Data="PlaceTypes" TextFieldName="Description" ValueFieldName="Value"></DxComboBox></DxFormLayoutItem>
+            
+            <DxFormLayoutItem Caption="@Loc["Latitude"]" ColSpanMd="6"><DxSpinEdit @bind-Value="@Model.Latitude" Mask="0.00######"></DxSpinEdit></DxFormLayoutItem>
+            <DxFormLayoutItem Caption="@Loc["Longitude"]" ColSpanMd="6"><DxSpinEdit @bind-Value="@Model.Longitude" Mask="0.00######"></DxSpinEdit></DxFormLayoutItem>
+                        
+            <DxFormLayoutItem Caption="@Loc["ID"]" ColSpanMd="4"><DxTextBox @bind-Text="@Model.ArborId"></DxTextBox></DxFormLayoutItem>
+            <DxFormLayoutItem Caption="@Loc["Code"]" ColSpanMd="4"><DxTextBox @bind-Text="@Model.Code"></DxTextBox></DxFormLayoutItem>
+            <DxFormLayoutItem Caption="@Loc["Enclosed By"]" ColSpanMd="4"><PlaceSelector @bind-PlaceId="@Model.ParentPlaceId" @bind-Text="@Model.ParentPlaceName"></PlaceSelector></DxFormLayoutItem>
+        </DxFormLayoutGroup>
+    </DxFormLayout>
+    
+    <DxButton SubmitFormOnClick="true" Text="@Loc["Save"]" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
+</EditForm>
 
 
 @code {
@@ -10,8 +29,17 @@
     [Parameter]
     public EventCallback PlaceSave { get; set; }
     
+    private List<EnumListType<PlaceType>> PlaceTypes { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        PlaceTypes = EnumService.GetEnumTypes<PlaceType>();
+    }
+
+
     private async Task OnSave()
     {
         await PlaceSave.InvokeAsync();
+        
     }
 }

@@ -1,5 +1,6 @@
 ﻿@page "/place/list"
 @using ArborFamiliae.Domain.Places
+@using Syncfusion.Blazor.Grids
 @inject PlaceService PlaceService
 @inherits BasePageComponent
 
@@ -9,7 +10,9 @@
     <DxToolbarItem Text="@Loc["Add"]" IconCssClass="bi bi-plus-lg" Click="AddPlace"></DxToolbarItem>
 </DxToolbar>
 
-<SfTreeGrid DataSource="_places" IdMapping="Id" ParentIdMapping="ParentPlaceId" TreeColumnIndex="0">
+<SfTreeGrid @ref="TreeGrid" DataSource="_places" IdMapping="Id" ParentIdMapping="ParentPlaceId" TreeColumnIndex="0">
+    <TreeGridSelectionSettings Mode="SelectionMode.Row" Type="SelectionType.Single"></TreeGridSelectionSettings>
+    <TreeGridEvents TValue="PlaceListModel" OnRecordDoubleClick="RowDoubleClick"></TreeGridEvents>
     <TreeGridColumns>
         <TreeGridColumn Field="@nameof(PlaceListModel.Name)"></TreeGridColumn>
         <TreeGridColumn Field="@nameof(PlaceListModel.ArborId)" HeaderText="ID"></TreeGridColumn>
@@ -19,6 +22,8 @@
 </SfTreeGrid>
 
 @code {
+
+    SfTreeGrid<PlaceListModel> TreeGrid;
 
     private List<PlaceListModel> _places;
     
@@ -30,6 +35,11 @@
     private void AddPlace()
     {
         NavigationManager.NavigateTo("/place/add");
+    }
+
+    private void RowDoubleClick(RecordDoubleClickEventArgs<PlaceListModel> obj)
+    {
+        NavigationManager.NavigateTo($"/place/{obj.RowData.Id}/edit"); 
     }
 
 }

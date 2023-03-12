@@ -1,10 +1,12 @@
-﻿using ArborFamiliae.Shared.Interfaces;
+﻿using ArborFamiliae.Data;
+using ArborFamiliae.Services.Sequences;
+using ArborFamiliae.Shared.Interfaces;
 using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace ArborFamiliae.Data;
+namespace ArborFamiliae.Services.Common;
 
 public class ArborRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>
     where T : class, IAggregateRoot
@@ -12,25 +14,19 @@ public class ArborRepository<T> : RepositoryBase<T>, IReadRepository<T>, IReposi
     private ArborFamiliaeContext _context;
     private ISequenceGeneratorService _sequenceGeneratorService;
 
-    public ArborRepository(
-        ArborFamiliaeContext dbContext,
-        ISequenceGeneratorService sequenceGeneratorService
-    )
-        : base(dbContext)
+    public ArborRepository(ArborFamiliaeContext dbContext) : base(dbContext)
     {
         _context = dbContext;
-        _sequenceGeneratorService = sequenceGeneratorService;
+        _sequenceGeneratorService = new SequenceGeneratorService(_context);
     }
 
     public ArborRepository(
         ArborFamiliaeContext dbContext,
-        ISpecificationEvaluator specificationEvaluator,
-        ISequenceGeneratorService sequenceGeneratorService
-    )
-        : base(dbContext, specificationEvaluator)
+        ISpecificationEvaluator specificationEvaluator
+    ) : base(dbContext, specificationEvaluator)
     {
         _context = dbContext;
-        _sequenceGeneratorService = sequenceGeneratorService;
+        _sequenceGeneratorService = new SequenceGeneratorService(_context);
     }
 
     public override async Task<int> SaveChangesAsync(

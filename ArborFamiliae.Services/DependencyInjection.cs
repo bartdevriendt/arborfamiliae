@@ -1,4 +1,5 @@
 ﻿using ArborFamiliae.Data;
+using ArborFamiliae.Services.Common;
 using ArborFamiliae.Services.Sequences;
 using ArborFamiliae.Shared.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +24,8 @@ namespace ArborFamiliae.Services
             services.AddScoped<ISequenceGeneratorService, SequenceGeneratorService>();
             services.AddScoped(typeof(IRepository<>), typeof(ArborRepository<>));
             services.AddScoped(typeof(IReadRepository<>), typeof(ArborRepository<>));
-
+            services.AddLocalization();
+            services.AddLogging();
             return services;
         }
     }

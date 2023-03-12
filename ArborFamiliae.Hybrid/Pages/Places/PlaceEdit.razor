@@ -1,22 +1,25 @@
-﻿@page "/place/add"
+﻿@page "/place/{PlaceId:guid}/edit"
 @using ArborFamiliae.Domain.Places
 @inherits BasePageComponent
 @inject PlaceService PlaceService
 
-<h3>Add new place</h3>
+<h3>Edit place</h3>
 
 <PlaceEditForm Model="@Model" PlaceSave="OnSave">
     
 </PlaceEditForm>
 
 @code {
+    [Parameter]
+    public Guid PlaceId { get; set; }
 
-    private PlaceAddEditModel Model { get; set; } = new();
+    public PlaceAddEditModel Model { get; set; }
     
     protected override async Task OnInitializedAsync()
     {
-        
+        Model = await PlaceService.GetPlaceById(PlaceId);
     }
+
     private async Task OnSave()
     {
         await PlaceService.AddEditPlace(Model);
