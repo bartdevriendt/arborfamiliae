@@ -1,0 +1,17 @@
+﻿@using ArborFamiliae.Domain.Places
+
+
+
+
+@code {
+    [Parameter]
+    public PlaceAddEditModel Model { get; set; }
+    
+    [Parameter]
+    public EventCallback PlaceSave { get; set; }
+    
+    private async Task OnSave()
+    {
+        await PlaceSave.InvokeAsync();
+    }
+}

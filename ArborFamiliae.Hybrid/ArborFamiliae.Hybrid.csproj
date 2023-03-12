@@ -16,6 +16,8 @@
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="20.4.0.53" />
+    <PackageReference Include="Syncfusion.Blazor.TreeGrid" Version="20.4.0.53" />
   </ItemGroup>
 
   <ItemGroup>

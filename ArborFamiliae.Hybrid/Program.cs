@@ -22,6 +22,9 @@ namespace ArborFamiliae.Hybrid
         [STAThread]
         static void Main()
         {
+            
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTMwNTI4OEAzMjMwMmUzNDJlMzBKSlRkazlnU2YxY2Yrek5iNUFMWWtBbnBOUVNFb3B1MXhHeEgvUzJoRVNrPQ==");
+            
             #if DEBUG
             // redirect console output to parent process;
             // must be before any calls to Console.WriteLine()

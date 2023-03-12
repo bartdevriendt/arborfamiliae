@@ -49,7 +49,7 @@ namespace ArborFamiliae.Hybrid
             this.ClientSize = new System.Drawing.Size(1200, 800);
             this.Controls.Add(this.blazorWebView1);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Arbor Familiae";
             this.WindowState = FormWindowState.Normal;
             this.ResumeLayout(false);
 

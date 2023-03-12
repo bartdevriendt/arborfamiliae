@@ -16,6 +16,7 @@ using MudBlazor.Services;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using Syncfusion.Blazor;
 
 namespace ArborFamiliae.Hybrid
 {
@@ -63,7 +64,7 @@ namespace ArborFamiliae.Hybrid
                 configuration.SnackbarConfiguration.ShowCloseIcon = false;
                 configuration.SnackbarConfiguration.PreventDuplicates = true;
             });
-
+            services.AddSyncfusionBlazor();
             
             services.AddDbContext<ArborFamiliaeContext>(config =>
             {

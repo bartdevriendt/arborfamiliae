@@ -13,7 +13,8 @@
 <DxGrid Data="_databases"
         SelectionMode="GridSelectionMode.Multiple"
         AllowSelectRowByClick="true"
-        @bind-SelectedDataItem="@SelectedDatabase">
+        @bind-SelectedDataItem="@SelectedDatabase"
+        RowDoubleClick="ConnectionSelected">
     <Columns>
         <DxGridDataColumn FieldName="@nameof(FamilyTreeDatabase.Name)" Caption="@Loc["Name"]"></DxGridDataColumn>
     </Columns>
@@ -56,6 +57,11 @@
         }
         
         NavigationManager.NavigateTo("/seed", forceLoad: true);   
+    }
+
+    private void ConnectionSelected()
+    {
+        LoadDatabase();
     }
 
 }

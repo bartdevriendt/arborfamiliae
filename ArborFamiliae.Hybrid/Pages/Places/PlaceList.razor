@@ -1,0 +1,35 @@
+﻿@page "/place/list"
+@using ArborFamiliae.Domain.Places
+@inject PlaceService PlaceService
+@inherits BasePageComponent
+
+<h3>@Loc["Places"]</h3>
+
+<DxToolbar>
+    <DxToolbarItem Text="@Loc["Add"]" IconCssClass="bi bi-plus-lg" Click="AddPlace"></DxToolbarItem>
+</DxToolbar>
+
+<SfTreeGrid DataSource="_places" IdMapping="Id" ParentIdMapping="ParentPlaceId" TreeColumnIndex="0">
+    <TreeGridColumns>
+        <TreeGridColumn Field="@nameof(PlaceListModel.Name)"></TreeGridColumn>
+        <TreeGridColumn Field="@nameof(PlaceListModel.ArborId)" HeaderText="ID"></TreeGridColumn>
+        <TreeGridColumn Field="@nameof(PlaceListModel.Code)" HeaderText="Code"></TreeGridColumn>
+        <TreeGridColumn Field="@nameof(PlaceListModel.Type)" HeaderText="Type"></TreeGridColumn>
+    </TreeGridColumns>
+</SfTreeGrid>
+
+@code {
+
+    private List<PlaceListModel> _places;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _places = await PlaceService.GetAllPlaces();
+    }
+
+    private void AddPlace()
+    {
+        NavigationManager.NavigateTo("/place/add");
+    }
+
+}
