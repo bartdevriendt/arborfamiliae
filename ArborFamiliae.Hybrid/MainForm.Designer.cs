@@ -50,7 +50,7 @@ namespace ArborFamiliae.Hybrid
             this.Controls.Add(this.blazorWebView1);
             this.Name = "MainForm";
             this.Text = "Arbor Familiae";
-            this.WindowState = FormWindowState.Normal;
+            this.WindowState = FormWindowState.Maximized;
             this.ResumeLayout(false);
 
         }

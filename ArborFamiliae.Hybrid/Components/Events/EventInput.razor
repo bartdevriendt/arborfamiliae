@@ -1,9 +1,41 @@
-﻿<h3>EventInput</h3>
+﻿@using ArborFamiliae.Services.Common
+@using ArborFamiliae.Domain.Enums
+@using ArborFamiliae.Domain.Events
+@inject EnumService EnumService
 
-<DxFormLayout CaptionPosition="CaptionPosition.Horizontal">
-    <DxFormLayoutItem><ArborDateInput Text="@Date"></ArborDateInput></DxFormLayoutItem>
-</DxFormLayout>
+<div class="container-fluid">
+<EditForm Model="@Model" Context="edit_form">
+    <DxFormLayout CaptionPosition="CaptionPosition.Horizontal">
+        <DxFormLayoutItem Caption="@Loc["Event Type"]" ColSpanMd="12"><DxComboBox Data="_eventTypes" TextFieldName="Description" ValueFieldName="Value" @bind-Value="Model.Type"></DxComboBox> </DxFormLayoutItem>
+        <DxFormLayoutItem Caption="@Loc["Date"]" ColSpanMd="12"><ArborDateInput @bind-Date="@Model.Date"></ArborDateInput></DxFormLayoutItem>
+        <DxFormLayoutItem Caption="@Loc["ID"]"><DxTextBox @bind-Text="@Model.ArborId"></DxTextBox></DxFormLayoutItem>
+        <DxFormLayoutItem Caption="@Loc["Place"]"><PlaceSelector @bind-PlaceId="@Model.PlaceId" @bind-Text="@Model.PlaceName" AllowAdd="true"></PlaceSelector></DxFormLayoutItem>
+        <DxFormLayoutItem Caption="@Loc["Description"]"><DxTextBox @bind-Text="@Model.Description"></DxTextBox></DxFormLayoutItem>
+    </DxFormLayout>
+    <DxButton SubmitFormOnClick="true" Text="@Loc["Save"]" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
+</EditForm>
+</div>
 
 @code {
+    
+    [Parameter]
+    public EventAddEditModel Model { get; set; }
+    
+    [Parameter]
+    public EventCallback EventSave { get; set; }
+    
     private string Date { get; set; }
+
+    private List<EnumListType<EventType>> _eventTypes; 
+
+    protected override async Task OnInitializedAsync()
+    {
+        _eventTypes = EnumService.GetEnumTypes<EventType>();
+    }
+
+    private async Task OnSave()
+    {
+        await EventSave.InvokeAsync();
+    }
+
 }

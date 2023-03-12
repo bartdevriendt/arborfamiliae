@@ -10,23 +10,33 @@
 </div>
 <div class="row">
     <div class="col-12">
-        <DxGrid Data="_events">
+        <DxGrid Data="_events" RowDoubleClick="RowDoubleClick"
+                SelectionMode="GridSelectionMode.Single"
+                AllowSelectRowByClick="true"
+                @bind-SelectedDataItem="@SelectedEvent"
+                AutoExpandAllGroupRows="true"
+                >
             <Columns>
-                <DxGridDataColumn GroupIndex="0" FieldName="Category" AllowGroup="true"></DxGridDataColumn>
-                <DxGridDataColumn FieldName="ArborId" Caption="ID"></DxGridDataColumn>
+                <DxGridDataColumn GroupIndex="0" FieldName="Category" AllowGroup="true" Caption="@Loc["Category"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="Type" Caption="@Loc["Type"]"></DxGridDataColumn>
                 <DxGridDataColumn FieldName="Description" Caption="@Loc["Description"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="Date" Caption="@Loc["Date"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="Place" Caption="@Loc["Place"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="Participant" Caption="@Loc["Main Participants"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="Role" Caption="@Loc["Role"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="ArborId" Caption="@Loc["ID"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="Age" Caption="@Loc["Age"]"></DxGridDataColumn>
             </Columns>
         </DxGrid>
     </div>
 </div>
 
 
-<DxPopup HeaderText="@Loc["Add Event"]" @bind-Visible="@PopupVisible">
+<DxPopup HeaderText="@Loc["Add Event"]" @bind-Visible="@PopupVisible" SizeMode="SizeMode.Large" Width="800" Height="600">
     <BodyTemplate>
-        <EditForm Model="_addEditModel">
+        <EventInput Model="_addEditModel" EventSave="OnEventSave">
             
-        </EditForm>
-        <EventInput></EventInput>
+        </EventInput>
     </BodyTemplate>
 </DxPopup>
 
@@ -39,17 +49,44 @@
     
     bool PopupVisible { get; set; } = false;
     
+    private object SelectedEvent { get; set; }
+    
     protected override async Task OnInitializedAsync()
     {
-        if(PersonId!=Guid.Empty)
-            _events = await _eventService.GetEventsForPerson(PersonId);
+        await LoadEvents();
     }
 
+    private async Task LoadEvents()
+    {
+        _events = await _eventService.GetEventsForPerson(PersonId);
+    }
+    
     private void AddNewEvent()
     {
         _addEditModel.Role = EventRole.PRIMARY;
         
         PopupVisible = true;
+    }
+
+    private async Task OnEventSave()
+    {
+        _addEditModel = await _eventService.AddEditEventForPerson(PersonId, _addEditModel);
+        PopupVisible = false;
+        await LoadEvents();
+        
+        
+    }
+
+    private async Task RowDoubleClick()
+    {
+
+        _addEditModel = await _eventService.GetEventById(((EventListModel)SelectedEvent).Id);
+        PopupVisible = true;
+    }
+
+    private void GroupTextCustomization(GridCustomizeGroupValueDisplayTextEventArgs obj)
+    {
+        
     }
 
 }

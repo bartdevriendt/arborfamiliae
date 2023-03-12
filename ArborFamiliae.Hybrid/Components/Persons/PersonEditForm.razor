@@ -25,11 +25,14 @@
                 <DxTextBox @bind-Text="@Model.ArborId"></DxTextBox>
             </DxFormLayoutItem>
         </DxFormLayoutGroup>
-        <DxFormLayoutTabPages>
-            <DxFormLayoutTabPage Caption="@Loc["Events"]">
-                <NestedEventList PersonId="Model.Id"></NestedEventList>
-            </DxFormLayoutTabPage>
-        </DxFormLayoutTabPages>
+        @if (IsEdit)
+        {
+            <DxFormLayoutTabPages>
+                <DxFormLayoutTabPage Caption="@Loc["Events"]">
+                    <NestedEventList PersonId="Model.Id"></NestedEventList>
+                </DxFormLayoutTabPage>
+            </DxFormLayoutTabPages>
+        }
     </DxFormLayout>
 
     <DxButton SubmitFormOnClick="true" Text="@Loc["Save"]" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
@@ -43,6 +46,12 @@
     [Parameter]
     public EventCallback PersonSave { get; set; }
 
+    
+    public bool IsEdit
+    {
+        get => Model.Id != Guid.Empty;
+    }
+    
     private List<GenderModel> _genders;
 
     protected override async Task OnInitializedAsync()

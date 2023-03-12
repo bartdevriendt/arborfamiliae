@@ -44,7 +44,7 @@ public enum DateNewYear
 
 public class ArborDateModel
 {
-    public DateCalendar Calendar { get; set;}
+    public DateCalendar Calendar { get; set; }
     public DateModifier Modifier { get; set; }
     public DateQuality Quality { get; set; }
     public int Year { get; set; }
@@ -55,11 +55,11 @@ public class ArborDateModel
     public int Month2 { get; set; }
     public int Day2 { get; set; }
     public bool SlashDate2 { get; set; }
-    
+
     public string? Text { get; set; }
     public int SortValue { get; set; }
     public DateNewYear NewYear { get; set; }
-   
+
     public bool IsCompound => Modifier is DateModifier.MOD_SPAN or DateModifier.MOD_RANGE;
     public bool IsReguler => Modifier == DateModifier.MOD_NONE && Quality == DateQuality.QUAL_NONE;
     public bool IsYearValid => IsLowItemValid(Year);
@@ -68,17 +68,18 @@ public class ArborDateModel
 
     private bool IsLowItemValid(int item)
     {
-        if (Modifier == DateModifier.MOD_TEXTONLY) return false;
+        if (Modifier == DateModifier.MOD_TEXTONLY)
+            return false;
         return item != 0;
     }
-    
+
     #region Constructors
 
     public ArborDateModel()
     {
         SetEmpty();
     }
-    
+
     public ArborDateModel(ArborDateModel source)
     {
         Calendar = source.Calendar;
@@ -102,21 +103,43 @@ public class ArborDateModel
         SetEmpty();
         SetYearMonthDay((source.Year, source.Month, source.Day, source.Slash, 0, 0, 0, false));
     }
-    
-    public ArborDateModel((int Year, int Month, int Day, bool Slash, int Year2, int Month2, int Day2, bool Slash2) source)
+
+    public ArborDateModel(
+        (
+            int Year,
+            int Month,
+            int Day,
+            bool Slash,
+            int Year2,
+            int Month2,
+            int Day2,
+            bool Slash2
+        ) source
+    )
     {
         SetEmpty();
         SetYearMonthDay(source);
     }
-    
+
     #endregion
-    
-    
-    
+
+
+
     #region Public methods
 
     public void SetYearMonthDay(
-        (int Year, int Month, int Day, bool Slash, int Year2, int Month2, int Day2, bool Slash2) source, bool removeStopDate = false)
+        (
+            int Year,
+            int Month,
+            int Day,
+            bool Slash,
+            int Year2,
+            int Month2,
+            int Day2,
+            bool Slash2
+        ) source,
+        bool removeStopDate = false
+    )
     {
         SetYearMonthDayInternal(source.Year, source.Month, source.Day);
         if (removeStopDate && IsCompound)
@@ -124,9 +147,9 @@ public class ArborDateModel
             SetYearMonthDayInternal(source.Year, source.Month, source.Day, false);
         }
     }
-    
+
     #endregion
-    
+
     #region Helper methods
 
     private void SetEmpty()
@@ -171,6 +194,12 @@ public class ArborDateModel
 
         return (year, month, day);
     }
-    
+
     #endregion
+
+
+    public string ConvertToDisplay()
+    {
+        return $"{Year}-{Month}-{Day}";
+    }
 }

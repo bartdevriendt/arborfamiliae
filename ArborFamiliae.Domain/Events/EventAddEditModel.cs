@@ -10,5 +10,6 @@ public class EventAddEditModel : BaseDomainModel
     public ArborDateModel? Date { set; get; }
     public string ArborId { get; set; }
     public Guid? PlaceId { get; set; }
+    public string? PlaceName { get; set; }
     public string? Description { get; set; }
 }

@@ -22,8 +22,8 @@ namespace ArborFamiliae.Services
             );
 
             services.AddScoped<ISequenceGeneratorService, SequenceGeneratorService>();
-            services.AddScoped(typeof(IRepository<>), typeof(ArborRepository<>));
-            services.AddScoped(typeof(IReadRepository<>), typeof(ArborRepository<>));
+            services.AddTransient(typeof(IRepository<>), typeof(ArborRepository<>));
+            services.AddTransient(typeof(IReadRepository<>), typeof(ArborRepository<>));
             services.AddLocalization();
             services.AddLogging();
             return services;

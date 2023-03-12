@@ -54,4 +54,9 @@ public class ArborRepository<T> : RepositoryBase<T>, IReadRepository<T>, IReposi
 
         return await base.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task ResetCache()
+    {
+        _context.ChangeTracker.Clear();
+    }
 }

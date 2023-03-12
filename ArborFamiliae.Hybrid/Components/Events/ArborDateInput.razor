@@ -1,6 +1,12 @@
-﻿<DxTextBox @bind-Text="@Text" BindValueMode="BindValueMode.OnInput">
+﻿@using ArborFamiliae.Domain.Events
+@using ArborFamiliae.Services.Common
+@inject DateParserService DateParserService
+ 
+<DxTextBox Text="@Text"
+           TextExpression="@(() => Text)"
+           BindValueMode="BindValueMode.OnLostFocus" TextChanged="TextChanged" >
     <Buttons>
-        <DxEditorButton IconCssClass="oi oi-pencil" Tooltip="Advanced date" Click="OnAdvancedEdit"></DxEditorButton>
+        <DxEditorButton IconCssClass="bi bi-pencil" Tooltip="Advanced date" Click="OnAdvancedEdit"></DxEditorButton>
     </Buttons>
 </DxTextBox>
 
@@ -11,8 +17,23 @@
 </DxPopup>
 
 @code {
+
     [Parameter]
-    public string Text { get; set; }
+    public ArborDateModel Date { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<ArborDateModel> DateChanged { get; set; }
+
+    private string Text;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Date != null)
+        {
+            Text = Date.ConvertToDisplay();
+        }
+        
+    }
 
     private bool IsAdvancedEditorVisible { get; set; }
     
@@ -24,6 +45,18 @@
     private void ValidateDate()
     {
         Console.WriteLine("Validate date: " + Text);
+    }
+
+    private async Task TextChanged(string text)
+    {
+        var parsed = DateParserService.ParseDate(text);
+        Text = text;
+        if (parsed != null)
+        {
+            Date = parsed;
+        }
+
+        await DateChanged.InvokeAsync(Date);
     }
 
 }

@@ -11,7 +11,7 @@
 <h3>@Loc["Load family tree"]</h3>
 
 <DxGrid Data="_databases"
-        SelectionMode="GridSelectionMode.Multiple"
+        SelectionMode="GridSelectionMode.Single"
         AllowSelectRowByClick="true"
         @bind-SelectedDataItem="@SelectedDatabase"
         RowDoubleClick="ConnectionSelected">

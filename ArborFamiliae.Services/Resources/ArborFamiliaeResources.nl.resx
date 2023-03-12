@@ -39,4 +39,7 @@
     <data name="COUNTRY" xml:space="preserve">
         <value>Land</value>
     </data>
+    <data name="Save" xml:space="preserve">
+        <value>Opslaan</value>
+    </data>
 </root>

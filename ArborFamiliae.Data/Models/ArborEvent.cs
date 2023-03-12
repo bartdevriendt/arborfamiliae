@@ -9,10 +9,11 @@ public class ArborEvent : BaseModel, IAggregateRoot, IHasSequence
     public int EventType { get; set; }
     public string? Description { get; set; }
     public virtual Place? Place { get; set; }
+    public Guid? PlaceId { get; set; }
     public bool IsPrivate { get; set; }
     public string SequenceType => "Event";
 
-    public virtual List<PersonEvent> PersonEvents { get; set; }
+    public virtual List<PersonEvent> PersonEvents { get; set; } = new();
 
     public void SetSequence(int sequence)
     {
