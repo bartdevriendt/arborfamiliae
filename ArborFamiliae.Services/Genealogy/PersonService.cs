@@ -1,6 +1,7 @@
 ﻿using ArborFamiliae.Data.Models;
 using ArborFamiliae.Domain.Enums;
 using ArborFamiliae.Domain.Person;
+using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
 
 namespace ArborFamiliae.Services.Genealogy
@@ -20,10 +21,8 @@ namespace ArborFamiliae.Services.Genealogy
             _personRepository = personRepository;
         }
 
-        public async Task<List<PersonListModel>> GetAllPersons()
+        private List<PersonListModel> ConvertToDomain(List<Person> persons)
         {
-            var persons = await _personReadRepository.ListAsync();
-
             var result = new List<PersonListModel>();
 
             foreach (var p in persons)
@@ -58,7 +57,25 @@ namespace ArborFamiliae.Services.Genealogy
                 result.Add(model);
             }
 
+            result = result.OrderBy(p => p.Surname).ToList();
+            
             return result;
+        }
+
+        public async Task<List<PersonListModel>> GetPersonsFiltered(Guid? gender)
+        {
+            var persons = await _personReadRepository.ListAsync(
+                new PersonListSpecification(gender)
+            );
+
+            return ConvertToDomain(persons);
+        }
+
+        public async Task<List<PersonListModel>> GetAllPersons()
+        {
+            var persons = await _personReadRepository.ListAsync();
+
+            return ConvertToDomain(persons);
         }
 
         public async Task<PersonAddEditModel> GetPersonById(Guid id)

@@ -1,0 +1,114 @@
+﻿@using ArborFamiliae.Domain.Person
+@using ArborFamiliae.Domain.Enums
+@inject PersonService PersonService
+@inject GenderService GenderService
+
+
+<DxTextBox @bind-Text="@Text" ReadOnly="true">
+    <Buttons>
+        <DxEditorButton IconCssClass="bi bi-hand-index-thumb" Tooltip="Select person" Click="OnSelectPerson"></DxEditorButton>
+    </Buttons>
+</DxTextBox>
+
+
+<DxPopup @bind-Visible="IsPopupVisible"
+         HeaderText="Select person"
+         Width="800"
+         Height="600"
+         >
+    
+    <BodyContentTemplate>
+        <div class="container-fluid">
+            <div class="row">
+
+            </div>
+            <div class="row">
+                <DxGrid Data="_persons"
+                        AllowGroup="true"
+                        ShowGroupedColumns="false"
+                        SelectionMode="GridSelectionMode.Single">
+                    <Columns>
+                        <DxGridDataColumn FieldName="@nameof(PersonListModel.Surname)" GroupIndex="0"></DxGridDataColumn>
+                        <DxGridDataColumn FieldName="@nameof(PersonListModel.FullName)" Caption="@Loc["Name"]"></DxGridDataColumn>
+                        <DxGridDataColumn FieldName="@nameof(PersonListModel.ArborId)" Caption="@Loc["ID"]"></DxGridDataColumn>
+                        <DxGridDataColumn FieldName="@nameof(PersonListModel.Gender)" Caption="@Loc["Gender"]"></DxGridDataColumn>
+                        <DxGridDataColumn FieldName="@nameof(PersonListModel.BirthDate)" Caption="@Loc["Birth Date"]"></DxGridDataColumn>
+                        <DxGridDataColumn FieldName="@nameof(PersonListModel.DeathDate)" Caption="@Loc["Death"]"></DxGridDataColumn>
+                    </Columns>
+
+                </DxGrid>
+            </div>
+            <div class="row">
+                <DxCheckBox Checked="_showAll"
+                            CheckedExpression="() => _showAll"
+                            CheckedChanged="ShowAllChanged" T="bool"></DxCheckBox>
+            </div>
+        </div>
+    </BodyContentTemplate>
+    
+</DxPopup>
+
+
+@code {
+
+    [Parameter]
+    public string Text { get; set; } = "";
+    
+    [Parameter]
+    public Guid? PersonId { get; set; }
+    
+    [Parameter]
+    public EventCallback<Guid?> PersonIdChanged { get; set; }
+
+    [Parameter]
+    public GenderInternal Gender { get; set; } = GenderInternal.Male;
+
+    private bool _showAll = false;
+    private Guid genderId = Guid.Empty;
+    
+    private List<PersonListModel> _persons = new();
+    
+    private bool IsPopupVisible { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var genders = await GenderService.GetGenders();
+
+        if (Gender == GenderInternal.Male)
+        {
+            genderId = genders.First(g => g.Description == "Male").Id;
+        }
+        else
+        {
+            genderId = genders.First(g => g.Description == "Female").Id;
+        }
+        
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+
+        if (_showAll)
+        {
+            _persons = await PersonService.GetAllPersons();
+        }
+        else
+        {
+            _persons = await PersonService.GetPersonsFiltered(genderId);
+        }
+    }
+
+
+    private void OnSelectPerson()
+    {
+        IsPopupVisible = true;
+    }
+
+    private async Task ShowAllChanged(bool value)
+    {
+        _showAll = !_showAll;
+        await LoadData();
+    }
+
+}

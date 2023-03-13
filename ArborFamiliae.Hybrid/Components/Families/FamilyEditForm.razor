@@ -1,0 +1,43 @@
+﻿@using ArborFamiliae.Domain.Family
+@using ArborFamiliae.Domain.Enums
+
+<EditForm Model="@Model" Context="edit_context">
+    <DxFormLayout>
+        <DxFormLayoutGroup ColSpanMd="6" Caption="@Loc["Father/partner1"]">
+            <DxFormLayoutItem Caption="Name" ColSpanMd="12">
+                <PersonSelector Text="@Model.FatherDisplayName" @bind-PersonId="@Model.FatherId" Gender="GenderInternal.Male"></PersonSelector>
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Birth">
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Death">
+            </DxFormLayoutItem>
+        </DxFormLayoutGroup>
+        <DxFormLayoutGroup ColSpanMd="6" Caption="@Loc["Mother/partner2"]">
+            <DxFormLayoutItem Caption="Name">
+                <PersonSelector Text="@Model.MotherDisplayName" @bind-PersonId="@Model.MotherId" Gender="GenderInternal.Female"></PersonSelector>
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Birth">
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Death">
+            </DxFormLayoutItem>
+        </DxFormLayoutGroup>
+    </DxFormLayout>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public FamilyAddEditModel Model { get; set; }
+    
+    [Parameter]
+    public EventCallback PersonSave { get; set; }
+
+    private Guid _maleGenderId = Guid.Empty;
+    private Guid _femaleGenderId = Guid.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+           
+    }
+
+}

@@ -1,9 +1,43 @@
 ﻿@page "/family/list"
+@using ArborFamiliae.Domain.Family
 @inherits BasePageComponent
+@inject FamilyService FamilyService
 
 <h3>@Loc["Families"]</h3>
 
+<DxButton RenderStyle="ButtonRenderStyle.Primary" Text="@Loc["Add"]" IconCssClass="oi oi-plus" Click="OnAdd"></DxButton>
+
+<DxGrid Data="_familyList">
+    <Columns>
+        <DxGridDataColumn Caption="ID" FieldName="@nameof(FamilyListModel.ArborId)"></DxGridDataColumn>
+        <DxGridDataColumn Caption="@Loc["Father"]" FieldName="@nameof(FamilyListModel.Father)"></DxGridDataColumn>
+        <DxGridDataColumn Caption="@Loc["Mother"]" FieldName="@nameof(FamilyListModel.Mother)"></DxGridDataColumn>
+        <DxGridDataColumn Caption="@Loc["Relationship"]" FieldName="@nameof(FamilyListModel.Relationship)"></DxGridDataColumn>
+        <DxGridDataColumn Caption="@Loc["Marriage Date"]" FieldName="@nameof(FamilyListModel.MarriageDate)"></DxGridDataColumn>
+        <DxGridCommandColumn Caption="@Loc["Manage"]">
+            <HeaderTemplate Context="detail_context">
+                &nbsp;
+            </HeaderTemplate>
+            <CellDisplayTemplate Context="detail_context">
+        	    <a class="oi oi-pencil" style="text-decoration: none;" href="javascript:void(0);" 
+        	       @onclick="@(() => NavigationManager.NavigateTo($"/family/{((FamilyListModel)detail_context.DataItem).Id}/edit"))"></a>
+            </CellDisplayTemplate>
+        </DxGridCommandColumn>
+    </Columns>
+</DxGrid>
+
 
 @code {
+
+    private List<FamilyListModel> _familyList = new(); 
     
+    protected override async Task OnInitializedAsync()
+    {
+        _familyList = await FamilyService.LoadAllFamilies();
+    }
+
+    private void OnAdd()
+    {
+        NavigationManager.NavigateTo("/family/add");
+    }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ArborFamiliae.Services.Genealogy;
 
-public class GenderService : IScoped
+public class GenderService : ITransient
 {
     private ArborFamiliaeContext context;
 

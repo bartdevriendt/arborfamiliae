@@ -34,5 +34,8 @@ namespace ArborFamiliae.Data.Models
         }
 
         public bool NeedsSequence => String.IsNullOrEmpty(ArborId);
+
+        public string DisplayName =>
+            $"{PrimaryName?.PrimarySurname?.Name}, {PrimaryName?.FirstName}";
     }
 }
