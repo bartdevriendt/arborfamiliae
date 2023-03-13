@@ -26,7 +26,9 @@
                 <DxGrid Data="_persons"
                         AllowGroup="true"
                         ShowGroupedColumns="false"
-                        SelectionMode="GridSelectionMode.Single">
+                        SelectionMode="GridSelectionMode.Single"
+                        AllowSelectRowByClick="true"
+                        @bind-SelectedDataItem="@SelectedPerson">
                     <Columns>
                         <DxGridDataColumn FieldName="@nameof(PersonListModel.Surname)" GroupIndex="0"></DxGridDataColumn>
                         <DxGridDataColumn FieldName="@nameof(PersonListModel.FullName)" Caption="@Loc["Name"]"></DxGridDataColumn>
@@ -41,7 +43,11 @@
             <div class="row">
                 <DxCheckBox Checked="_showAll"
                             CheckedExpression="() => _showAll"
-                            CheckedChanged="ShowAllChanged" T="bool"></DxCheckBox>
+                            CheckedChanged="ShowAllChanged" T="bool"
+                >@Loc["Show All"]</DxCheckBox>
+            </div>
+            <div class="row">
+                <DxButton Text="Select" Click="OnSelect"></DxButton>
             </div>
         </div>
     </BodyContentTemplate>
@@ -59,9 +65,14 @@
     
     [Parameter]
     public EventCallback<Guid?> PersonIdChanged { get; set; }
+    
+    [Parameter]
+    public EventCallback<PersonListModel> PersonSelected { get; set; }
 
     [Parameter]
     public GenderInternal Gender { get; set; } = GenderInternal.Male;
+
+    private object SelectedPerson;
 
     private bool _showAll = false;
     private Guid genderId = Guid.Empty;
@@ -110,5 +121,21 @@
         _showAll = !_showAll;
         await LoadData();
     }
+    private async Task OnSelect()
+    {
+        
+        if (SelectedPerson != null)
+        {
+            IsPopupVisible = false;
+            var person = (PersonListModel)SelectedPerson;
+            PersonId = person.Id;
 
+            await PersonSelected.InvokeAsync(person);
+
+        }
+        else
+        {
+           
+        } 
+    }
 }
