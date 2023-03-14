@@ -35,4 +35,52 @@ public class FamilyService : ITransient
 
         return result;
     }
+
+    public async Task<FamilyAddEditModel> AddEditFamily(FamilyAddEditModel model)
+    {
+        Family? f;
+        bool isNew = false;
+
+        if (model.Id == Guid.Empty)
+        {
+            f = new Family();
+            f.Id = Guid.NewGuid();
+            isNew = true;
+        }
+        else
+        {
+            f = await _familyRepository.GetByIdAsync(model.Id);
+        }
+
+        f.FatherId = model.FatherId;
+        f.MotherId = model.MotherId;
+
+        if (isNew)
+        {
+            await _familyRepository.AddAsync(f);
+        }
+        else
+        {
+            await _familyRepository.UpdateAsync(f);
+        }
+
+        model.Id = f.Id;
+        model.ArborId = f.ArborId;
+
+        return model;
+    }
+
+    public async Task<FamilyAddEditModel> GetFamilyById(Guid familyId)
+    {
+        var family = await _familyRepository.GetByIdAsync(familyId);
+        var model =  new FamilyAddEditModel();
+
+        model.FatherId = family.FatherId;
+        model.MotherId = family.MotherId;
+        model.ArborId = family.ArborId;
+        model.FatherDisplayName = family.Father?.DisplayName;
+        model.Id = family.Id;
+
+        return model;
+    }
 }

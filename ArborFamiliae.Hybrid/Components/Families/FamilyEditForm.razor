@@ -1,27 +1,39 @@
 ﻿@using ArborFamiliae.Domain.Family
 @using ArborFamiliae.Domain.Enums
+@using ArborFamiliae.Domain.Person
 
 <EditForm Model="@Model" Context="edit_context">
     <DxFormLayout>
         <DxFormLayoutGroup ColSpanMd="6" Caption="@Loc["Father/partner1"]">
-            <DxFormLayoutItem Caption="Name" ColSpanMd="12">
-                <PersonSelector Text="@Model.FatherDisplayName" @bind-PersonId="@Model.FatherId" Gender="GenderInternal.Male"></PersonSelector>
+            <DxFormLayoutItem Caption="@Loc["Name"]" ColSpanMd="12">
+                <PersonSelector Text="@Model.FatherDisplayName" @bind-PersonId="@Model.FatherId" Gender="GenderInternal.Male" PersonSelected="FatherSelected"></PersonSelector>
             </DxFormLayoutItem>
-            <DxFormLayoutItem Caption="Birth">
+            <DxFormLayoutItem Caption="@Loc["Birth"]" ColSpanMd="12">
+                <DxTextBox @bind-Text="@Model.FatherBirthDate" ReadOnly="true"></DxTextBox>
             </DxFormLayoutItem>
-            <DxFormLayoutItem Caption="Death">
+            <DxFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
+                <DxTextBox @bind-Text="@Model.FatherDeathDate" ReadOnly="true"></DxTextBox>
             </DxFormLayoutItem>
         </DxFormLayoutGroup>
         <DxFormLayoutGroup ColSpanMd="6" Caption="@Loc["Mother/partner2"]">
-            <DxFormLayoutItem Caption="Name">
-                <PersonSelector Text="@Model.MotherDisplayName" @bind-PersonId="@Model.MotherId" Gender="GenderInternal.Female"></PersonSelector>
+            <DxFormLayoutItem Caption="@Loc["Name"]" ColSpanMd="12">
+                <PersonSelector Text="@Model.MotherDisplayName" @bind-PersonId="@Model.MotherId" Gender="GenderInternal.Female" PersonSelected="MotherSelected"></PersonSelector>
             </DxFormLayoutItem>
-            <DxFormLayoutItem Caption="Birth">
+            <DxFormLayoutItem Caption="@Loc["Birth"]" ColSpanMd="12">
+                <DxTextBox @bind-Text="@Model.MotherBirthDate" ReadOnly="true"></DxTextBox>
             </DxFormLayoutItem>
-            <DxFormLayoutItem Caption="Death">
+            <DxFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
+                <DxTextBox @bind-Text="@Model.MotherDeathDate" ReadOnly="true"></DxTextBox>
+            </DxFormLayoutItem>
+        </DxFormLayoutGroup>
+        <DxFormLayoutGroup ColSpanMd="12">
+            <DxFormLayoutItem Caption="@Loc["ID"]" ColSpanMd="6">
+                <DxTextBox ReadOnly="true" @bind-Text="@Model.ArborId"></DxTextBox>
             </DxFormLayoutItem>
         </DxFormLayoutGroup>
     </DxFormLayout>
+    
+    <DxButton SubmitFormOnClick="true" Text="@Loc["Save"]" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
 </EditForm>
 
 @code {
@@ -30,7 +42,7 @@
     public FamilyAddEditModel Model { get; set; }
     
     [Parameter]
-    public EventCallback PersonSave { get; set; }
+    public EventCallback FamilySave { get; set; }
 
     private Guid _maleGenderId = Guid.Empty;
     private Guid _femaleGenderId = Guid.Empty;
@@ -40,4 +52,21 @@
            
     }
 
+    private void FatherSelected(PersonListModel father)
+    {
+        Model.FatherDisplayName = father.FullName + " [" + father.ArborId + "]";
+        Model.FatherBirthDate = father.BirthDate;
+        Model.FatherDeathDate = father.DeathDate;
+    }
+    private void MotherSelected(PersonListModel mother)
+    {
+        Model.MotherDisplayName = mother.FullName + " [" + mother.ArborId + "]";
+        Model.MotherBirthDate = mother.BirthDate;
+        Model.MotherDeathDate = mother.DeathDate;
+    }
+    
+    private async Task OnSave()
+    {
+        await FamilySave.InvokeAsync();
+    }
 }

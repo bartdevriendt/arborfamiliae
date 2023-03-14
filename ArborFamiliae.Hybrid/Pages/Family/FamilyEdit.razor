@@ -1,8 +1,8 @@
-﻿@page "/family/add"
+﻿@page "/family/{FamilyId:guid}/edit"
 @inherits BasePageComponent
 @using ArborFamiliae.Domain.Family
 @inject FamilyService FamilyService
-<h3>@Loc["Add Family"]</h3>
+<h3>@Loc["Edit Family"]</h3>
 
 <FamilyEditForm Model="_model" FamilySave="FamilySave">
     
@@ -10,7 +10,15 @@
 
 @code {
 
+    [Parameter]
+    public Guid FamilyId { get; set; }
+    
     private FamilyAddEditModel _model = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FamilyService.GetFamilyById(FamilyId);
+    }
 
     private async Task FamilySave()
     {
