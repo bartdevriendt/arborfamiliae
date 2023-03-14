@@ -17,7 +17,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await FamilyService.GetFamilyById(FamilyId);
+        _model = await FamilyService.GetFamilyById(FamilyId);
     }
 
     private async Task FamilySave()

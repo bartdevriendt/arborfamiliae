@@ -36,6 +36,34 @@ namespace ArborFamiliae.Data.Models
         public bool NeedsSequence => String.IsNullOrEmpty(ArborId);
 
         public string DisplayName =>
-            $"{PrimaryName?.PrimarySurname?.Name}, {PrimaryName?.FirstName}";
+            $"{PrimaryName?.PrimarySurname?.SurnameValue}, {PrimaryName?.FirstName}";
+
+        public string BirthDate
+        {
+            get
+            {
+                var birth = Events.FirstOrDefault(e => e.Event.EventType == 12);
+                if (birth != null)
+                {
+                    return birth.Event.EventDate?.Text ?? "";
+                }
+
+                return "";
+            }
+        }
+
+        public string DeathDate
+        {
+            get
+            {
+                var death = Events.FirstOrDefault(e => e.Event.EventType == 13);
+                if (death != null)
+                {
+                    return death.Event.EventDate?.Text ?? "";
+                }
+
+                return "";
+            }
+        }
     }
 }

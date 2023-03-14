@@ -1,5 +1,6 @@
 ﻿using ArborFamiliae.Data.Models;
 using ArborFamiliae.Domain.Family;
+using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -16,7 +17,7 @@ public class FamilyService : ITransient
 
     public async Task<List<FamilyListModel>> LoadAllFamilies()
     {
-        var families = await _familyRepository.ListAsync();
+        var families = await _familyRepository.ListAsync(new FamilyListSpecification());
         var result = new List<FamilyListModel>();
 
         foreach (var family in families.OrderBy(f => f.ArborId))
@@ -34,6 +35,36 @@ public class FamilyService : ITransient
         }
 
         return result;
+    }
+
+    public async Task<FamilyAddEditModel> GetFamilyById(Guid familyId)
+    {
+        var family = await _familyRepository.FirstOrDefaultAsync(
+            new FamilyListSpecification(familyId)
+        );
+        var model = new FamilyAddEditModel();
+
+        model.FatherId = family.FatherId;
+        model.MotherId = family.MotherId;
+        model.ArborId = family.ArborId;
+        if (family.Father != null)
+        {
+            model.FatherDisplayName =
+                family.Father?.DisplayName + " [" + family.Father?.ArborId + "]";
+            model.FatherBirthDate = family.Father?.BirthDate;
+            model.FatherDeathDate = family.Father?.DeathDate;
+        }
+
+        if (family.Mother != null)
+        {
+            model.MotherDisplayName =
+                family.Mother?.DisplayName + " [" + family.Mother?.ArborId + "]";
+            model.MotherBirthDate = family.Mother?.BirthDate;
+            model.MotherDeathDate = family.Mother?.DeathDate;
+        }
+        model.Id = family.Id;
+
+        return model;
     }
 
     public async Task<FamilyAddEditModel> AddEditFamily(FamilyAddEditModel model)
@@ -66,20 +97,6 @@ public class FamilyService : ITransient
 
         model.Id = f.Id;
         model.ArborId = f.ArborId;
-
-        return model;
-    }
-
-    public async Task<FamilyAddEditModel> GetFamilyById(Guid familyId)
-    {
-        var family = await _familyRepository.GetByIdAsync(familyId);
-        var model =  new FamilyAddEditModel();
-
-        model.FatherId = family.FatherId;
-        model.MotherId = family.MotherId;
-        model.ArborId = family.ArborId;
-        model.FatherDisplayName = family.Father?.DisplayName;
-        model.Id = family.Id;
 
         return model;
     }

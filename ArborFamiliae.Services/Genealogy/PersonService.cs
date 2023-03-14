@@ -73,7 +73,7 @@ namespace ArborFamiliae.Services.Genealogy
 
         public async Task<List<PersonListModel>> GetAllPersons()
         {
-            var persons = await _personReadRepository.ListAsync();
+            var persons = await _personReadRepository.ListAsync(new PersonListSpecification());
 
             return ConvertToDomain(persons);
         }

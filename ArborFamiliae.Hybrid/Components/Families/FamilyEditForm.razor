@@ -57,12 +57,14 @@
         Model.FatherDisplayName = father.FullName + " [" + father.ArborId + "]";
         Model.FatherBirthDate = father.BirthDate;
         Model.FatherDeathDate = father.DeathDate;
+        Model.FatherId = father.Id;
     }
     private void MotherSelected(PersonListModel mother)
     {
         Model.MotherDisplayName = mother.FullName + " [" + mother.ArborId + "]";
         Model.MotherBirthDate = mother.BirthDate;
         Model.MotherDeathDate = mother.DeathDate;
+        Model.MotherId = mother.Id;
     }
     
     private async Task OnSave()
