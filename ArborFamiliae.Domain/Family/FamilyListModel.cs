@@ -1,4 +1,6 @@
-﻿namespace ArborFamiliae.Domain.Family;
+﻿using System.Collections.Generic;
+
+namespace ArborFamiliae.Domain.Family;
 
 public class FamilyListModel : BaseDomainModel
 {
@@ -7,4 +9,6 @@ public class FamilyListModel : BaseDomainModel
     public string Mother { get; set; }
     public string Relationship { get; set; }
     public string MarriageDate { get; set; }
+
+    public List<FamilyChildListModel> Children { get; set; } = new();
 }
