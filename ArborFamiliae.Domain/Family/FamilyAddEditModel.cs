@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ArborFamiliae.Domain.Family;
 
@@ -15,4 +16,6 @@ public class FamilyAddEditModel : BaseDomainModel
     public string MotherDeathDate { get; set; }
 
     public string ArborId { get; set; }
+
+    public List<FamilyChildAddEditModel> Children { get; set; } = new();
 }

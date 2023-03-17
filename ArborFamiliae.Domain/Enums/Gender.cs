@@ -2,6 +2,7 @@
 
 public enum GenderInternal
 {
+    All,
     Male,
     Female
 }

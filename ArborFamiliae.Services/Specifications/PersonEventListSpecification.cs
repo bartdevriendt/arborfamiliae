@@ -3,10 +3,11 @@ using Ardalis.Specification;
 
 namespace ArborFamiliae.Services.Specifications;
 
-public class PersonEventListSpecification : SingleResultSpecification<ArborEvent>
+public class PersonEventListSpecification : SingleResultSpecification<Person>
 {
     public PersonEventListSpecification(Guid personId)
     {
-        Query.Include(x => x.PersonEvents.Where(x => x.PersonId == personId));
+        Query.Where(p => p.Id == personId);
+        Query.Include(p => p.Events).ThenInclude(pe => pe.Event);
     }
 }

@@ -64,6 +64,26 @@ public class FamilyService : ITransient
         }
         model.Id = family.Id;
 
+        int order = 1;
+        foreach (FamilyChild fc in family.Children)
+        {
+            FamilyChildAddEditModel fcm =
+                new()
+                {
+                    Id = fc.Id,
+                    Order = order++,
+                    Name = fc.Child.DisplayName,
+                    Gender = fc.Child.Gender.Description,
+                    BirthDate = fc.Child.BirthDate,
+                    PaternalRelation = "",
+                    MaternalRelation = "",
+                    PersonId = fc.ChildId,
+                    FamiliyId = fc.FamilyId
+                };
+
+            model.Children.Add(fcm);
+        }
+
         return model;
     }
 

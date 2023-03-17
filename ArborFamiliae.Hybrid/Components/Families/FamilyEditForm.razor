@@ -31,12 +31,45 @@
                 <DxTextBox ReadOnly="true" @bind-Text="@Model.ArborId"></DxTextBox>
             </DxFormLayoutItem>
         </DxFormLayoutGroup>
+        
+        <DxFormLayoutTabPages>
+            <DxFormLayoutTabPage Caption="@Loc["Children"]">
+                <DxToolbar>
+                    <DxToolbarItem Text="Add" IconCssClass="bi bi-hand-index-thumb" Click="OnChildLink"></DxToolbarItem>
+                </DxToolbar>
+                <DxDataGrid Data="@Model.Children" @ref="_childGrid">
+                    <Columns>
+                        <DxDataGridColumn Caption="@Loc["Order"]" Field="Order"></DxDataGridColumn>
+                        <DxDataGridColumn Caption="@Loc["ID"]" Field="ArborId"></DxDataGridColumn>
+                        <DxDataGridColumn Caption="@Loc["Name"]" Field="Name"></DxDataGridColumn>
+                        <DxDataGridColumn Caption="@Loc["Gender"]" Field="Gender"></DxDataGridColumn>
+                        <DxDataGridColumn Caption="@Loc["Paternal"]" Field="PaternalRelation"></DxDataGridColumn>
+                        <DxDataGridColumn Caption="@Loc["Maternal"]" Field="MaternalRelation"></DxDataGridColumn>
+                        <DxDataGridColumn Caption="@Loc["BirthDate"]" Field="BirthDate"></DxDataGridColumn>
+                    </Columns>
+                </DxDataGrid>
+            </DxFormLayoutTabPage>
+        </DxFormLayoutTabPages>
     </DxFormLayout>
     
     <DxButton SubmitFormOnClick="true" Text="@Loc["Save"]" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
 </EditForm>
 
+<DxPopup @bind-Visible="_isPopupVisible"
+         HeaderText="@Loc["Add child"]">
+    
+    <BodyTemplate>
+        <PersonSelector Gender="GenderInternal.All" @bind-PersonId="@_childModel.PersonId" Text="@_childModel.Name" PersonSelected="PersonSelected"></PersonSelector>
+        
+        <DxButton Click="OnChildAddClick" Text="@Loc["Add"]"></DxButton>
+    </BodyTemplate>
+    
+</DxPopup>
+
 @code {
+
+
+    DxDataGrid<FamilyChildAddEditModel> _childGrid;
 
     [Parameter]
     public FamilyAddEditModel Model { get; set; }
@@ -47,6 +80,9 @@
     private Guid _maleGenderId = Guid.Empty;
     private Guid _femaleGenderId = Guid.Empty;
 
+    private bool _isPopupVisible = false;
+    private FamilyChildAddEditModel _childModel = new();
+    
     protected override async Task OnInitializedAsync()
     {
            
@@ -71,4 +107,33 @@
     {
         await FamilySave.InvokeAsync();
     }
+
+    private void OnChildLink()
+    {
+        _childModel = new FamilyChildAddEditModel();
+        _childModel.FamiliyId = Model.Id;
+        _childModel.Order = Model.Children.Count + 1;
+
+        _isPopupVisible = true;
+    }
+
+    private void PersonSelected(PersonListModel obj)
+    {
+        _childModel.PersonId = obj.Id;
+        _childModel.Name = obj.FullName;
+        _childModel.BirthDate = obj.BirthDate;
+        _childModel.Gender = obj.Gender;
+        _childModel.MaternalRelation = "";
+        _childModel.PaternalRelation = "";
+        
+    }
+
+    private void OnChildAddClick()
+    {
+        Model.Children.Add(_childModel);
+        _isPopupVisible = false;
+        _childGrid.Refresh();
+
+    }
+
 }

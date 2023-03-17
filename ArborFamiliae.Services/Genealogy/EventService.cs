@@ -15,7 +15,7 @@ public class EventService : ITransient
     private IRepository<ArborEvent> _eventRepository;
     private IReadRepository<Family> _familyReadRepository;
     private IStringLocalizer<ArborFamiliaeResources> _stringLocalizer;
-
+    private IReadRepository<Person> _personRepository;
     private PersonService _personService;
 
     public EventService(
@@ -23,7 +23,8 @@ public class EventService : ITransient
         IRepository<ArborEvent> eventRepository,
         IReadRepository<Family> familyReadRepository,
         IStringLocalizer<ArborFamiliaeResources> stringLocalizer,
-        PersonService personService
+        PersonService personService,
+        IReadRepository<Person> personRepository
     )
     {
         _dateCalculationService = dateCalculationService;
@@ -31,29 +32,34 @@ public class EventService : ITransient
         _familyReadRepository = familyReadRepository;
         _stringLocalizer = stringLocalizer;
         _personService = personService;
+        _personRepository = personRepository;
     }
 
     public async Task<List<EventListModel>> GetEventsForPerson(Guid personId)
     {
-        var events = await _eventRepository.ListAsync(new PersonEventListSpecification(personId));
+        var personEvents = await _personRepository.FirstOrDefaultAsync(
+            new PersonEventListSpecification(personId)
+        );
 
-        var person = await _personService.GetPersonById(personId);
+        //var person = await _personService.GetPersonById(personId);
 
         var result = new List<EventListModel>();
 
-        foreach (var arborEvent in events)
+        foreach (var personEvent in personEvents.Events)
         {
+            ArborEvent arborEvent = personEvent.Event;
+
             EventListModel model = new EventListModel();
             model.Id = arborEvent.Id;
             model.ArborId = arborEvent.ArborId;
             model.Category = "Personal";
             model.Description = arborEvent.Description;
             model.Type = _stringLocalizer[((EventType)arborEvent.EventType).ToString()];
-            var personEvent = arborEvent.PersonEvents.First(x => x.PersonId == personId);
             model.Role = _stringLocalizer[((EventRole)personEvent.EventRole).ToString()];
+
             model.Place = arborEvent.Place?.Name;
             model.Date = arborEvent.EventDate?.Text;
-            model.Participant = person.DisplayName;
+            model.Participant = personEvents.DisplayName;
             result.Add(model);
         }
 

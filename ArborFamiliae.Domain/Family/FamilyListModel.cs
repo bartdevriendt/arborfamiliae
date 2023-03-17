@@ -10,5 +10,5 @@ public class FamilyListModel : BaseDomainModel
     public string Relationship { get; set; }
     public string MarriageDate { get; set; }
 
-    public List<FamilyChildListModel> Children { get; set; } = new();
+    public List<FamilyChildAddEditModel> Children { get; set; } = new();
 }

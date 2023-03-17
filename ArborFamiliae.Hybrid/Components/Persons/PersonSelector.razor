@@ -89,10 +89,11 @@
         {
             genderId = genders.First(g => g.Description == "Male").Id;
         }
-        else
+        else if(Gender == GenderInternal.Female)
         {
             genderId = genders.First(g => g.Description == "Female").Id;
         }
+        
         
         await LoadData();
     }
@@ -100,7 +101,7 @@
     private async Task LoadData()
     {
 
-        if (_showAll)
+        if (_showAll || Gender == GenderInternal.All)
         {
             _persons = await PersonService.GetAllPersons();
         }
