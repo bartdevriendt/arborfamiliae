@@ -2,19 +2,26 @@
 @using ArborFamiliae.Services.Common
 @inject DateParserService DateParserService
  
-<DxTextBox Text="@Text"
-           TextExpression="@(() => Text)"
-           BindValueMode="BindValueMode.OnLostFocus" TextChanged="TextChanged" >
-    <Buttons>
-        <DxEditorButton IconCssClass="bi bi-pencil" Tooltip="Advanced date" Click="OnAdvancedEdit"></DxEditorButton>
-    </Buttons>
-</DxTextBox>
+<SfTextBox Value="@Text"
+           ValueExpression="@(() => Text)"
+           ShowClearButton="true"
+           ValueChanged="ValueChanged">
+    
+</SfTextBox>
 
-<DxPopup @bind-Visible="IsAdvancedEditorVisible">
-    <BodyContentTemplate>
-        This is the advanced editor
-    </BodyContentTemplate>
-</DxPopup>
+@* <DxTextBox Text="@Text" *@
+@*            TextExpression="@(() => Text)" *@
+@*            BindValueMode="BindValueMode.OnLostFocus" TextChanged="TextChanged" > *@
+@*     <Buttons> *@
+@*         <DxEditorButton IconCssClass="bi bi-pencil" Tooltip="Advanced date" Click="OnAdvancedEdit"></DxEditorButton> *@
+@*     </Buttons> *@
+@* </DxTextBox> *@
+
+<SfDialog Header="Advanced editor" @bind-Visible="IsAdvancedEditorVisible">
+    <DialogTemplates>
+            <Content> This is the advanced editor </Content>
+        </DialogTemplates>
+</SfDialog>
 
 @code {
 
@@ -48,6 +55,11 @@
     }
 
     private async Task TextChanged(string text)
+    {
+        
+    }
+
+    private async Task ValueChanged(string text)
     {
         var parsed = DateParserService.ParseDate(text);
         Text = text;

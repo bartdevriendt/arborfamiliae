@@ -25,6 +25,13 @@
             <DxFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
                 <DxTextBox @bind-Text="@Model.MotherDeathDate" ReadOnly="true"></DxTextBox>
             </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
+                <DxTextBox @bind-Text="@Model.MotherDeathDate" ReadOnly="true"></DxTextBox>
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
+                <DxTextBox @bind-Text="@Model.MotherDeathDate" ReadOnly="true"></DxTextBox>
+            </DxFormLayoutItem>
+            
         </DxFormLayoutGroup>
         <DxFormLayoutGroup ColSpanMd="12">
             <DxFormLayoutItem Caption="@Loc["ID"]" ColSpanMd="6">
@@ -51,6 +58,8 @@
             </DxFormLayoutTabPage>
         </DxFormLayoutTabPages>
     </DxFormLayout>
+    
+
     
     <DxButton SubmitFormOnClick="true" Text="@Loc["Save"]" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
 </EditForm>
