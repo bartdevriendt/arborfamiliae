@@ -7,31 +7,37 @@
 @using ArborFamiliae.Hybrid.Services
 @using ArborFamiliae.Hybrid.Shared.Layouts
 @using ArborFamiliae.Hybrid.Shared.Models
+@using SelectionType = Syncfusion.Blazor.Grids.SelectionType
 
 <h3>@Loc["Load family tree"]</h3>
 
-<DxGrid Data="_databases"
-        SelectionMode="GridSelectionMode.Single"
-        AllowSelectRowByClick="true"
-        @bind-SelectedDataItem="@SelectedDatabase"
-        RowDoubleClick="ConnectionSelected">
-    <Columns>
-        <DxGridDataColumn FieldName="@nameof(FamilyTreeDatabase.Name)" Caption="@Loc["Name"]"></DxGridDataColumn>
-    </Columns>
-</DxGrid>
-
-<p>
-    <DxButton RenderStyle="ButtonRenderStyle.Primary" Click="LoadDatabase">@Loc["Load"]</DxButton>
-</p>
+<TwoRowLayout>
+    <Row1>
+        
+        <SfGrid @ref="_connectGrid" DataSource="_databases">
+            <GridSelectionSettings Type="SelectionType.Single"
+                                   Mode="SelectionMode.Row"></GridSelectionSettings>
+            <GridEvents TValue="FamilyTreeDatabase" OnRecordDoubleClick="ConnectionSelected"></GridEvents>
+            <GridColumns>
+                <GridColumn Field="@nameof(FamilyTreeDatabase.Name)" HeaderText="@Loc["Name"]"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+        
+    </Row1>
+    <Row2>
+        <SfButton IsPrimary="true" @onclick="LoadDatabase">@Loc["Load"]</SfButton>
+    </Row2>
+</TwoRowLayout>
 
 @code {
 
+    private SfGrid<FamilyTreeDatabase> _connectGrid;
 
     private FamilyTreeDatabaseService _databaseService;
 
     private List<FamilyTreeDatabase> _databases;
     
-    private object SelectedDatabase { get; set; }
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -40,9 +46,18 @@
         
     }
 
-    private void LoadDatabase()
+    private async Task LoadDatabase()
     {
-        FamilyTreeDatabase db = SelectedDatabase as FamilyTreeDatabase;
+
+        var records = await _connectGrid.GetSelectedRecordsAsync();
+        
+        if (records.Count == 0)
+        {
+            Snackbar.Add(@Loc["Please select a family tree"], Severity.Error);
+            return;
+        }
+        
+        FamilyTreeDatabase db = records[0];
         if (db.DatabaseType == Provider.MySql.Name)
         {
             var builder = new MySqlConnector.MySqlConnectionStringBuilder();
@@ -59,9 +74,9 @@
         NavigationManager.NavigateTo("/seed", forceLoad: true);   
     }
 
-    private void ConnectionSelected()
+    private async Task ConnectionSelected()
     {
-        LoadDatabase();
+        await LoadDatabase();
     }
 
 }

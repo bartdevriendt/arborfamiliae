@@ -1,25 +1,33 @@
 ﻿@page "/place/list"
 @using ArborFamiliae.Domain.Places
-@using Syncfusion.Blazor.Grids
+@using SelectionType = Syncfusion.Blazor.Grids.SelectionType
 @inject PlaceService PlaceService
 @inherits BasePageComponent
 
 <h3>@Loc["Places"]</h3>
 
-<DxToolbar>
-    <DxToolbarItem Text="@Loc["Add"]" IconCssClass="bi bi-plus-lg" Click="AddPlace"></DxToolbarItem>
-</DxToolbar>
 
-<SfTreeGrid @ref="TreeGrid" DataSource="_places" IdMapping="Id" ParentIdMapping="ParentPlaceId" TreeColumnIndex="0">
-    <TreeGridSelectionSettings Mode="SelectionMode.Row" Type="SelectionType.Single"></TreeGridSelectionSettings>
-    <TreeGridEvents TValue="PlaceListModel" OnRecordDoubleClick="RowDoubleClick"></TreeGridEvents>
-    <TreeGridColumns>
-        <TreeGridColumn Field="@nameof(PlaceListModel.Name)"></TreeGridColumn>
-        <TreeGridColumn Field="@nameof(PlaceListModel.ArborId)" HeaderText="ID"></TreeGridColumn>
-        <TreeGridColumn Field="@nameof(PlaceListModel.Code)" HeaderText="Code"></TreeGridColumn>
-        <TreeGridColumn Field="@nameof(PlaceListModel.Type)" HeaderText="Type"></TreeGridColumn>
-    </TreeGridColumns>
-</SfTreeGrid>
+<TwoRowLayout>
+    <Row1>
+        <SfToolbar>
+            <ToolbarItems>
+                <ToolbarItem Text="@Loc["Add"]" PrefixIcon="bi bi-plus-lg" OnClick="AddPlace"></ToolbarItem>
+            </ToolbarItems>
+        </SfToolbar>
+    </Row1>
+    <Row2>
+        <SfTreeGrid @ref="TreeGrid" DataSource="_places" IdMapping="Id" ParentIdMapping="ParentPlaceId" TreeColumnIndex="0">
+            <TreeGridSelectionSettings Mode="SelectionMode.Row" Type="SelectionType.Single"></TreeGridSelectionSettings>
+            <TreeGridEvents TValue="PlaceListModel" OnRecordDoubleClick="RowDoubleClick"></TreeGridEvents>
+            <TreeGridColumns>
+                <TreeGridColumn Field="@nameof(PlaceListModel.Name)"></TreeGridColumn>
+                <TreeGridColumn Field="@nameof(PlaceListModel.ArborId)" HeaderText="ID"></TreeGridColumn>
+                <TreeGridColumn Field="@nameof(PlaceListModel.Code)" HeaderText="Code"></TreeGridColumn>
+                <TreeGridColumn Field="@nameof(PlaceListModel.Type)" HeaderText="Type"></TreeGridColumn>
+            </TreeGridColumns>
+        </SfTreeGrid>
+    </Row2>
+</TwoRowLayout>
 
 @code {
 

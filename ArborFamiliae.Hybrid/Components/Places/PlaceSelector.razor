@@ -22,7 +22,7 @@
             </div>
             <div class="row">
                 <SfTreeGrid @ref="TreeGrid" DataSource="_places" IdMapping="Id" ParentIdMapping="ParentPlaceId" TreeColumnIndex="0" AllowSelection="true">
-                    <TreeGridSelectionSettings Type="SelectionType.Single" Mode="SelectionMode.Row"></TreeGridSelectionSettings>
+                    <TreeGridSelectionSettings Type="Syncfusion.Blazor.Grids.SelectionType.Single" Mode="SelectionMode.Row"></TreeGridSelectionSettings>
                     <TreeGridEvents RowSelected="RowSelectHandler" TValue="PlaceListModel"></TreeGridEvents>
                     <TreeGridColumns>
                         <TreeGridColumn Field="Name"></TreeGridColumn>

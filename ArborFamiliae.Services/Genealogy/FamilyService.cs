@@ -2,7 +2,6 @@
 using ArborFamiliae.Domain.Family;
 using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ArborFamiliae.Services.Genealogy;
 
@@ -78,7 +77,8 @@ public class FamilyService : ITransient
                     PaternalRelation = "",
                     MaternalRelation = "",
                     PersonId = fc.ChildId,
-                    FamiliyId = fc.FamilyId
+                    FamiliyId = fc.FamilyId,
+                    ArborId = fc.Child.ArborId
                 };
 
             model.Children.Add(fcm);
@@ -117,6 +117,24 @@ public class FamilyService : ITransient
 
         model.Id = f.Id;
         model.ArborId = f.ArborId;
+
+        foreach (var child in model.Children)
+        {
+            if (child.Id == Guid.Empty && child.PersonId != null)
+            {
+                var familyChild = new FamilyChild
+                {
+                    Id = Guid.NewGuid(),
+                    FamilyId = f.Id,
+                    ChildId = child.PersonId.Value
+                };
+                f.Children.Add(familyChild);
+
+                child.Id = familyChild.Id;
+            }
+        }
+
+        await _familyRepository.UpdateAsync(f);
 
         return model;
     }

@@ -41,20 +41,28 @@
         
         <DxFormLayoutTabPages>
             <DxFormLayoutTabPage Caption="@Loc["Children"]">
-                <DxToolbar>
-                    <DxToolbarItem Text="Add" IconCssClass="bi bi-hand-index-thumb" Click="OnChildLink"></DxToolbarItem>
-                </DxToolbar>
-                <DxDataGrid Data="@Model.Children" @ref="_childGrid">
-                    <Columns>
-                        <DxDataGridColumn Caption="@Loc["Order"]" Field="Order"></DxDataGridColumn>
-                        <DxDataGridColumn Caption="@Loc["ID"]" Field="ArborId"></DxDataGridColumn>
-                        <DxDataGridColumn Caption="@Loc["Name"]" Field="Name"></DxDataGridColumn>
-                        <DxDataGridColumn Caption="@Loc["Gender"]" Field="Gender"></DxDataGridColumn>
-                        <DxDataGridColumn Caption="@Loc["Paternal"]" Field="PaternalRelation"></DxDataGridColumn>
-                        <DxDataGridColumn Caption="@Loc["Maternal"]" Field="MaternalRelation"></DxDataGridColumn>
-                        <DxDataGridColumn Caption="@Loc["BirthDate"]" Field="BirthDate"></DxDataGridColumn>
-                    </Columns>
-                </DxDataGrid>
+                <TwoRowLayout>
+                    <Row1>
+                        <DxToolbar>
+                            <DxToolbarItem Text="Add" IconCssClass="bi bi-hand-index-thumb" Click="OnChildLink"></DxToolbarItem>
+                        </DxToolbar>
+                    </Row1>
+                    <Row2>
+                        <DxDataGrid Data="@Model.Children" @ref="_childGrid">
+                            <Columns>
+                                <DxDataGridColumn Caption="@Loc["Order"]" Field="Order"></DxDataGridColumn>
+                                <DxDataGridColumn Caption="@Loc["ID"]" Field="ArborId"></DxDataGridColumn>
+                                <DxDataGridColumn Caption="@Loc["Name"]" Field="Name"></DxDataGridColumn>
+                                <DxDataGridColumn Caption="@Loc["Gender"]" Field="Gender"></DxDataGridColumn>
+                                <DxDataGridColumn Caption="@Loc["Paternal"]" Field="PaternalRelation"></DxDataGridColumn>
+                                <DxDataGridColumn Caption="@Loc["Maternal"]" Field="MaternalRelation"></DxDataGridColumn>
+                                <DxDataGridColumn Caption="@Loc["BirthDate"]" Field="BirthDate"></DxDataGridColumn>
+                            </Columns>
+                        </DxDataGrid>
+                    </Row2>
+                </TwoRowLayout>
+                
+                
             </DxFormLayoutTabPage>
         </DxFormLayoutTabPages>
     </DxFormLayout>
