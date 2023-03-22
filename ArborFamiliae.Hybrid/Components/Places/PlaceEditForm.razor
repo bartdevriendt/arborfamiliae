@@ -3,12 +3,15 @@
 @using ArborFamiliae.Domain.Enums
 @inject EnumService EnumService
 
-<EditForm Model="@Model" Context="edit_context">
+<EditForm Model="@Model" Context="edit_context" class="">
     
     <AFFieldSet Caption="Place information">
         <AFFormLayoutItem Caption="@Loc["Name"]">
             <SfTextBox @bind-Value="@Model.Name"></SfTextBox>
         </AFFormLayoutItem>
+             <AFFormLayoutItem Caption="@Loc["ID"]">
+                    <SfTextBox @bind-Value="@Model.ArborId"></SfTextBox>
+                </AFFormLayoutItem>
     </AFFieldSet>
     
     <DxFormLayout >

@@ -1,9 +1,13 @@
-﻿
-<div class="form-group">
-    <label>
+﻿@using System.ComponentModel
+
+<div class="mb-3 col-md-@ColSpanMd af-fli">
+    <label class="control-label col-sm-2">
         @Caption
     </label>
-    @ChildContent
+    <div class="controls col-sm-10">
+        @ChildContent       
+    </div>
+    
 </div>
 
 
@@ -13,5 +17,9 @@
     public string Caption { get; set; }
     [Parameter]
     public RenderFragment ChildContent { get; set; }
-    
+
+    [Parameter]
+    public int ColSpanMd { get; set; } = 6;
+
+
 }

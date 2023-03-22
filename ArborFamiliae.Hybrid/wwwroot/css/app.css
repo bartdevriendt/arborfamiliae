@@ -47,3 +47,62 @@ a, .btn-link {
     top: 0.5rem;
 }
 
+/**
+    Form layout stuff
+ */
+
+.af-flg {
+    
+}
+
+.af-flg .af-fli {
+    -webkit-box-orient:horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: row nowrap;
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    display: flex;
+}
+
+.af-flg .af-fli>.af-fli-cpt {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 0 auto;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;
+    align-self: flex-start;
+    margin: 0;
+    padding-left: 0;
+    width: auto;
+}
+
+
+.af-flg .af-fli>.af-fli-ctrl {
+    width: 100%;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-width: 0
+}
+
+@media (min-width: 992px) {
+    .af-flg .af-fli>.af-fli-cpt {
+        white-space:nowrap;
+    }
+
+    .af-flg .af-fli>.af-fli-ctrl:not(img) {
+        width: 90%
+    }
+
+    .af-flg .af-fli>.af-fli-ctrl {
+        -webkit-align-self: flex-start;
+        -ms-flex-item-align: start;
+        align-self: flex-start
+    }
+
+    .af-flg:not(.dxbl-fl-calc) .af-fli>.af-fli-cpt {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
