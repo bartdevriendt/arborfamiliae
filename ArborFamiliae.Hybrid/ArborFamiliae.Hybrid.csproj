@@ -39,4 +39,13 @@
     <ProjectReference Include="..\ArborFamiliae.Services\ArborFamiliae.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\components\forms.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\components\forms.css.map" />
+  </ItemGroup>
+
+<!--  <Target Name="CompileGlobalSass" BeforeTargets="Compile">-->
+<!--    <Message Text="Compiling global SCSS files" Importance="high" />-->
+<!--    <Exec Command="npm run sass &#45;&#45; Styles:wwwroot/css" />-->
+<!--  </Target>-->
 </Project>

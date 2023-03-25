@@ -1,44 +1,43 @@
 ﻿@using ArborFamiliae.Domain.Places
-@using Syncfusion.Blazor.Grids
+@using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
 @inject PlaceService PlaceService
 
 
-<DxTextBox ReadOnly="true" @bind-Text="Text">
-    <Buttons>
-        <DxEditorButton IconCssClass="bi bi-hand-index-thumb" Click="OnSelectPlace"></DxEditorButton>
-        @if (AllowAdd)
-        {
-            <DxEditorButton IconCssClass="bi bi-plus" Click="OnAddPlace"></DxEditorButton>
-        }
-    </Buttons>
-</DxTextBox>
+ <SfTextBox @ref="personSelection" @bind-Value="Text" Created="OnCreated" Readonly="true"></SfTextBox>
 
 
-<DxPopup HeaderText="@Loc["Select Place"]" @bind-Visible="IsPopupVisible">
-    <BodyContentTemplate>
-        <div class="container-fluid">
-            <div class="row">
+<SfDialog @bind-Visible="IsPopupVisible" CloseOnEscape="true" Width="70%" IsModal="true" >
+    <DialogTemplates>
+        <Header>
+            @Loc["Select Place"]
+        </Header>
+        <Content>
+            <div class="container-fluid">
+                <div class="row">
 
+                </div>
+                <div class="row">
+                    <SfTreeGrid @ref="TreeGrid" DataSource="_places" IdMapping="Id" ParentIdMapping="ParentPlaceId" TreeColumnIndex="0" AllowSelection="true">
+                        <TreeGridSelectionSettings Type="Syncfusion.Blazor.Grids.SelectionType.Single" Mode="SelectionMode.Row"></TreeGridSelectionSettings>
+                        <TreeGridEvents RowSelected="RowSelectHandler" TValue="PlaceListModel"></TreeGridEvents>
+                        <TreeGridColumns>
+                            <TreeGridColumn Field="Name" HeaderText="@Loc["Name"]"></TreeGridColumn>
+                            <TreeGridColumn Field="ArborId" HeaderText="ID"></TreeGridColumn>
+                            <TreeGridColumn Field="Type" HeaderText="@Loc["Type"]"></TreeGridColumn>
+                        </TreeGridColumns>
+                    </SfTreeGrid>
+                </div>
+                <div class="row mt-3">
+                    <SfButton IsPrimary="true" @onclick="OnSelect">@Loc["Select Place"]</SfButton>
+                </div>
             </div>
-            <div class="row">
-                <SfTreeGrid @ref="TreeGrid" DataSource="_places" IdMapping="Id" ParentIdMapping="ParentPlaceId" TreeColumnIndex="0" AllowSelection="true">
-                    <TreeGridSelectionSettings Type="Syncfusion.Blazor.Grids.SelectionType.Single" Mode="SelectionMode.Row"></TreeGridSelectionSettings>
-                    <TreeGridEvents RowSelected="RowSelectHandler" TValue="PlaceListModel"></TreeGridEvents>
-                    <TreeGridColumns>
-                        <TreeGridColumn Field="Name"></TreeGridColumn>
-                        <TreeGridColumn Field="ArborId"></TreeGridColumn>
-                        <TreeGridColumn Field="Type"></TreeGridColumn>
-                    </TreeGridColumns>
-                </SfTreeGrid>
-            </div>
-            <div class="row">
-                <DxButton Text="Select" Click="OnSelect"></DxButton>
-            </div>
-        </div>
-    </BodyContentTemplate>
-</DxPopup>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
 
 @code {
+
+    SfTextBox personSelection;
     
     SfTreeGrid<PlaceListModel> TreeGrid;
 
@@ -103,4 +102,17 @@
         
     }
 
+    
+    public async Task OnCreated()
+
+    {
+
+        await this.personSelection.AddIconAsync("append", "bi bi-hand-index-thumb", new Dictionary<string, object>() { { "onclick", OnSelectPlace } });
+        if (AllowAdd)
+        {
+            await this.personSelection.AddIconAsync("append", "bi bi-plus", new Dictionary<string, object>() { { "onclick", OnAddPlace } });    
+        }
+        
+
+    }
 }
