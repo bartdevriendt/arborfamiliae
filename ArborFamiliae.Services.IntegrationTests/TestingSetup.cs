@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MySqlConnector;
 using Respawn;
 using Respawn.Graph;
+using Testcontainers.MySql;
 
 namespace ArborFamiliae.Services.IntegrationTests;
 
@@ -20,17 +21,11 @@ public class TestingSetup
     private static Respawner _respawner;
     private static string _connString;
 
-    private static readonly MySqlTestcontainer _dbContainer =
-        new TestcontainersBuilder<MySqlTestcontainer>()
-            .WithDatabase(
-                new MySqlTestcontainerConfiguration
-                {
-                    Database = "arbor_test",
-                    Username = "arbor",
-                    Password = "arbor"
-                }
-            )
-            .Build();
+    private static readonly MySqlContainer _dbContainer = new MySqlBuilder()
+        .WithDatabase("arbor_test")
+        .WithUsername("arbor")
+        .WithPassword("arbor")
+        .Build();
 
     [OneTimeTearDown]
     public async Task RunAfterAllTests()
@@ -48,16 +43,16 @@ public class TestingSetup
         {
             Thread.Sleep(50);
         }
-        _connString = _dbContainer.ConnectionString;
+        _connString = _dbContainer.GetConnectionString();
 
         var services = new ServiceCollection();
         services.RegisterServices();
-        services.AddDbContext<ArborFamiliaeContext>(options =>
+        services.AddDbContextFactory<ArborFamiliaeContext>(options =>
         {
             var provider = services.BuildServiceProvider();
             options.UseMySql(
-                _dbContainer.ConnectionString,
-                ServerVersion.AutoDetect(_dbContainer.ConnectionString),
+                _connString,
+                ServerVersion.AutoDetect(_connString),
                 b =>
                 {
                     b.MigrationsAssembly(typeof(MySqlMarker).Assembly.FullName);

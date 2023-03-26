@@ -45,9 +45,11 @@ public class DataLoader
         foreach (var pe in personEvents)
         {
             PersonEvent personEvent = new PersonEvent();
+            personEvent.Id = Guid.NewGuid();
             personEvent.Person = FindPerson(pe["personid"].Value<string>());
 
             ArborEvent arborEvent = new ArborEvent();
+            arborEvent.Id = Guid.NewGuid();
             arborEvent.ArborId = pe["arborid"].Value<string>();
             arborEvent.Description = pe["description"].Value<string>();
             arborEvent.EventType = pe["eventtype"].Value<int>();
