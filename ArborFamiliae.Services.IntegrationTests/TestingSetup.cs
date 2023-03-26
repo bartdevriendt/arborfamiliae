@@ -21,7 +21,7 @@ public class TestingSetup
     private static Respawner _respawner;
     private static string _connString;
 
-    private static readonly MySqlContainer _dbContainer = new MySqlBuilder()
+    private static readonly MySqlContainer _dbContainer = new CustomMySqlBuilder()
         .WithDatabase("arbor_test")
         .WithUsername("arbor")
         .WithPassword("arbor")
