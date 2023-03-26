@@ -1,61 +1,54 @@
 ﻿@using ArborFamiliae.Domain.Person
 @using ArborFamiliae.Domain.Enums
+@using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
+@using SelectionType = Syncfusion.Blazor.Grids.SelectionType
 @inject PersonService PersonService
 @inject GenderService GenderService
 
 
-<DxTextBox @bind-Text="@Text" ReadOnly="true">
-    <Buttons>
-        <DxEditorButton IconCssClass="bi bi-hand-index-thumb" Tooltip="Select person" Click="OnSelectPerson"></DxEditorButton>
-    </Buttons>
-</DxTextBox>
+<SfTextBox @ref="personSelection" @bind-Value="Text" Created="OnCreated" Readonly="true"></SfTextBox>
 
-
-<DxPopup @bind-Visible="IsPopupVisible"
-         HeaderText="Select person"
-         Width="800"
-         Height="600"
-         >
-    
-    <BodyContentTemplate>
-        <div class="container-fluid">
-            <div class="row">
-
-            </div>
-            <div class="row">
-                <DxGrid Data="_persons"
-                        AllowGroup="true"
-                        ShowGroupedColumns="false"
-                        SelectionMode="GridSelectionMode.Single"
-                        AllowSelectRowByClick="true"
-                        @bind-SelectedDataItem="@SelectedPerson">
-                    <Columns>
-                        <DxGridDataColumn FieldName="@nameof(PersonListModel.Surname)" GroupIndex="0"></DxGridDataColumn>
-                        <DxGridDataColumn FieldName="@nameof(PersonListModel.FullName)" Caption="@Loc["Name"]"></DxGridDataColumn>
-                        <DxGridDataColumn FieldName="@nameof(PersonListModel.ArborId)" Caption="@Loc["ID"]"></DxGridDataColumn>
-                        <DxGridDataColumn FieldName="@nameof(PersonListModel.Gender)" Caption="@Loc["Gender"]"></DxGridDataColumn>
-                        <DxGridDataColumn FieldName="@nameof(PersonListModel.BirthDate)" Caption="@Loc["Birth Date"]"></DxGridDataColumn>
-                        <DxGridDataColumn FieldName="@nameof(PersonListModel.DeathDate)" Caption="@Loc["Death"]"></DxGridDataColumn>
-                    </Columns>
-
-                </DxGrid>
-            </div>
-            <div class="row">
-                <DxCheckBox Checked="_showAll"
-                            CheckedExpression="() => _showAll"
-                            CheckedChanged="ShowAllChanged" T="bool"
-                >@Loc["Show All"]</DxCheckBox>
-            </div>
-            <div class="row">
-                <DxButton Text="Select" Click="OnSelect"></DxButton>
-            </div>
-        </div>
-    </BodyContentTemplate>
-    
-</DxPopup>
-
+<SfDialog @bind-Visible="IsPopupVisible"  Width="800" Height="600" IsModal="true">
+    <DialogTemplates>
+        <Header>
+            @Loc["Select person"]
+        </Header>
+        <Content>
+             <div class="container-fluid">
+                 <div class="row">
+                
+                 </div>
+                 <div class="row">
+                     <SfGrid @ref="_personGrid" DataSource="_persons" AllowGrouping="true">
+                         <GridGroupSettings Columns="_groupColumns" ShowDropArea="false"></GridGroupSettings>
+                         <GridSelectionSettings Mode="SelectionMode.Row" Type="SelectionType.Single"></GridSelectionSettings>
+                         <GridColumns>
+                             <GridColumn Field="@nameof(PersonListModel.Surname)" AllowGrouping="true"></GridColumn>
+                             <GridColumn Field="@nameof(PersonListModel.FullName)" HeaderText="@Loc["Name"]"></GridColumn>
+                             <GridColumn Field="@nameof(PersonListModel.ArborId)" HeaderText="@Loc["ID"]"></GridColumn>
+                             <GridColumn Field="@nameof(PersonListModel.Gender)" HeaderText="@Loc["Gender"]"></GridColumn>
+                             <GridColumn Field="@nameof(PersonListModel.BirthDate)" HeaderText="@Loc["Birth Date"]"></GridColumn>
+                             <GridColumn Field="@nameof(PersonListModel.DeathDate)" HeaderText="@Loc["Death"]"></GridColumn>
+                         </GridColumns>
+                     </SfGrid>
+                 </div>
+                 <div class="row">
+                     <SfCheckBox Checked="@_showAll" Label="@Loc["Show All"]" ValueChange="ShowAllChanged" TChecked="bool" ></SfCheckBox>
+                 </div>
+                 <div class="row">
+                     <SfButton IsPrimary="true" @onclick="OnSelect">@Loc["Select"]</SfButton>
+                 </div>
+             </div>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
 
 @code {
+
+    SfTextBox personSelection;
+    SfGrid<PersonListModel> _personGrid;
+
+    private string[] _groupColumns = new[] { "Surname" };
 
     [Parameter]
     public string Text { get; set; } = "";
@@ -117,18 +110,15 @@
         IsPopupVisible = true;
     }
 
-    private async Task ShowAllChanged(bool value)
-    {
-        _showAll = !_showAll;
-        await LoadData();
-    }
     private async Task OnSelect()
     {
+
+        var selection = await _personGrid.GetSelectedRecordsAsync();
         
-        if (SelectedPerson != null)
+        if (selection.Count >0)
         {
             IsPopupVisible = false;
-            var person = (PersonListModel)SelectedPerson;
+            var person = selection[0];
             PersonId = person.Id;
 
             await PersonSelected.InvokeAsync(person);
@@ -139,4 +129,24 @@
            
         } 
     }
+    
+    public async Task OnCreated()
+
+    {
+
+        await this.personSelection.AddIconAsync("append", "bi bi-hand-index-thumb", new Dictionary<string, object>() { { "onclick", OnSelectPerson } });
+        // if (AllowAdd)
+        // {
+        //     await this.personSelection.AddIconAsync("append", "bi bi-plus", new Dictionary<string, object>() { { "onclick", OnAddPlace } });    
+        // }
+        
+
+    }
+
+    private async Task ShowAllChanged(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> obj)
+    {
+        _showAll = !_showAll;
+        await LoadData();
+    }
+
 }

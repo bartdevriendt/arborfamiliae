@@ -4,38 +4,54 @@
 
 
 <EditForm Model="@Model" Context="edit_context">
-    <DxFormLayout>
-        <DxFormLayoutGroup Caption="@Loc["Preferred"]">
-            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="@Loc["Title"]"><DxTextBox @bind-Text="@Model.PreferredTitle"></DxTextBox></DxFormLayoutItem>    
-            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="@Loc["Nick"]"><DxTextBox @bind-Text="@Model.PreferredNick"></DxTextBox></DxFormLayoutItem>    
-            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="@Loc["Call"]"><DxTextBox @bind-Text="@Model.PreferredCall"></DxTextBox></DxFormLayoutItem>    
-            <DxFormLayoutItem ColSpanLg="8" ColSpanMd="8" Caption="@Loc["Given"]"><DxTextBox @bind-Text="@Model.PreferredGivenName"></DxTextBox></DxFormLayoutItem>    
-            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="@Loc["Suffix"]"><DxTextBox @bind-Text="@Model.PreferredSuffix"></DxTextBox></DxFormLayoutItem>    
-            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="@Loc["Surname"]">
-                <DxTextBox @bind-Text="@Model.PreferredSurnamePrefix" NullText="@Loc["prefix"]"></DxTextBox></DxFormLayoutItem>    
-            <DxFormLayoutItem ColSpanLg="4" ColSpanMd="4" Caption="">
-                <DxTextBox @bind-Text="@Model.PreferredSurname"></DxTextBox>
-            </DxFormLayoutItem>    
-        </DxFormLayoutGroup>
-        <DxFormLayoutGroup Caption="@Loc["General"]">
-            <DxFormLayoutItem Caption="@Loc["Gender"]" ColSpanLg="4" ColSpanMd="4">
-                <DxComboBox Data="_genders" TData="GenderModel" TValue="Guid" @bind-Value="@Model.Gender" Text="@Loc["Select Gender"]" ValueFieldName="Id" TextFieldName="Description"></DxComboBox>
-            </DxFormLayoutItem>
-            <DxFormLayoutItem Caption="ID" ColSpanLg="4" ColSpanMd="4">
-                <DxTextBox @bind-Text="@Model.ArborId"></DxTextBox>
-            </DxFormLayoutItem>
-        </DxFormLayoutGroup>
-        @if (IsEdit)
-        {
-            <DxFormLayoutTabPages>
-                <DxFormLayoutTabPage Caption="@Loc["Events"]">
-                    <NestedEventList PersonId="Model.Id"></NestedEventList>
-                </DxFormLayoutTabPage>
-            </DxFormLayoutTabPages>
-        }
-    </DxFormLayout>
+    <TwoRowLayout>
+        <Row1>
+            <AFFormLayout>
+                <AFFormLayoutGroup Caption="@Loc["Preferred"]">
+                    <AFFormLayoutItem ColSpanMd="4" Caption="@Loc["Title"]"><SfTextBox @bind-Value="@Model.PreferredTitle"></SfTextBox></AFFormLayoutItem>
+                    <AFFormLayoutItem ColSpanMd="4" Caption="@Loc["Nick"]"><SfTextBox @bind-Value="@Model.PreferredNick"></SfTextBox></AFFormLayoutItem>
+                    <AFFormLayoutItem ColSpanMd="4" Caption="@Loc["Call"]"><SfTextBox @bind-Value="@Model.PreferredCall"></SfTextBox></AFFormLayoutItem>
+                    <AFFormLayoutItem ColSpanMd="8" Caption="@Loc["Given"]"><SfTextBox @bind-Value="@Model.PreferredGivenName"></SfTextBox></AFFormLayoutItem>
+                    <AFFormLayoutItem ColSpanMd="4" Caption="@Loc["Suffix"]"><SfTextBox @bind-Value="@Model.PreferredSuffix"></SfTextBox></AFFormLayoutItem>
+                    <AFFormLayoutItem ColSpanMd="4" Caption="@Loc["Surname"]">
+                        <SfTextBox @bind-Value="@Model.PreferredSurnamePrefix" Placeholder="@Loc["prefix"]"></SfTextBox></AFFormLayoutItem>
+                    <AFFormLayoutItem ColSpanMd="4" Caption="&nbsp;">
+                        <SfTextBox @bind-Value="@Model.PreferredSurname"></SfTextBox>
+                    </AFFormLayoutItem>
+                </AFFormLayoutGroup>
+                <AFFormLayoutGroup Caption="@Loc["General"]">
+                    <AFFormLayoutItem Caption="@Loc["Gender"]" ColSpanMd="4">
+                        <SfComboBox DataSource="_genders" TItem="GenderModel" TValue="Guid" @bind-Value="@Model.Gender" Placeholder="@Loc["Select Gender"]">
+                            <ComboBoxFieldSettings Text="Description" Value="Id"></ComboBoxFieldSettings>
+                        </SfComboBox>
+                    </AFFormLayoutItem>
+                    <AFFormLayoutItem Caption="ID" ColSpanMd="4">
+                        <SfTextBox @bind-Value="@Model.ArborId"></SfTextBox>
+                    </AFFormLayoutItem>
+                </AFFormLayoutGroup>
+                @if (IsEdit)
+                {
+                    <SfTab>
+                        <TabItems>
+                            <TabItem>
+                                <ChildContent>
+                                    <TabHeader Text="@Loc["Events"]"></TabHeader>
+                                </ChildContent>
+                                <ContentTemplate>
+                                    <NestedEventList PersonId="Model.Id"></NestedEventList>    
+                                </ContentTemplate>
+                            </TabItem>
+                        </TabItems>
+                    </SfTab>
+                }
+            </AFFormLayout>
+            
+        </Row1>
+        <Row2><SfButton IsPrimary="true" @onclick="OnSave">@Loc["Save"]</SfButton></Row2>
+    </TwoRowLayout>
+    
 
-    <DxButton SubmitFormOnClick="true" Text="@Loc["Save"]" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
+    
 </EditForm>
 
 @code {

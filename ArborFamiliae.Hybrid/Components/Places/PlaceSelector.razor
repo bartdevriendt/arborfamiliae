@@ -3,7 +3,7 @@
 @inject PlaceService PlaceService
 
 
- <SfTextBox @ref="personSelection" @bind-Value="Text" Created="OnCreated" Readonly="true"></SfTextBox>
+ <SfTextBox @ref="placeSelection" @bind-Value="Text" Created="OnCreated" Readonly="true"></SfTextBox>
 
 
 <SfDialog @bind-Visible="IsPopupVisible" CloseOnEscape="true" Width="70%" IsModal="true" >
@@ -37,7 +37,7 @@
 
 @code {
 
-    SfTextBox personSelection;
+    SfTextBox placeSelection;
     
     SfTreeGrid<PlaceListModel> TreeGrid;
 
@@ -107,10 +107,10 @@
 
     {
 
-        await this.personSelection.AddIconAsync("append", "bi bi-hand-index-thumb", new Dictionary<string, object>() { { "onclick", OnSelectPlace } });
+        await this.placeSelection.AddIconAsync("append", "bi bi-hand-index-thumb", new Dictionary<string, object>() { { "onclick", OnSelectPlace } });
         if (AllowAdd)
         {
-            await this.personSelection.AddIconAsync("append", "bi bi-plus", new Dictionary<string, object>() { { "onclick", OnAddPlace } });    
+            await this.placeSelection.AddIconAsync("append", "bi bi-plus", new Dictionary<string, object>() { { "onclick", OnAddPlace } });    
         }
         
 

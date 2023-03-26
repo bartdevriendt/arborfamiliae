@@ -6,11 +6,9 @@ using ArborFamiliae.Data.Mysql;
 using ArborFamiliae.Hybrid.Services;
 using ArborFamiliae.Hybrid.Shared.Models;
 using ArborFamiliae.Services;
-using DevExpress.Blazor;
 using Microsoft.AspNetCore.Components.WebView.WindowsForms;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using MudBlazor;
 using MudBlazor.Services;
 using Serilog;
@@ -20,7 +18,7 @@ using Syncfusion.Blazor;
 
 namespace ArborFamiliae.Hybrid
 {
-    public partial class MainForm : DevExpress.XtraEditors.XtraForm
+    public partial class MainForm : Form
     {
         public MainForm()
         {
@@ -54,7 +52,6 @@ namespace ArborFamiliae.Hybrid
                 // logging.AddDebug();
                 // logging.AddConsole();
             });
-            services.AddDevExpressBlazor(configure => configure.BootstrapVersion = BootstrapVersion.v5);
             services.AddMudServices(configuration =>
             {
                 configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;

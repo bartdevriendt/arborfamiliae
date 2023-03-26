@@ -1,4 +1,4 @@
-﻿<fieldset class="form-group border g-3 p-3 af-flg">
+﻿<fieldset class="form-group border g-3 p-3 af-flg col-md-@ColSpanMd">
     <legend class="w-auto px-2 af-flg-cpt">@Caption</legend>
     <div class="row">
         @ChildContent
@@ -7,6 +7,9 @@
 
 
 @code {
+
+    [Parameter]
+    public int ColSpanMd { get; set; } = 12;
     
     [Parameter]
     public string Caption { get; set; }

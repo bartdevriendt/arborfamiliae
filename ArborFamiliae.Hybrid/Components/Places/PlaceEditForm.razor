@@ -4,33 +4,33 @@
 @inject EnumService EnumService
 
 <EditForm Model="@Model" Context="edit_context" class="">
-    
-    <AFFieldSet Caption="Place information">
-        <AFFormLayoutItem Caption="@Loc["Name"]" ColSpanMd="8">
-            <SfTextBox @bind-Value="@Model.Name"></SfTextBox>
-        </AFFormLayoutItem>
-        <AFFormLayoutItem Caption="@Loc["Type"]" ColSpanMd="4">
-            <SfComboBox DataSource="PlaceTypes" TItem="EnumListType<PlaceType>" TValue="PlaceType" @bind-Value="@Model.PlaceType">
-                <ComboBoxFieldSettings Text="Description" Value="Value"></ComboBoxFieldSettings>
-            </SfComboBox>
-        </AFFormLayoutItem>
-        <AFFormLayoutItem Caption="@Loc["Latitude"]">
-            <SfNumericTextBox TValue="float?" @bind-Value="@Model.Latitude" Format="0.00######"></SfNumericTextBox>
-        </AFFormLayoutItem>
-        <AFFormLayoutItem Caption="@Loc["Longitude"]">
-            <SfNumericTextBox TValue="float?" @bind-Value="@Model.Longitude" Format="0.00######"></SfNumericTextBox>
-        </AFFormLayoutItem>
-        <AFFormLayoutItem Caption="@Loc["ID"]" ColSpanMd="4">
-            <SfTextBox @bind-Value="@Model.ArborId"></SfTextBox>
-        </AFFormLayoutItem>
-        <AFFormLayoutItem Caption="@Loc["Code"]" ColSpanMd="4">
-            <SfTextBox @bind-Value="@Model.Code"></SfTextBox>
-        </AFFormLayoutItem>
-        <AFFormLayoutItem Caption="@Loc["Enclosed By"]" ColSpanMd="4">
-            <PlaceSelector @bind-PlaceId="@Model.ParentPlaceId" @bind-Text="@Model.ParentPlaceName"></PlaceSelector>
-        </AFFormLayoutItem>
-    </AFFieldSet>
-    
+    <AFFormLayout>
+        <AFFormLayoutGroup Caption="Place information">
+            <AFFormLayoutItem Caption="@Loc["Name"]" ColSpanMd="8">
+                <SfTextBox @bind-Value="@Model.Name"></SfTextBox>
+            </AFFormLayoutItem>
+            <AFFormLayoutItem Caption="@Loc["Type"]" ColSpanMd="4">
+                <SfComboBox DataSource="PlaceTypes" TItem="EnumListType<PlaceType>" TValue="PlaceType" @bind-Value="@Model.PlaceType">
+                    <ComboBoxFieldSettings Text="Description" Value="Value"></ComboBoxFieldSettings>
+                </SfComboBox>
+            </AFFormLayoutItem>
+            <AFFormLayoutItem Caption="@Loc["Latitude"]">
+                <SfNumericTextBox TValue="float?" @bind-Value="@Model.Latitude" Format="0.00######"></SfNumericTextBox>
+            </AFFormLayoutItem>
+            <AFFormLayoutItem Caption="@Loc["Longitude"]">
+                <SfNumericTextBox TValue="float?" @bind-Value="@Model.Longitude" Format="0.00######"></SfNumericTextBox>
+            </AFFormLayoutItem>
+            <AFFormLayoutItem Caption="@Loc["ID"]" ColSpanMd="4">
+                <SfTextBox @bind-Value="@Model.ArborId"></SfTextBox>
+            </AFFormLayoutItem>
+            <AFFormLayoutItem Caption="@Loc["Code"]" ColSpanMd="4">
+                <SfTextBox @bind-Value="@Model.Code"></SfTextBox>
+            </AFFormLayoutItem>
+            <AFFormLayoutItem Caption="@Loc["Enclosed By"]" ColSpanMd="4">
+                <PlaceSelector @bind-PlaceId="@Model.ParentPlaceId" @bind-Text="@Model.ParentPlaceName"></PlaceSelector>
+            </AFFormLayoutItem>
+        </AFFormLayoutGroup>
+    </AFFormLayout>
     <SfButton IsPrimary="true" @onclick="OnSave" CssClass="mt-3">@Loc["Save"]</SfButton>
 </EditForm>
 

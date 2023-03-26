@@ -7,26 +7,36 @@
 
 <h3>@Loc["Persons"]</h3>
 
-<DxButton RenderStyle="ButtonRenderStyle.Primary" Text="@Loc["Add"]" IconCssClass="oi oi-plus" Click="OnAdd"></DxButton>
+<TwoRowLayout>
+    <Row1>
+        <SfToolbar>
+            <ToolbarItems>
+                <ToolbarItem Text="@Loc["Add"]" PrefixIcon="bi bi-plus-lg" OnClick="OnAdd"></ToolbarItem>
+            </ToolbarItems>
+        </SfToolbar>
+    </Row1>
+    <Row2>
+        <SfGrid DataSource="_personList">
+            <GridEvents CommandClicked="OnCommandClicked" TValue="PersonListModel"></GridEvents>
+            <GridColumns>
+                <GridColumn HeaderText="@Loc["Name"]" Field="@nameof(PersonListModel.FullName)"></GridColumn>
+                <GridColumn HeaderText="ID" Field="@nameof(PersonListModel.ArborId)"></GridColumn>
+                <GridColumn HeaderText="@Loc["Gender"]" Field="@nameof(PersonListModel.Gender)"></GridColumn>
+                <GridColumn HeaderText="@Loc["Birth Date"]" Field="@nameof(PersonListModel.BirthDate)"></GridColumn>
+                <GridColumn HeaderText="@Loc["Death Date"]" Field="@nameof(PersonListModel.DeathDate)"></GridColumn>
+                <GridColumn HeaderText="">
+                    <GridCommandColumns>
+                        <GridCommandColumn Title="Edit" ButtonOption="@(new CommandButtonOptions() { Content = "", CssClass = "bi bi-pencil" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </Row2>
+</TwoRowLayout>
 
-<DxGrid Data="_personList">
-    <Columns>
-        <DxGridDataColumn Caption="@Loc["Name"]" FieldName="@nameof(PersonListModel.FullName)"></DxGridDataColumn>
-        <DxGridDataColumn Caption="ID" FieldName="@nameof(PersonListModel.ArborId)"></DxGridDataColumn>
-        <DxGridDataColumn Caption="@Loc["Gender"]" FieldName="@nameof(PersonListModel.Gender)"></DxGridDataColumn>
-        <DxGridDataColumn Caption="@Loc["Birth Date"]" FieldName="@nameof(PersonListModel.BirthDate)"></DxGridDataColumn>
-        <DxGridDataColumn Caption="@Loc["Death Date"]" FieldName="@nameof(PersonListModel.DeathDate)"></DxGridDataColumn>
-        <DxGridCommandColumn Caption="@Loc["Manage"]">
-            <HeaderTemplate Context="detail_context">
-                &nbsp;
-            </HeaderTemplate>
-            <CellDisplayTemplate Context="detail_context">
-        	    <a class="oi oi-pencil" style="text-decoration: none;" href="javascript:void(0);" 
-        	       @onclick="@(() => NavigationManager.NavigateTo($"/person/{((PersonListModel)detail_context.DataItem).Id}/edit"))"></a>
-            </CellDisplayTemplate>
-        </DxGridCommandColumn>
-    </Columns>
-</DxGrid>
+
+
+
 
 @code {
 
@@ -40,5 +50,14 @@
     private void OnAdd()
     {
         NavigationManager.NavigateTo("/person/add");
+    }
+    
+    public void OnCommandClicked(CommandClickEventArgs<PersonListModel> args)
+    {
+        if (args.CommandColumn.Title == "Edit")
+        {
+            NavigationManager.NavigateTo($"/person/{args.RowData.Id}/edit");
+        }
+
     }
 }

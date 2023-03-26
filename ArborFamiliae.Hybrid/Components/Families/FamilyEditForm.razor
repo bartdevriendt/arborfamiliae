@@ -3,90 +3,99 @@
 @using ArborFamiliae.Domain.Person
 
 <EditForm Model="@Model" Context="edit_context">
-    <DxFormLayout>
-        <DxFormLayoutGroup ColSpanMd="6" Caption="@Loc["Father/partner1"]">
-            <DxFormLayoutItem Caption="@Loc["Name"]" ColSpanMd="12">
-                <PersonSelector Text="@Model.FatherDisplayName" @bind-PersonId="@Model.FatherId" Gender="GenderInternal.Male" PersonSelected="FatherSelected"></PersonSelector>
-            </DxFormLayoutItem>
-            <DxFormLayoutItem Caption="@Loc["Birth"]" ColSpanMd="12">
-                <DxTextBox @bind-Text="@Model.FatherBirthDate" ReadOnly="true"></DxTextBox>
-            </DxFormLayoutItem>
-            <DxFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
-                <DxTextBox @bind-Text="@Model.FatherDeathDate" ReadOnly="true"></DxTextBox>
-            </DxFormLayoutItem>
-        </DxFormLayoutGroup>
-        <DxFormLayoutGroup ColSpanMd="6" Caption="@Loc["Mother/partner2"]">
-            <DxFormLayoutItem Caption="@Loc["Name"]" ColSpanMd="12">
-                <PersonSelector Text="@Model.MotherDisplayName" @bind-PersonId="@Model.MotherId" Gender="GenderInternal.Female" PersonSelected="MotherSelected"></PersonSelector>
-            </DxFormLayoutItem>
-            <DxFormLayoutItem Caption="@Loc["Birth"]" ColSpanMd="12">
-                <DxTextBox @bind-Text="@Model.MotherBirthDate" ReadOnly="true"></DxTextBox>
-            </DxFormLayoutItem>
-            <DxFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
-                <DxTextBox @bind-Text="@Model.MotherDeathDate" ReadOnly="true"></DxTextBox>
-            </DxFormLayoutItem>
-            <DxFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
-                <DxTextBox @bind-Text="@Model.MotherDeathDate" ReadOnly="true"></DxTextBox>
-            </DxFormLayoutItem>
-            <DxFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
-                <DxTextBox @bind-Text="@Model.MotherDeathDate" ReadOnly="true"></DxTextBox>
-            </DxFormLayoutItem>
-            
-        </DxFormLayoutGroup>
-        <DxFormLayoutGroup ColSpanMd="12">
-            <DxFormLayoutItem Caption="@Loc["ID"]" ColSpanMd="6">
-                <DxTextBox ReadOnly="true" @bind-Text="@Model.ArborId"></DxTextBox>
-            </DxFormLayoutItem>
-        </DxFormLayoutGroup>
+    <TwoRowLayout>
+        <Row1>
+            <AFFormLayout>
+                <AFFormLayoutGroup ColSpanMd="6" Caption="@Loc["Father/partner1"]">
+                    <AFFormLayoutItem Caption="@Loc["Name"]" ColSpanMd="12">
+                        <PersonSelector Text="@Model.FatherDisplayName" @bind-PersonId="@Model.FatherId" Gender="GenderInternal.Male" PersonSelected="FatherSelected"></PersonSelector>
+                    </AFFormLayoutItem>
+                    <AFFormLayoutItem Caption="@Loc["Birth"]" ColSpanMd="12">
+                        <SfTextBox @bind-Value="@Model.FatherBirthDate" Readonly="true"></SfTextBox>
+                    </AFFormLayoutItem>
+                    <AFFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
+                        <SfTextBox @bind-Value="@Model.FatherDeathDate" Readonly="true"></SfTextBox>
+                    </AFFormLayoutItem>
+                </AFFormLayoutGroup>
+                <AFFormLayoutGroup ColSpanMd="6" Caption="@Loc["Mother/partner2"]">
+                    <AFFormLayoutItem Caption="@Loc["Name"]" ColSpanMd="12">
+                        <PersonSelector Text="@Model.MotherDisplayName" @bind-PersonId="@Model.MotherId" Gender="GenderInternal.Female" PersonSelected="MotherSelected"></PersonSelector>
+                    </AFFormLayoutItem>
+                    <AFFormLayoutItem Caption="@Loc["Birth"]" ColSpanMd="12">
+                        <SfTextBox @bind-Value="@Model.MotherBirthDate" Readonly="true"></SfTextBox>
+                    </AFFormLayoutItem>
+                    <AFFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
+                        <SfTextBox @bind-Value="@Model.MotherDeathDate" Readonly="true"></SfTextBox>
+                    </AFFormLayoutItem>
+                </AFFormLayoutGroup>
+                <AFFormLayoutGroup ColSpanMd="12">
+                    <AFFormLayoutItem Caption="@Loc["ID"]" ColSpanMd="6">
+                        <SfTextBox Readonly="true" @bind-Value="@Model.ArborId"></SfTextBox>
+                    </AFFormLayoutItem>
+                </AFFormLayoutGroup>
         
-        <DxFormLayoutTabPages>
-            <DxFormLayoutTabPage Caption="@Loc["Children"]">
-                <TwoRowLayout>
-                    <Row1>
-                        <DxToolbar>
-                            <DxToolbarItem Text="Add" IconCssClass="bi bi-hand-index-thumb" Click="OnChildLink"></DxToolbarItem>
-                        </DxToolbar>
-                    </Row1>
-                    <Row2>
-                        <DxDataGrid Data="@Model.Children" @ref="_childGrid">
-                            <Columns>
-                                <DxDataGridColumn Caption="@Loc["Order"]" Field="Order"></DxDataGridColumn>
-                                <DxDataGridColumn Caption="@Loc["ID"]" Field="ArborId"></DxDataGridColumn>
-                                <DxDataGridColumn Caption="@Loc["Name"]" Field="Name"></DxDataGridColumn>
-                                <DxDataGridColumn Caption="@Loc["Gender"]" Field="Gender"></DxDataGridColumn>
-                                <DxDataGridColumn Caption="@Loc["Paternal"]" Field="PaternalRelation"></DxDataGridColumn>
-                                <DxDataGridColumn Caption="@Loc["Maternal"]" Field="MaternalRelation"></DxDataGridColumn>
-                                <DxDataGridColumn Caption="@Loc["BirthDate"]" Field="BirthDate"></DxDataGridColumn>
-                            </Columns>
-                        </DxDataGrid>
-                    </Row2>
-                </TwoRowLayout>
+                <SfTab>
+                    <TabItems>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="@Loc["Children"]"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <TwoRowLayout>
+                                    <Row1>
+                                        <SfToolbar>
+                                            <ToolbarItems>
+                                                <ToolbarItem Text="@Loc["Add"]" PrefixIcon="bi bi-hand-index-thumb" OnClick="OnChildLink"></ToolbarItem>
+                                            </ToolbarItems>
+                                        </SfToolbar>
+                                    </Row1>
+                                    <Row2>
+                                        <SfGrid @ref="_childGrid" DataSource="@Model.Children">
+                                            <GridColumns>
+                                                <GridColumn HeaderText="@Loc["Order"]" Field="Order"></GridColumn>
+                                                <GridColumn HeaderText="@Loc["ID"]" Field="ArborId"></GridColumn>
+                                                <GridColumn HeaderText="@Loc["Name"]" Field="Name"></GridColumn>
+                                                <GridColumn HeaderText="@Loc["Gender"]" Field="Gender"></GridColumn>
+                                                <GridColumn HeaderText="@Loc["Paternal"]" Field="PaternalRelation"></GridColumn>
+                                                <GridColumn HeaderText="@Loc["Maternal"]" Field="MaternalRelation"></GridColumn>
+                                                <GridColumn HeaderText="@Loc["BirthDate"]" Field="BirthDate"></GridColumn>
+                                            </GridColumns>
+                                        </SfGrid>
+                                    </Row2>
+                                </TwoRowLayout>
+                            </ContentTemplate>
+                        </TabItem>
+                    </TabItems>
+                </SfTab>
                 
-                
-            </DxFormLayoutTabPage>
-        </DxFormLayoutTabPages>
-    </DxFormLayout>
+            </AFFormLayout>
+
+        </Row1>
+        <Row2><SfButton IsPrimary="true" @onclick="OnSave">@Loc["Save"]</SfButton></Row2>
+    </TwoRowLayout>
     
 
+
     
-    <DxButton SubmitFormOnClick="true" Text="@Loc["Save"]" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
 </EditForm>
 
-<DxPopup @bind-Visible="_isPopupVisible"
-         HeaderText="@Loc["Add child"]">
-    
-    <BodyTemplate>
-        <PersonSelector Gender="GenderInternal.All" @bind-PersonId="@_childModel.PersonId" Text="@_childModel.Name" PersonSelected="PersonSelected"></PersonSelector>
-        
-        <DxButton Click="OnChildAddClick" Text="@Loc["Add"]"></DxButton>
-    </BodyTemplate>
-    
-</DxPopup>
+<SfDialog @bind-Visible="_isPopupVisible">
+    <DialogTemplates>
+        <Header>
+            @Loc["Add child"]
+        </Header>
+        <Content>
+            <TwoRowLayout>
+                <Row1><PersonSelector Gender="GenderInternal.All" @bind-PersonId="@_childModel.PersonId" Text="@_childModel.Name" PersonSelected="PersonSelected"></PersonSelector></Row1>
+                <Row2><SfButton @onclick="OnChildAddClick" IsPrimary="true">@Loc["Add"]</SfButton></Row2>
+            </TwoRowLayout>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
 
 @code {
 
-
-    DxDataGrid<FamilyChildAddEditModel> _childGrid;
+    SfGrid<FamilyChildAddEditModel> _childGrid;
 
     [Parameter]
     public FamilyAddEditModel Model { get; set; }

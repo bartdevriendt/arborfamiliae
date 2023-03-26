@@ -1,44 +1,46 @@
 ﻿@using ArborFamiliae.Domain.Events
 @using ArborFamiliae.Domain.Enums
+@using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
+@using SelectionType = Syncfusion.Blazor.Grids.SelectionType
 @inject EventService _eventService
 
 
-<div class="row">
-    <div class="col-12">
-        <DxToolbar><DxToolbarItem Text="@Loc["Add"]" IconCssClass="oi oi-plus" Click="AddNewEvent"></DxToolbarItem></DxToolbar>
-    </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <DxGrid Data="_events" RowDoubleClick="RowDoubleClick"
-                SelectionMode="GridSelectionMode.Single"
-                AllowSelectRowByClick="true"
-                @bind-SelectedDataItem="@SelectedEvent"
-                AutoExpandAllGroupRows="true"
-                >
-            <Columns>
-                <DxGridDataColumn GroupIndex="0" FieldName="Category" AllowGroup="true" Caption="@Loc["Category"]"></DxGridDataColumn>
-                <DxGridDataColumn FieldName="Type" Caption="@Loc["Type"]"></DxGridDataColumn>
-                <DxGridDataColumn FieldName="Description" Caption="@Loc["Description"]"></DxGridDataColumn>
-                <DxGridDataColumn FieldName="Date" Caption="@Loc["Date"]"></DxGridDataColumn>
-                <DxGridDataColumn FieldName="Place" Caption="@Loc["Place"]"></DxGridDataColumn>
-                <DxGridDataColumn FieldName="Participant" Caption="@Loc["Main Participants"]"></DxGridDataColumn>
-                <DxGridDataColumn FieldName="Role" Caption="@Loc["Role"]"></DxGridDataColumn>
-                <DxGridDataColumn FieldName="ArborId" Caption="@Loc["ID"]"></DxGridDataColumn>
-                <DxGridDataColumn FieldName="Age" Caption="@Loc["Age"]"></DxGridDataColumn>
-            </Columns>
-        </DxGrid>
-    </div>
-</div>
+<TwoRowLayout>
+    <Row1>
+        <SfToolbar>
+            <ToolbarItems>
+                <ToolbarItem Text="@Loc["Add"]" PrefixIcon="bi bi-plus-lg" OnClick="AddNewEvent"></ToolbarItem>
+            </ToolbarItems>
+        </SfToolbar>
+    </Row1>
+    <Row2>
+        <SfGrid DataSource="_events" AllowGrouping="true">
+            <GridSelectionSettings Mode="SelectionMode.Row" Type="SelectionType.Single"></GridSelectionSettings>
+            <GridGroupSettings Columns="@_groupColumns"></GridGroupSettings>
+            <GridColumns>
+                <GridColumn Field="Category" HeaderText="@Loc["Category"]" AllowGrouping="true"></GridColumn>
+                <GridColumn Field="Type" HeaderText="@Loc["Type"]"></GridColumn>
+                <GridColumn Field="Description" HeaderText="@Loc["Description"]"></GridColumn>
+                <GridColumn Field="Date" HeaderText="@Loc["Date"]"></GridColumn>
+                <GridColumn Field="Place" HeaderText="@Loc["Place"]"></GridColumn>
+                <GridColumn Field="Participant" HeaderText="@Loc["Main Participants"]"></GridColumn>
+                <GridColumn Field="Role" HeaderText="@Loc["Role"]"></GridColumn>
+                <GridColumn Field="ArborId" HeaderText="@Loc["ID"]"></GridColumn>
+                <GridColumn Field="Age" HeaderText="@Loc["Age"]"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </Row2>
+</TwoRowLayout>
 
+<SfDialog IsModal="true" @bind-Visible="@PopupVisible">
+    <DialogTemplates>
+        <Header>@Loc["Add Event"]</Header>
+        <Content>
+            <EventInput Model="_addEditModel" EventSave="OnEventSave"></EventInput>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
 
-<DxPopup HeaderText="@Loc["Add Event"]" @bind-Visible="@PopupVisible" SizeMode="SizeMode.Large" Width="800" Height="600">
-    <BodyTemplate>
-        <EventInput Model="_addEditModel" EventSave="OnEventSave">
-            
-        </EventInput>
-    </BodyTemplate>
-</DxPopup>
 
 @code {
     [Parameter]
@@ -46,6 +48,8 @@
 
     private List<EventListModel> _events = new();
     private EventAddEditModel _addEditModel = new();
+
+    private string[] _groupColumns = new[] { "Category" };
     
     bool PopupVisible { get; set; } = false;
     
@@ -82,11 +86,6 @@
 
         _addEditModel = await _eventService.GetEventById(((EventListModel)SelectedEvent).Id);
         PopupVisible = true;
-    }
-
-    private void GroupTextCustomization(GridCustomizeGroupValueDisplayTextEventArgs obj)
-    {
-        
     }
 
 }

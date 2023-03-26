@@ -4,16 +4,36 @@
 @inject EnumService EnumService
 
 <div class="container-fluid">
-<EditForm Model="@Model" Context="edit_form">
-    <DxFormLayout CaptionPosition="CaptionPosition.Horizontal">
-        <DxFormLayoutItem Caption="@Loc["Event Type"]" ColSpanMd="12"><DxComboBox Data="_eventTypes" TextFieldName="Description" ValueFieldName="Value" @bind-Value="Model.Type"></DxComboBox> </DxFormLayoutItem>
-        <DxFormLayoutItem Caption="@Loc["Date"]" ColSpanMd="12"><ArborDateInput @bind-Date="@Model.Date"></ArborDateInput></DxFormLayoutItem>
-        <DxFormLayoutItem Caption="@Loc["ID"]"><DxTextBox @bind-Text="@Model.ArborId"></DxTextBox></DxFormLayoutItem>
-        <DxFormLayoutItem Caption="@Loc["Place"]"><PlaceSelector @bind-PlaceId="@Model.PlaceId" @bind-Text="@Model.PlaceName" AllowAdd="true"></PlaceSelector></DxFormLayoutItem>
-        <DxFormLayoutItem Caption="@Loc["Description"]"><DxTextBox @bind-Text="@Model.Description"></DxTextBox></DxFormLayoutItem>
-    </DxFormLayout>
-    <DxButton SubmitFormOnClick="true" Text="@Loc["Save"]" RenderStyle="ButtonRenderStyle.Primary" Click="OnSave"></DxButton>
-</EditForm>
+    <EditForm Model="@Model" Context="edit_form">
+        <TwoRowLayout>
+            <Row1>
+                <AFFormLayout>
+                    <AFFormLayoutGroup Caption="@Loc["Event Information"]">
+                        <AFFormLayoutItem Caption="@Loc["Event Type"]">
+                            <SfComboBox DataSource="_eventTypes" TItem="EnumListType<EventType>" TValue="EventType" @bind-Value="@Model.Type">
+                                <ComboBoxFieldSettings Text="Description" Value="Value"></ComboBoxFieldSettings>
+                            </SfComboBox>
+                        </AFFormLayoutItem>
+                        <AFFormLayoutItem Caption="@Loc["Date"]">
+                            <ArborDateInput @bind-Date="@Model.Date"></ArborDateInput>
+                        </AFFormLayoutItem>
+                        <AFFormLayoutItem Caption="@Loc["ID"]">
+                            <SfTextBox @bind-Value="@Model.ArborId"></SfTextBox>
+                        </AFFormLayoutItem>
+                        <AFFormLayoutItem Caption="@Loc["Place"]">
+                            <PlaceSelector @bind-PlaceId="@Model.PlaceId" @bind-Text="@Model.PlaceName" AllowAdd="true"></PlaceSelector>
+                        </AFFormLayoutItem>
+                        <AFFormLayoutItem Caption="@Loc["Description"]">
+                            <SfTextBox @bind-Value="@Model.Description"></SfTextBox>
+                        </AFFormLayoutItem>
+                    </AFFormLayoutGroup>
+                </AFFormLayout>
+            </Row1>
+            <Row2>
+                <SfButton IsPrimary="true" @onclick="OnSave">@Loc["Save"]</SfButton>
+            </Row2>
+        </TwoRowLayout>
+    </EditForm>
 </div>
 
 @code {
