@@ -25,15 +25,21 @@ public class EnumService : IScoped
                     new EnumListType<T>
                     {
                         Value = x,
-                        Description = _stringLocalizer[
+                        Description = 
                             type.GetMember(x.ToString())
                                 .First()
                                 .GetCustomAttribute<DescriptionAttribute>()
                                 ?.Description ?? x.ToString()
-                        ]
+                        
                     }
             )
             .ToList();
+
+        foreach (var listType in result)
+        {
+            listType.Description = _stringLocalizer[listType.Description];
+        }
+        
         return result;
     }
 }

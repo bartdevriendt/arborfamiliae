@@ -2,7 +2,7 @@
 
 namespace ArborFamiliae.Services.IntegrationTests.Genealogy;
 
-public class GenderServQiceTests : TestBase
+public class GenderServiceTests : TestBase
 {
     [Test]
     public async Task Test_LoadAllGenders()

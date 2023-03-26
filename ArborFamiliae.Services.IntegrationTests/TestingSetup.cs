@@ -1,15 +1,14 @@
-﻿using ArborFamiliae.Data;
-using ArborFamiliae.Data.Mysql;
+﻿using System.Globalization;
+using ArborFamiliae.Data;
+using ArborFamiliae.Data.Sqlite;
 using ArborFamiliae.Services.IntegrationTests.Fixtures;
+using ArborFamiliae.Services.Resources;
 using Bogus;
-using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Configurations;
-using DotNet.Testcontainers.Containers;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MySqlConnector;
-using Respawn;
-using Respawn.Graph;
+
+[assembly: SetCulture("en")]
 
 namespace ArborFamiliae.Services.IntegrationTests;
 
@@ -17,25 +16,18 @@ namespace ArborFamiliae.Services.IntegrationTests;
 public class TestingSetup
 {
     private static IServiceScopeFactory? _scopeFactory;
-    private static Respawner _respawner;
     private static string _connString;
 
-    private static readonly MySqlTestcontainer _dbContainer =
-        new TestcontainersBuilder<MySqlTestcontainer>()
-            .WithDatabase(
-                new MySqlTestcontainerConfiguration
-                {
-                    Database = "arbor_test",
-                    Username = "arbor",
-                    Password = "arbor"
-                }
-            )
-            .Build();
+    private static string _dbPath = Path.GetTempPath() + "test_arbor.sqlite";
 
     [OneTimeTearDown]
     public async Task RunAfterAllTests()
     {
-        await _dbContainer.DisposeAsync();
+        try
+        {
+            File.Delete(_dbPath);
+        }
+        catch (Exception ex) { }
     }
 
     [OneTimeSetUp]
@@ -43,25 +35,21 @@ public class TestingSetup
     {
         Randomizer.Seed = new Random(8573497);
 
-        await _dbContainer.StartAsync();
-        while (_dbContainer.State != TestcontainersStates.Running)
-        {
-            Thread.Sleep(50);
-        }
-        _connString = _dbContainer.ConnectionString;
+        var builder = new SqliteConnectionStringBuilder();
+        builder.DataSource = _dbPath;
+        _connString = builder.ConnectionString;
 
         var services = new ServiceCollection();
         services.RegisterServices();
-        services.AddDbContext<ArborFamiliaeContext>(options =>
+        services.AddDbContextFactory<ArborFamiliaeContext>(options =>
         {
             var provider = services.BuildServiceProvider();
-            options.UseMySql(
-                _dbContainer.ConnectionString,
-                ServerVersion.AutoDetect(_dbContainer.ConnectionString),
+
+            options.UseSqlite(
+                _connString,
                 b =>
                 {
-                    b.MigrationsAssembly(typeof(MySqlMarker).Assembly.FullName);
-                    b.EnableRetryOnFailure();
+                    b.MigrationsAssembly(typeof(SqliteMarker).Assembly.FullName);
                 }
             );
 
@@ -75,6 +63,10 @@ public class TestingSetup
         {
             var scopedServices = scope.ServiceProvider;
             var db = scopedServices.GetRequiredService<ArborFamiliaeContext>();
+            if (!File.Exists(_dbPath))
+            {
+                db.Database.EnsureCreated();
+            }
             if (!db.Database.CanConnect())
             {
                 throw new Exception("Database not reachable");
@@ -82,29 +74,30 @@ public class TestingSetup
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
         }
-
-        using (var conn = new MySqlConnection(_connString))
-        {
-            await conn.OpenAsync();
-            _respawner = await Respawner.CreateAsync(
-                conn,
-                new RespawnerOptions()
-                {
-                    TablesToIgnore = new Table[] { "__EFMigrationsHistory" },
-                    SchemasToInclude = new[] { "arbor_test" },
-                    DbAdapter = DbAdapter.MySql
-                }
-            );
-        }
     }
 
     public static async Task ResetState()
     {
-        using (var conn = new MySqlConnection(_connString))
+        using (var scope = _scopeFactory.CreateScope())
         {
-            await conn.OpenAsync();
+            var scopedServices = scope.ServiceProvider;
+            var db = scopedServices.GetRequiredService<ArborFamiliaeContext>();
 
-            await _respawner.ResetAsync(conn);
+            db.Database.EnsureCreated();
+
+            if (!db.Database.CanConnect())
+            {
+                throw new Exception("Database not reachable");
+            }
+
+            await db.PersonEvents.ExecuteDeleteAsync();
+            await db.Sequences.ExecuteDeleteAsync();
+            await db.FamilyChildren.ExecuteDeleteAsync();
+            await db.Families.ExecuteDeleteAsync();
+            await db.Events.ExecuteDeleteAsync();
+            await db.Persons.ExecuteDeleteAsync();
+            await db.Places.ExecuteDeleteAsync();
+            await db.Genders.ExecuteDeleteAsync();
         }
     }
 

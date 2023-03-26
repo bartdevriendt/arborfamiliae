@@ -7,6 +7,7 @@ namespace ArborFamiliae.Services.IntegrationTests.Common;
 public class EnumServiceTests : TestBase
 {
     [Test]
+    [Culture("en")]
     public async Task Test_LoadEnums()
     {
         // arrange

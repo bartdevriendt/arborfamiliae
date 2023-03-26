@@ -11,27 +11,18 @@ namespace ArborFamiliae.Services.Genealogy;
 
 public class EventService : ITransient
 {
-    private DateCalculationService _dateCalculationService;
     private IRepository<ArborEvent> _eventRepository;
-    private IReadRepository<Family> _familyReadRepository;
     private IStringLocalizer<ArborFamiliaeResources> _stringLocalizer;
     private IReadRepository<Person> _personRepository;
-    private PersonService _personService;
 
     public EventService(
-        DateCalculationService dateCalculationService,
         IRepository<ArborEvent> eventRepository,
-        IReadRepository<Family> familyReadRepository,
         IStringLocalizer<ArborFamiliaeResources> stringLocalizer,
-        PersonService personService,
         IReadRepository<Person> personRepository
     )
     {
-        _dateCalculationService = dateCalculationService;
         _eventRepository = eventRepository;
-        _familyReadRepository = familyReadRepository;
         _stringLocalizer = stringLocalizer;
-        _personService = personService;
         _personRepository = personRepository;
     }
 
@@ -63,7 +54,7 @@ public class EventService : ITransient
             result.Add(model);
         }
 
-        return result;
+        return result.OrderBy(x => x.ArborId).ToList();
     }
 
     public async Task<EventAddEditModel> GetEventById(Guid id)
