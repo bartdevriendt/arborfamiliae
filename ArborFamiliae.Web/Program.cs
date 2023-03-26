@@ -1,4 +1,5 @@
 using ArborFamiliae.Data;
+using DevExpress.Xpo.DB;
 using Microsoft.EntityFrameworkCore;
 using static ArborFamiliae.Web.Provider;
 
@@ -9,12 +10,20 @@ builder.Services.AddDbContext<ArborFamiliaeContext>(options =>
 {
     var provider = config.GetValue("provider", MySql.Name);
 
+    Console.WriteLine($"Provider:  {provider}");
     if (provider == MySql.Name)
     {
         options.UseMySql(
             config.GetConnectionString(MySql.Name)!,
             ServerVersion.AutoDetect(config.GetConnectionString(MySql.Name)),
             x => x.MigrationsAssembly(MySql.Assembly)
+        );
+    }
+    else if (provider == Sqlite.Name)
+    {
+        options.UseSqlite(
+            config.GetConnectionString(MySql.Name),
+            x => x.MigrationsAssembly(Sqlite.Assembly)
         );
     }
 

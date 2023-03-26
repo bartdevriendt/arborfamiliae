@@ -12,6 +12,14 @@ public class FamilyTreeDatabaseService
         SaveDatabases(databases);
     }
 
+    public void DeleteDatabase(FamilyTreeDatabase database)
+    {
+        var databases = LoadDatabases();
+        
+        databases.Remove(database);
+        SaveDatabases(databases);
+    }
+
     private string GetDatabasesFilePath()
     {
         string folder =

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using ArborFamiliae.Data;
 using ArborFamiliae.Data.Mysql;
+using ArborFamiliae.Data.Sqlite;
 using ArborFamiliae.Hybrid.Services;
 using ArborFamiliae.Hybrid.Shared.Models;
 using ArborFamiliae.Services;
@@ -66,11 +67,11 @@ namespace ArborFamiliae.Hybrid
             services.AddDbContextFactory<ArborFamiliaeContext>(config =>
             {
                 var connstring = ConnectionStringService.ConnectionString;
+                config.EnableSensitiveDataLogging();
+                config.UseLazyLoadingProxies();
+                config.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
                 if (ConnectionStringService.Provider == Provider.MySql.Name)
                 {
-                    config.EnableSensitiveDataLogging();
-                    config.UseLazyLoadingProxies();
-                    config.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
                     config.UseMySql(
                         connstring,
                         ServerVersion.AutoDetect(connstring),
@@ -79,6 +80,13 @@ namespace ArborFamiliae.Hybrid
                             x.MigrationsAssembly(typeof(MySqlMarker).Assembly.GetName().Name);
                         }
                     );    
+                }
+                else if (ConnectionStringService.Provider == Provider.Sqlite.Name)
+                {
+                    config.UseSqlite(connstring,x =>
+                    {
+                        x.MigrationsAssembly(typeof(SqliteMarker).Assembly.GetName().Name);
+                    });
                 }
             }, ServiceLifetime.Transient);
             

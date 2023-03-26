@@ -51,4 +51,7 @@
     <data name="Load" xml:space="preserve">
         <value>Laden</value>
     </data>
+    <data name="New" xml:space="preserve">
+        <value>Nieuw</value>
+    </data>
 </root>

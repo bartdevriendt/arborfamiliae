@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ArborFamiliae.Data.Mysql\ArborFamiliae.Data.Mysql.csproj" />
+    
     <ProjectReference Include="..\ArborFamiliae.Data\ArborFamiliae.Data.csproj" />
     <ProjectReference Include="..\ArborFamiliae.Domain\ArborFamiliae.Domain.csproj" />
   </ItemGroup>

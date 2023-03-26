@@ -7,6 +7,7 @@
 @using ArborFamiliae.Hybrid.Services
 @using ArborFamiliae.Hybrid.Shared.Layouts
 @using ArborFamiliae.Hybrid.Shared.Models
+@using Microsoft.Data.Sqlite
 @using SelectionType = Syncfusion.Blazor.Grids.SelectionType
 @using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
 
@@ -20,31 +21,105 @@
                                    Mode="SelectionMode.Row"></GridSelectionSettings>
             <GridEvents TValue="FamilyTreeDatabase" OnRecordDoubleClick="ConnectionSelected"></GridEvents>
             <GridColumns>
+                 <GridEvents CommandClicked="OnCommandClicked" TValue="FamilyTreeDatabase"></GridEvents>
+                            
                 <GridColumn Field="@nameof(FamilyTreeDatabase.Name)" HeaderText="@Loc["Name"]"></GridColumn>
+                <GridColumn Field="@nameof(FamilyTreeDatabase.DatabaseType)" HeaderText="@Loc["Type"]"></GridColumn>
+                <GridColumn HeaderText="">
+                    <GridCommandColumns>
+                        <GridCommandColumn Title="Delete" ButtonOption="@(new CommandButtonOptions() { Content = "", CssClass = "bi bi-trash" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
             </GridColumns>
         </SfGrid>
         
     </Row1>
     <Row2>
-        <SfButton IsPrimary="true" @onclick="LoadDatabase">@Loc["Load"]</SfButton>
+        <SfButton IsPrimary="true" @onclick="AddDatabase">@Loc["New"]</SfButton> <SfButton IsPrimary="true" @onclick="LoadDatabase">@Loc["Load"]</SfButton>
     </Row2>
 </TwoRowLayout>
 
+
+<SfDialog @bind-Visible="_isPopupVisible" IsModal="true" Height="600px" Width="800px">
+    <DialogTemplates>
+        <Header>@Loc["New Family Tree"]</Header>
+        <Content>
+            <TwoRowLayout>
+                <Row1>
+                    <EditForm Model="@_addModel">
+                        <AFFormLayout>
+                            <AFFormLayoutGroup Caption="@Loc["Type"]">
+                                <AFFormLayoutItem Caption="@Loc["Database Type"]">
+                                    <SfComboBox DataSource="_treeTypes" TItem="string" TValue="string" @bind-Value="@_addModel.DatabaseType"></SfComboBox>
+                                </AFFormLayoutItem>
+                                <AFFormLayoutItem Caption="@Loc["Name"]">
+                                    <SfTextBox @bind-Value="_addModel.Name"></SfTextBox>
+                                </AFFormLayoutItem>
+                            </AFFormLayoutGroup>
+                           
+                                @if (_addModel.DatabaseType == "MySql")
+                                {
+                                    <AFFormLayoutGroup Caption="@Loc["Details"]">
+                                        <AFFormLayoutItem Caption="@Loc["Server"]">
+                                            <SfTextBox @bind-Value="_addModel.Server"></SfTextBox>
+                                        </AFFormLayoutItem>
+                                        <AFFormLayoutItem Caption="@Loc["Database"]">
+                                            <SfTextBox @bind-Value="_addModel.Database"></SfTextBox>
+                                        </AFFormLayoutItem>
+                                        <AFFormLayoutItem Caption="@Loc["Username"]">
+                                            <SfTextBox @bind-Value="_addModel.Username"></SfTextBox>
+                                        </AFFormLayoutItem>
+                                        <AFFormLayoutItem Caption="@Loc["Password"]">
+                                            <SfTextBox @bind-Value="_addModel.Password"></SfTextBox>
+                                        </AFFormLayoutItem>
+                                    </AFFormLayoutGroup>
+                                }
+                                else if (_addModel.DatabaseType == "Sqlite")
+                                {
+                                    <AFFormLayoutGroup Caption="@Loc["Details"]">
+                                        <AFFormLayoutItem Caption="@Loc["Path"]">
+                                            <SfTextBox @bind-Value="_addModel.FilePath"></SfTextBox>
+                                        </AFFormLayoutItem>
+                                    </AFFormLayoutGroup>
+                                }
+                            
+                        </AFFormLayout>
+                    </EditForm>
+                </Row1>
+                <Row2>
+                    <SfButton IsPrimary="true" @onclick="OnAdd">@Loc["Save"]</SfButton>
+                </Row2>
+            </TwoRowLayout>
+        </Content>
+    </DialogTemplates>
+    
+</SfDialog>
+
 @code {
 
+    private bool _isPopupVisible = false;
+    
     private SfGrid<FamilyTreeDatabase> _connectGrid;
 
     private FamilyTreeDatabaseService _databaseService;
 
     private List<FamilyTreeDatabase> _databases;
-    
-    
+
+    private FamilyTreeDatabase _addModel = new FamilyTreeDatabase();
+
+    private string[] _treeTypes = new[] { "MySql", "Sqlite" };
 
     protected override async Task OnInitializedAsync()
     {
         _databaseService = new FamilyTreeDatabaseService();
         _databases = _databaseService.LoadDatabases();
         
+    }
+
+    private async Task AddDatabase()
+    {
+        _addModel = new();
+        _isPopupVisible = true;
     }
 
     private async Task LoadDatabase()
@@ -71,6 +146,14 @@
             ConnectionStringService.Provider = db.DatabaseType;
 
         }
+        if (db.DatabaseType == Provider.Sqlite.Name)
+        {
+            var builder = new SqliteConnectionStringBuilder();
+            builder.DataSource = db.FilePath;
+
+            ConnectionStringService.ConnectionString = builder.ConnectionString;
+            ConnectionStringService.Provider = Provider.Sqlite.Name;
+        }
         
         NavigationManager.NavigateTo("/seed", forceLoad: true);   
     }
@@ -80,4 +163,21 @@
         await LoadDatabase();
     }
 
+    private void OnAdd()
+    {
+        _databaseService.StoreDatabase(_addModel);
+        _databases = _databaseService.LoadDatabases();
+        _isPopupVisible = false;
+    }
+
+    private async Task OnCommandClicked(CommandClickEventArgs<FamilyTreeDatabase> arg)
+    {
+        if (arg.CommandColumn.Title == "Delete")
+        {
+            _databaseService.DeleteDatabase(arg.RowData);
+            _databases = _databaseService.LoadDatabases();
+        }
+    }
+
 }
+

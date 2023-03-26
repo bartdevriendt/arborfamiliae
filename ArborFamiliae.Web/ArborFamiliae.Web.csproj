@@ -8,10 +8,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ArborFamiliae.Data.Mysql\ArborFamiliae.Data.Mysql.csproj" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.5">
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
+	  <ProjectReference Include="..\ArborFamiliae.Data.Sqlite\ArborFamiliae.Data.Sqlite.csproj" />
   </ItemGroup>
 
 </Project>
