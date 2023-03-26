@@ -1,0 +1,89 @@
+﻿[
+  {
+    Description: CUSTOM
+  },
+  {
+    Value: COUNTRY,
+    Description: Land
+  },
+  {
+    Value: STATE,
+    Description: STATE
+  },
+  {
+    Value: COUNTY,
+    Description: COUNTY
+  },
+  {
+    Value: CITY,
+    Description: Stad
+  },
+  {
+    Value: PARISH,
+    Description: PARISH
+  },
+  {
+    Value: LOCALITY,
+    Description: LOCALITY
+  },
+  {
+    Value: STREET,
+    Description: STREET
+  },
+  {
+    Value: PROVINCE,
+    Description: Provincie
+  },
+  {
+    Value: REGION,
+    Description: REGION
+  },
+  {
+    Value: DEPARTMENT,
+    Description: DEPARTMENT
+  },
+  {
+    Value: NEIGHBORHOOD,
+    Description: NEIGHBORHOOD
+  },
+  {
+    Value: DISTRICT,
+    Description: DISTRICT
+  },
+  {
+    Value: BOROUGH,
+    Description: BOROUGH
+  },
+  {
+    Value: MUNICIPALITY,
+    Description: MUNICIPALITY
+  },
+  {
+    Value: TOWN,
+    Description: TOWN
+  },
+  {
+    Value: VILLAGE,
+    Description: VILLAGE
+  },
+  {
+    Value: HAMLET,
+    Description: HAMLET
+  },
+  {
+    Value: FARM,
+    Description: FARM
+  },
+  {
+    Value: BUILDING,
+    Description: BUILDING
+  },
+  {
+    Value: NUMBER,
+    Description: NUMBER
+  },
+  {
+    Value: UNKNOWN,
+    Description: Onbekend
+  }
+]
