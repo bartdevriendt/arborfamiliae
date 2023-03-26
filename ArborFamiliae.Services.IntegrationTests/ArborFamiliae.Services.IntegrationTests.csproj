@@ -16,14 +16,11 @@
         <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
         <PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
         <PackageReference Include="coverlet.collector" Version="3.1.2" />
-        <PackageReference Include="Respawn" Version="6.0.0" />
-        <PackageReference Include="Testcontainers" Version="3.0.0" />
-        <PackageReference Include="Testcontainers.MySql" Version="3.0.0" />
         <PackageReference Include="Verify.NUnit" Version="19.10.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ArborFamiliae.Data.Mysql\ArborFamiliae.Data.Mysql.csproj" />
+      <ProjectReference Include="..\ArborFamiliae.Data.Sqlite\ArborFamiliae.Data.Sqlite.csproj" />
       <ProjectReference Include="..\ArborFamiliae.Services\ArborFamiliae.Services.csproj" />
     </ItemGroup>
 
