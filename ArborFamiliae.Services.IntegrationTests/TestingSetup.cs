@@ -5,8 +5,6 @@ using Bogus;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Respawn;
-using Respawn.Graph;
 
 namespace ArborFamiliae.Services.IntegrationTests;
 
@@ -14,7 +12,6 @@ namespace ArborFamiliae.Services.IntegrationTests;
 public class TestingSetup
 {
     private static IServiceScopeFactory? _scopeFactory;
-    private static Respawner _respawner;
     private static string _connString;
 
     private static string _dbPath = Path.GetTempPath() + "test_arbor.sqlite";
