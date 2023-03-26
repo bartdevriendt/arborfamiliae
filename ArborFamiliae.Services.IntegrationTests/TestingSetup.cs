@@ -1,10 +1,14 @@
-﻿using ArborFamiliae.Data;
+﻿using System.Globalization;
+using ArborFamiliae.Data;
 using ArborFamiliae.Data.Sqlite;
 using ArborFamiliae.Services.IntegrationTests.Fixtures;
+using ArborFamiliae.Services.Resources;
 using Bogus;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
+[assembly: SetCulture("en")]
 
 namespace ArborFamiliae.Services.IntegrationTests;
 
