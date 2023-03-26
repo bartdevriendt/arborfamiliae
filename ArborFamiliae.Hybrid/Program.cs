@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -20,7 +18,7 @@ namespace ArborFamiliae.Hybrid
         static void Main()
         {
             
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTMwNTI4OEAzMjMwMmUzNDJlMzBKSlRkazlnU2YxY2Yrek5iNUFMWWtBbnBOUVNFb3B1MXhHeEgvUzJoRVNrPQ==");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTQ3MzI4NEAzMjMxMmUzMTJlMzMzNU1wUnBEOGRENWFNb3grdFhyclhiWjV4bHlNUnFTdWVJbC9nZTk1WEdXRE09");
             
             #if DEBUG
             // redirect console output to parent process;

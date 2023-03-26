@@ -16,14 +16,15 @@
 <TwoRowLayout>
     <Row1>
         
-        <SfGrid @ref="_connectGrid" DataSource="_databases">
-            <GridSelectionSettings Type="SelectionType.Single"
+        <SfGrid @ref="_connectGrid" DataSource="_databases" AllowSelection="true">
+            <GridSelectionSettings PersistSelection="true"
+                                   Type="SelectionType.Single"
                                    Mode="SelectionMode.Row"></GridSelectionSettings>
-            <GridEvents TValue="FamilyTreeDatabase" OnRecordDoubleClick="ConnectionSelected"></GridEvents>
+            <GridEditSettings AllowAdding="false" AllowDeleting="false" AllowEditing="false"></GridEditSettings>
+            <GridEvents TValue="FamilyTreeDatabase" OnRecordDoubleClick="ConnectionSelected"
+                        OnRecordClick="RecordClickHandler" CommandClicked="OnCommandClicked" ></GridEvents>
             <GridColumns>
-                 <GridEvents CommandClicked="OnCommandClicked" TValue="FamilyTreeDatabase"></GridEvents>
-                            
-                <GridColumn Field="@nameof(FamilyTreeDatabase.Name)" HeaderText="@Loc["Name"]"></GridColumn>
+                <GridColumn Field="@nameof(FamilyTreeDatabase.Name)" IsPrimaryKey="true" HeaderText="@Loc["Name"]"></GridColumn>
                 <GridColumn Field="@nameof(FamilyTreeDatabase.DatabaseType)" HeaderText="@Loc["Type"]"></GridColumn>
                 <GridColumn HeaderText="">
                     <GridCommandColumns>
@@ -132,8 +133,14 @@
             Snackbar.Add(@Loc["Please select a family tree"], Severity.Error);
             return;
         }
-        
         FamilyTreeDatabase db = records[0];
+        
+        LoadDatabase(db);
+    }
+
+    private async Task LoadDatabase(FamilyTreeDatabase db)
+    {
+        
         if (db.DatabaseType == Provider.MySql.Name)
         {
             var builder = new MySqlConnector.MySqlConnectionStringBuilder();
@@ -144,8 +151,8 @@
 
             ConnectionStringService.ConnectionString = builder.ConnectionString;
             ConnectionStringService.Provider = db.DatabaseType;
-
         }
+
         if (db.DatabaseType == Provider.Sqlite.Name)
         {
             var builder = new SqliteConnectionStringBuilder();
@@ -154,15 +161,19 @@
             ConnectionStringService.ConnectionString = builder.ConnectionString;
             ConnectionStringService.Provider = Provider.Sqlite.Name;
         }
-        
-        NavigationManager.NavigateTo("/seed", forceLoad: true);   
+
+        NavigationManager.NavigateTo("/seed", forceLoad: true);
     }
 
-    private async Task ConnectionSelected()
+    private async Task ConnectionSelected(RecordDoubleClickEventArgs<FamilyTreeDatabase> args)
     {
-        await LoadDatabase();
+        await LoadDatabase(args.RowData);
     }
 
+    public void RecordClickHandler(RecordClickEventArgs<FamilyTreeDatabase> args)
+    {
+    }
+    
     private void OnAdd()
     {
         _databaseService.StoreDatabase(_addModel);
