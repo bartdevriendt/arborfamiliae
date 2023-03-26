@@ -16,7 +16,7 @@
   },
   {
     Value: CITY,
-    Description: Stad
+    Description: City
   },
   {
     Value: PARISH,
@@ -32,7 +32,7 @@
   },
   {
     Value: PROVINCE,
-    Description: Provincie
+    Description: Province
   },
   {
     Value: REGION,
@@ -84,6 +84,6 @@
   },
   {
     Value: UNKNOWN,
-    Description: Onbekend
+    Description: Unknown
   }
 ]
