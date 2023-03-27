@@ -9,5 +9,6 @@
   PreferredSurname: van Meissen,
   Gender: Guid_1,
   ArborId: I00001,
+  DisplayName: van Meissen, Albrecht II,
   Id: Guid_2
 }

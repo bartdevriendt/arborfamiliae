@@ -4,7 +4,9 @@
     ArborId: E00001,
     Description: ,
     Type: BIRTH,
+    Participant: van Meissen, Albrecht II,
     IsPrivate: false,
+    Role: CUSTOM,
     Category: Personal
   },
   {
@@ -12,7 +14,9 @@
     ArborId: E00002,
     Description: ,
     Type: DEATH,
+    Participant: van Meissen, Albrecht II,
     IsPrivate: false,
+    Role: CUSTOM,
     Category: Personal
   }
 ]

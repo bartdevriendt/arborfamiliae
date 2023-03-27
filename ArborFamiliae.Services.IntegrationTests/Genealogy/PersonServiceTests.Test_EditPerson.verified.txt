@@ -9,5 +9,6 @@
   PreferredSurname: TestSurname,
   Gender: Guid_1,
   ArborId: I00001,
+  DisplayName: TestSurname, TestGiven,
   Id: Guid_2
 }

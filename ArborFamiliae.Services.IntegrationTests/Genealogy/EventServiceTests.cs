@@ -14,7 +14,9 @@ public class EventServiceTests : TestBase
         var persons = await personService.GetAllPersons();
 
         // act
-        var events = await eventService.GetEventsForPerson(persons[0].Id);
+        var events = await eventService.GetEventsForPerson(
+            persons.First(p => p.ArborId == "I00001").Id
+        );
 
         // assert
         await Verify(events).ToTask();
