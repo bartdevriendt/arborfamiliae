@@ -3,27 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Data", "ArborFamiliae.Data\ArborFamiliae.Data.csproj", "{EACBC9B3-7228-42A4-892C-F68B36C635F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Data", "src\ArborFamiliae.Data\ArborFamiliae.Data.csproj", "{EACBC9B3-7228-42A4-892C-F68B36C635F4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Data.Mysql", "ArborFamiliae.Data.Mysql\ArborFamiliae.Data.Mysql.csproj", "{36404B37-152F-4ED1-99E5-3F3B846426B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Data.Mysql", "src\ArborFamiliae.Data.Mysql\ArborFamiliae.Data.Mysql.csproj", "{36404B37-152F-4ED1-99E5-3F3B846426B7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Web", "ArborFamiliae.Web\ArborFamiliae.Web.csproj", "{855452DB-E749-4F6E-BB84-5D89DBC01072}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Web", "src\ArborFamiliae.Web\ArborFamiliae.Web.csproj", "{855452DB-E749-4F6E-BB84-5D89DBC01072}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Services", "ArborFamiliae.Services\ArborFamiliae.Services.csproj", "{5662A3D8-FF57-457A-A6EC-897ACE2C8E69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Services", "src\ArborFamiliae.Services\ArborFamiliae.Services.csproj", "{5662A3D8-FF57-457A-A6EC-897ACE2C8E69}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Domain", "ArborFamiliae.Domain\ArborFamiliae.Domain.csproj", "{74FA1723-E319-499C-B7B9-B107CC74014A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Domain", "src\ArborFamiliae.Domain\ArborFamiliae.Domain.csproj", "{74FA1723-E319-499C-B7B9-B107CC74014A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Shared", "ArborFamiliae.Shared\ArborFamiliae.Shared.csproj", "{C6DCB437-D707-41CE-8C84-EBDC026824DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Shared", "src\ArborFamiliae.Shared\ArborFamiliae.Shared.csproj", "{C6DCB437-D707-41CE-8C84-EBDC026824DF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{27ACFA5A-EAF9-46DD-8A7F-F9382A2AFCEC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6E1D143E-EF8C-4993-891F-C35CC16DBBBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Hybrid", "ArborFamiliae.Hybrid\ArborFamiliae.Hybrid.csproj", "{AFF531E0-986B-472D-B5D2-10DB4FE97DEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Hybrid", "src\ArborFamiliae.Hybrid\ArborFamiliae.Hybrid.csproj", "{AFF531E0-986B-472D-B5D2-10DB4FE97DEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Services.IntegrationTests", "ArborFamiliae.Services.IntegrationTests\ArborFamiliae.Services.IntegrationTests.csproj", "{C3C8A428-C45E-4736-86F4-47F8E24E4794}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Services.IntegrationTests", "test\ArborFamiliae.Services.IntegrationTests\ArborFamiliae.Services.IntegrationTests.csproj", "{C3C8A428-C45E-4736-86F4-47F8E24E4794}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Data.Sqlite", "ArborFamiliae.Data.Sqlite\ArborFamiliae.Data.Sqlite.csproj", "{0DF83054-BF1C-4670-A933-08364894085E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Data.Sqlite", "src\ArborFamiliae.Data.Sqlite\ArborFamiliae.Data.Sqlite.csproj", "{0DF83054-BF1C-4670-A933-08364894085E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
