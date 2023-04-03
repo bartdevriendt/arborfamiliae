@@ -19,7 +19,7 @@
     <PackageReference Include="Syncfusion.Blazor.Grid" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Blazor.Inputs" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Blazor.Navigations" Version="21.1.35" />
-    <PackageReference Include="Syncfusion.Blazor.Popups" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.Blazor.Popups" Version="21.1.37" />
     <PackageReference Include="Syncfusion.Blazor.Spinner" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Blazor.Themes" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Blazor.TreeGrid" Version="21.1.35" />
