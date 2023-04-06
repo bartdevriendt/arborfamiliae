@@ -19,5 +19,8 @@ public class FamilyAddEditModel : BaseDomainModel
     public string ArborId { get; set; }
 
     public List<FamilyChildAddEditModel> Children { get; set; } = new();
+    public List<FamilyChildAddEditModel> DeletedChildren { get; set; } = new();
     public List<EventAddEditModel> Events { get; set; } = new();
+
+    public List<EventAddEditModel> DeletedEvents { get; set; } = new();
 }

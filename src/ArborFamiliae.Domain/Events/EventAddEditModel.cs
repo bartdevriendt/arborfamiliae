@@ -5,6 +5,8 @@ namespace ArborFamiliae.Domain.Events;
 
 public class EventAddEditModel : BaseDomainModel
 {
+    public EventListType ListType { get; set; }
+    
     public string Category { get; set; }
     public EventRole Role { get; set; }
     public string RoleDescription { get; set; }

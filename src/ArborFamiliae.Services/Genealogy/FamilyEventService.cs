@@ -5,7 +5,6 @@ using ArborFamiliae.Services.Common;
 using ArborFamiliae.Services.Resources;
 using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Localization;
 
 namespace ArborFamiliae.Services.Genealogy;
@@ -47,6 +46,8 @@ public class FamilyEventService : ITransient
             model.RoleDescription = _stringLocalizer[((EventRole)familyEvent.EventRole).ToString()];
             model.PlaceId = arborEvent.PlaceId;
             model.PlaceName = arborEvent.Place?.Name;
+            model.ListType = EventListType.Family;
+            
             if (arborEvent.EventDate != null)
             {
                 model.Date = _dateParserService.ParseDate(arborEvent.EventDate.Text);    
@@ -63,8 +64,11 @@ public class FamilyEventService : ITransient
 
             foreach (var m in fatherEvents)
             {
-                m.Category = "Father";
-                result.Add(m);
+                if (m.ListType == EventListType.Person)
+                {
+                    m.Category = "Father";
+                    result.Add(m);    
+                }
             }
         }
         
@@ -74,8 +78,11 @@ public class FamilyEventService : ITransient
 
             foreach (var m in motherEvents)
             {
-                m.Category = "Mother";
-                result.Add(m);
+                if (m.ListType == EventListType.Person)
+                {
+                    m.Category = "Mother";
+                    result.Add(m);    
+                }
             }
         }
 

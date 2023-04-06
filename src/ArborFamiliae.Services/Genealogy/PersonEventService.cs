@@ -55,6 +55,7 @@ public class PersonEventService : ITransient
             model.RoleDescription = _stringLocalizer[((EventRole)personEvent.EventRole).ToString()];
             model.PlaceId = arborEvent.PlaceId;
             model.PlaceName = arborEvent.Place?.Name;
+            model.ListType = EventListType.Person;
             if (arborEvent.EventDate != null)
             {
                 model.Date = _dateParserService.ParseDate(arborEvent.EventDate.Text);    
@@ -82,10 +83,12 @@ public class PersonEventService : ITransient
                 model.RoleDescription = _stringLocalizer[((EventRole)familyEvent.EventRole).ToString()];
                 model.PlaceId = arborEvent.PlaceId;
                 model.PlaceName = arborEvent.Place?.Name;
+                model.ListType = EventListType.Family;
                 if (arborEvent.EventDate != null)
                 {
                     model.Date = _dateParserService.ParseDate(arborEvent.EventDate.Text);    
                 }
+                model.DateText = arborEvent.EventDate?.Text;
                 model.Participants = family.Father?.DisplayName + " and " + family.Mother?.DisplayName;
                 result.Add(model);
             } 
@@ -139,6 +142,7 @@ public class PersonEventService : ITransient
             );
         }
         arborEvent.EventType = (int)model.Type;
+        
         arborEvent.Description = model.Description;
         arborEvent.ArborId = model.ArborId;
         arborEvent.PlaceId = model.PlaceId;

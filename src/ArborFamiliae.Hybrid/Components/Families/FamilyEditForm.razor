@@ -73,32 +73,7 @@
                                 <TabHeader Text="@Loc["Events"]"></TabHeader>
                             </ChildContent>
                             <ContentTemplate>
-                                 <TwoRowLayout>
-                                    <Row1>
-                                        <SfToolbar>
-                                            <ToolbarItems>
-                                                <ToolbarItem Text="@Loc["Add"]" PrefixIcon="bi bi-hand-index-thumb" OnClick="OnEventLink"></ToolbarItem>
-                                            </ToolbarItems>
-                                        </SfToolbar>
-                                    </Row1>
-                                    <Row2>
-                                        <SfGrid @ref="_eventGrid" DataSource="@Model.Events" AllowGrouping="true">
-                                            <GridSelectionSettings Mode="SelectionMode.Row" Type="SelectionType.Single"></GridSelectionSettings>
-                                            <GridGroupSettings Columns="@_groupColumns"></GridGroupSettings>
-                                            <GridColumns>
-                                                <GridColumn Field="Category" HeaderText="@Loc["Category"]" AllowGrouping="true"></GridColumn>
-                                                <GridColumn Field="TypeDescription" HeaderText="@Loc["Type"]"></GridColumn>
-                                                <GridColumn Field="Description" HeaderText="@Loc["Description"]"></GridColumn>
-                                                <GridColumn Field="DateText" HeaderText="@Loc["Date"]"></GridColumn>
-                                                <GridColumn Field="PlaceName" HeaderText="@Loc["Place"]"></GridColumn>
-                                                <GridColumn Field="Participant" HeaderText="@Loc["Main Participants"]"></GridColumn>
-                                                <GridColumn Field="RoleDescription" HeaderText="@Loc["Role"]"></GridColumn>
-                                                <GridColumn Field="ArborId" HeaderText="@Loc["ID"]"></GridColumn>
-                                                <GridColumn Field="Age" HeaderText="@Loc["Age"]"></GridColumn>
-                                            </GridColumns>
-                                        </SfGrid>
-                                    </Row2>
-                                </TwoRowLayout>
+                                <NestedEventList @bind-Events="@Model.Events" EventMode="NestedEventList.EventListMode.Family" EventDeleted="OnEventDeleted"></NestedEventList>
                             </ContentTemplate>
                         </TabItem>
                     </TabItems>
@@ -132,11 +107,6 @@
 @code {
 
     SfGrid<FamilyChildAddEditModel> _childGrid;
-    SfGrid<EventAddEditModel> _eventGrid;
-
-    
-    
-    private string[] _groupColumns = new[] { "Category" };
     
     [Parameter]
     public FamilyAddEditModel Model { get; set; }
@@ -210,6 +180,12 @@
         _isPopupVisible = false;
         _childGrid.Refresh();
 
+    }
+
+    private async Task OnEventDeleted(EventAddEditModel model)
+    {
+        Model.DeletedEvents.Add(model);
+        Model.Events.Remove(model);
     }
 
 }
