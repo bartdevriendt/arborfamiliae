@@ -2,7 +2,7 @@
 @using ArborFamiliae.Domain.Enums
 @using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
 @using SelectionType = Syncfusion.Blazor.Grids.SelectionType
-@inject EventService _eventService
+@inject PersonEventService PersonEventService
 
 
 <TwoRowLayout>
@@ -46,7 +46,7 @@
     [Parameter]
     public Guid PersonId { get; set; }
 
-    private List<EventListModel> _events = new();
+    private List<EventAddEditModel> _events = new();
     private EventAddEditModel _addEditModel = new();
 
     private string[] _groupColumns = new[] { "Category" };
@@ -62,7 +62,7 @@
 
     private async Task LoadEvents()
     {
-        _events = await _eventService.GetEventsForPerson(PersonId);
+        _events = await PersonEventService.GetEventsForPerson(PersonId);
     }
     
     private void AddNewEvent()
@@ -74,7 +74,7 @@
 
     private async Task OnEventSave()
     {
-        _addEditModel = await _eventService.AddEditEventForPerson(PersonId, _addEditModel);
+        _addEditModel = await PersonEventService.AddEditEventForPerson(PersonId, _addEditModel);
         PopupVisible = false;
         await LoadEvents();
         
@@ -84,7 +84,7 @@
     private async Task RowDoubleClick()
     {
 
-        _addEditModel = await _eventService.GetEventById(((EventListModel)SelectedEvent).Id);
+        _addEditModel = await PersonEventService.GetEventById(((EventListModel)SelectedEvent).Id);
         PopupVisible = true;
     }
 

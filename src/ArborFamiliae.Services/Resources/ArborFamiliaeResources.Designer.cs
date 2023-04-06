@@ -69,6 +69,15 @@ namespace ArborFamiliae.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Birth.
+        /// </summary>
+        public static string BIRTH {
+            get {
+                return ResourceManager.GetString("BIRTH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City.
         /// </summary>
         public static string CITY {

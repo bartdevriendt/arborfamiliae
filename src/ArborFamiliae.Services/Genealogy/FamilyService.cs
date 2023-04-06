@@ -8,10 +8,11 @@ namespace ArborFamiliae.Services.Genealogy;
 public class FamilyService : ITransient
 {
     private IRepository<Family> _familyRepository;
-
-    public FamilyService(IRepository<Family> familyRepository)
+    private FamilyEventService _familyEventService;
+    public FamilyService(IRepository<Family> familyRepository, FamilyEventService familyEventService)
     {
         _familyRepository = familyRepository;
+        _familyEventService = familyEventService;
     }
 
     public async Task<List<FamilyListModel>> LoadAllFamilies()
@@ -83,6 +84,8 @@ public class FamilyService : ITransient
 
             model.Children.Add(fcm);
         }
+
+        model.Events = await _familyEventService.GetEventsForFamily(familyId);
 
         return model;
     }

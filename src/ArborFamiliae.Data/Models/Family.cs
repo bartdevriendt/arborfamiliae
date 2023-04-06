@@ -12,6 +12,7 @@ public class Family : BaseModel, IAggregateRoot, IHasSequence
     public bool IsPrivate { get; set; }
 
     public virtual List<FamilyChild> Children { get; set; } = new();
+    public virtual List<FamilyEvent> Events { get; set; } = new();
     public string SequenceType => "Family";
 
     public void SetSequence(int sequence)

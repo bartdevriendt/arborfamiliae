@@ -9,51 +9,88 @@ using Microsoft.Extensions.Localization;
 
 namespace ArborFamiliae.Services.Genealogy;
 
-public class EventService : ITransient
+public class PersonEventService : ITransient
 {
     private IRepository<ArborEvent> _eventRepository;
     private IStringLocalizer<ArborFamiliaeResources> _stringLocalizer;
     private IReadRepository<Person> _personRepository;
-
-    public EventService(
+    private IReadRepository<Family> _familyRepository;
+    private DateParserService _dateParserService;
+    
+    public PersonEventService(
         IRepository<ArborEvent> eventRepository,
         IStringLocalizer<ArborFamiliaeResources> stringLocalizer,
-        IReadRepository<Person> personRepository
-    )
+        IReadRepository<Person> personRepository, IReadRepository<Family> familyRepository, DateParserService dateParserService)
     {
         _eventRepository = eventRepository;
         _stringLocalizer = stringLocalizer;
         _personRepository = personRepository;
+        _familyRepository = familyRepository;
+        _dateParserService = dateParserService;
     }
 
-    public async Task<List<EventListModel>> GetEventsForPerson(Guid personId)
+    public async Task<List<EventAddEditModel>> GetEventsForPerson(Guid personId)
     {
         var personEvents = await _personRepository.FirstOrDefaultAsync(
             new PersonEventListSpecification(personId)
         );
 
-        //var person = await _personService.GetPersonById(personId);
-
-        var result = new List<EventListModel>();
+        var familiesWithEvents = await _familyRepository.ListAsync(
+            new PersonFamilyEventListSpecification(personId));
+        
+        var result = new List<EventAddEditModel>();
 
         foreach (var personEvent in personEvents.Events)
         {
             ArborEvent arborEvent = personEvent.Event;
 
-            EventListModel model = new EventListModel();
+            EventAddEditModel model = new EventAddEditModel();
             model.Id = arborEvent.Id;
             model.ArborId = arborEvent.ArborId;
             model.Category = "Personal";
             model.Description = arborEvent.Description;
-            model.Type = _stringLocalizer[((EventType)arborEvent.EventType).ToString()];
-            model.Role = _stringLocalizer[((EventRole)personEvent.EventRole).ToString()];
-
-            model.Place = arborEvent.Place?.Name;
-            model.Date = arborEvent.EventDate?.Text;
-            model.Participant = personEvents.DisplayName;
+            model.Type = (EventType)arborEvent.EventType;
+            model.TypeDescription = _stringLocalizer[((EventType)arborEvent.EventType).ToString()];
+            model.Role = (EventRole)personEvent.EventRole;
+            model.RoleDescription = _stringLocalizer[((EventRole)personEvent.EventRole).ToString()];
+            model.PlaceId = arborEvent.PlaceId;
+            model.PlaceName = arborEvent.Place?.Name;
+            if (arborEvent.EventDate != null)
+            {
+                model.Date = _dateParserService.ParseDate(arborEvent.EventDate.Text);    
+            }
+            model.DateText = arborEvent.EventDate?.Text;
+            model.Participants = personEvents.DisplayName;
             result.Add(model);
         }
 
+        foreach (var family in familiesWithEvents)
+        {
+            foreach (var familyEvent in family.Events)
+            {
+                
+                ArborEvent arborEvent = familyEvent.Event;
+                
+                EventAddEditModel model = new EventAddEditModel();
+                model.Id = arborEvent.Id;
+                model.ArborId = arborEvent.ArborId;
+                model.Category = "Family";
+                model.Description = arborEvent.Description;
+                model.Type = (EventType)arborEvent.EventType;
+                model.TypeDescription = _stringLocalizer[((EventType)arborEvent.EventType).ToString()];
+                model.Role = (EventRole)familyEvent.EventRole;
+                model.RoleDescription = _stringLocalizer[((EventRole)familyEvent.EventRole).ToString()];
+                model.PlaceId = arborEvent.PlaceId;
+                model.PlaceName = arborEvent.Place?.Name;
+                if (arborEvent.EventDate != null)
+                {
+                    model.Date = _dateParserService.ParseDate(arborEvent.EventDate.Text);    
+                }
+                model.Participants = family.Father?.DisplayName + " and " + family.Mother?.DisplayName;
+                result.Add(model);
+            } 
+        }
+        
         return result.OrderBy(x => x.ArborId).ToList();
     }
 

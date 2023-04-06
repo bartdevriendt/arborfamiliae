@@ -1,6 +1,9 @@
 ﻿@using ArborFamiliae.Domain.Family
 @using ArborFamiliae.Domain.Enums
+@using ArborFamiliae.Domain.Events
 @using ArborFamiliae.Domain.Person
+@using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
+@using SelectionType = Syncfusion.Blazor.Grids.SelectionType
 
 <EditForm Model="@Model" Context="edit_context">
     <TwoRowLayout>
@@ -65,6 +68,39 @@
                                 </TwoRowLayout>
                             </ContentTemplate>
                         </TabItem>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="@Loc["Events"]"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                 <TwoRowLayout>
+                                    <Row1>
+                                        <SfToolbar>
+                                            <ToolbarItems>
+                                                <ToolbarItem Text="@Loc["Add"]" PrefixIcon="bi bi-hand-index-thumb" OnClick="OnEventLink"></ToolbarItem>
+                                            </ToolbarItems>
+                                        </SfToolbar>
+                                    </Row1>
+                                    <Row2>
+                                        <SfGrid @ref="_eventGrid" DataSource="@Model.Events" AllowGrouping="true">
+                                            <GridSelectionSettings Mode="SelectionMode.Row" Type="SelectionType.Single"></GridSelectionSettings>
+                                            <GridGroupSettings Columns="@_groupColumns"></GridGroupSettings>
+                                            <GridColumns>
+                                                <GridColumn Field="Category" HeaderText="@Loc["Category"]" AllowGrouping="true"></GridColumn>
+                                                <GridColumn Field="TypeDescription" HeaderText="@Loc["Type"]"></GridColumn>
+                                                <GridColumn Field="Description" HeaderText="@Loc["Description"]"></GridColumn>
+                                                <GridColumn Field="DateText" HeaderText="@Loc["Date"]"></GridColumn>
+                                                <GridColumn Field="PlaceName" HeaderText="@Loc["Place"]"></GridColumn>
+                                                <GridColumn Field="Participant" HeaderText="@Loc["Main Participants"]"></GridColumn>
+                                                <GridColumn Field="RoleDescription" HeaderText="@Loc["Role"]"></GridColumn>
+                                                <GridColumn Field="ArborId" HeaderText="@Loc["ID"]"></GridColumn>
+                                                <GridColumn Field="Age" HeaderText="@Loc["Age"]"></GridColumn>
+                                            </GridColumns>
+                                        </SfGrid>
+                                    </Row2>
+                                </TwoRowLayout>
+                            </ContentTemplate>
+                        </TabItem>
                     </TabItems>
                 </SfTab>
                 
@@ -96,7 +132,12 @@
 @code {
 
     SfGrid<FamilyChildAddEditModel> _childGrid;
+    SfGrid<EventAddEditModel> _eventGrid;
 
+    
+    
+    private string[] _groupColumns = new[] { "Category" };
+    
     [Parameter]
     public FamilyAddEditModel Model { get; set; }
     
@@ -141,6 +182,15 @@
         _childModel.Order = Model.Children.Count + 1;
 
         _isPopupVisible = true;
+    }
+    
+    private void OnEventLink()
+    {
+        // _childModel = new FamilyChildAddEditModel();
+        // _childModel.FamiliyId = Model.Id;
+        // _childModel.Order = Model.Children.Count + 1;
+        //
+        // _isPopupVisible = true;
     }
 
     private void PersonSelected(PersonListModel obj)
