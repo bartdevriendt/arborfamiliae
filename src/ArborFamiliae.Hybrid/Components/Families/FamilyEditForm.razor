@@ -1,6 +1,9 @@
 ﻿@using ArborFamiliae.Domain.Family
 @using ArborFamiliae.Domain.Enums
+@using ArborFamiliae.Domain.Events
 @using ArborFamiliae.Domain.Person
+@using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
+@using SelectionType = Syncfusion.Blazor.Grids.SelectionType
 
 <EditForm Model="@Model" Context="edit_context">
     <TwoRowLayout>
@@ -65,6 +68,14 @@
                                 </TwoRowLayout>
                             </ContentTemplate>
                         </TabItem>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="@Loc["Events"]"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <NestedEventList @bind-Events="@Model.Events" EventMode="NestedEventList.EventListMode.Family" EventDeleted="OnEventDeleted"></NestedEventList>
+                            </ContentTemplate>
+                        </TabItem>
                     </TabItems>
                 </SfTab>
                 
@@ -96,7 +107,7 @@
 @code {
 
     SfGrid<FamilyChildAddEditModel> _childGrid;
-
+    
     [Parameter]
     public FamilyAddEditModel Model { get; set; }
     
@@ -142,6 +153,15 @@
 
         _isPopupVisible = true;
     }
+    
+    private void OnEventLink()
+    {
+        // _childModel = new FamilyChildAddEditModel();
+        // _childModel.FamiliyId = Model.Id;
+        // _childModel.Order = Model.Children.Count + 1;
+        //
+        // _isPopupVisible = true;
+    }
 
     private void PersonSelected(PersonListModel obj)
     {
@@ -160,6 +180,12 @@
         _isPopupVisible = false;
         _childGrid.Refresh();
 
+    }
+
+    private async Task OnEventDeleted(EventAddEditModel model)
+    {
+        Model.DeletedEvents.Add(model);
+        Model.Events.Remove(model);
     }
 
 }

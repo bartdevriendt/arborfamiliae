@@ -14,6 +14,7 @@ public class ArborEvent : BaseModel, IAggregateRoot, IHasSequence
     public string SequenceType => "Event";
 
     public virtual List<PersonEvent> PersonEvents { get; set; } = new();
+    public virtual List<FamilyEvent> FamilyEvents { get; set; } = new();
 
     public void SetSequence(int sequence)
     {

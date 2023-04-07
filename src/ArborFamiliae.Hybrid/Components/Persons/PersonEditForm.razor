@@ -1,5 +1,6 @@
 ﻿@using ArborFamiliae.Domain.Person
 @using ArborFamiliae.Hybrid.Components.Events
+@using ArborFamiliae.Domain.Events
 @inject GenderService GenderService
 
 
@@ -38,7 +39,7 @@
                                     <TabHeader Text="@Loc["Events"]"></TabHeader>
                                 </ChildContent>
                                 <ContentTemplate>
-                                    <NestedEventList PersonId="Model.Id"></NestedEventList>    
+                                    <NestedEventList @bind-Events="Model.Events" EventMode="NestedEventList.EventListMode.Person" EventDeleted="OnEventDeleted"></NestedEventList>    
                                 </ContentTemplate>
                             </TabItem>
                         </TabItems>
@@ -80,4 +81,9 @@
         await PersonSave.InvokeAsync();
     }
 
+    private async Task OnEventDeleted(EventAddEditModel model)
+    {
+        Model.DeletedEvents.Add(model);
+        Model.Events.Remove(model);
+    }
 }

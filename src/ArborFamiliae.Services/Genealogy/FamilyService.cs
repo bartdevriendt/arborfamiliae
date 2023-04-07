@@ -1,17 +1,24 @@
 ﻿using ArborFamiliae.Data.Models;
+using ArborFamiliae.Domain.Enums;
+using ArborFamiliae.Domain.Events;
 using ArborFamiliae.Domain.Family;
 using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
+
 
 namespace ArborFamiliae.Services.Genealogy;
 
 public class FamilyService : ITransient
 {
     private IRepository<Family> _familyRepository;
-
-    public FamilyService(IRepository<Family> familyRepository)
+    private FamilyEventService _familyEventService;
+    private IRepository<ArborEvent> _arborEventRepository;
+        
+    public FamilyService(IRepository<Family> familyRepository, FamilyEventService familyEventService, IRepository<ArborEvent> arborEventRepository)
     {
         _familyRepository = familyRepository;
+        _familyEventService = familyEventService;
+        _arborEventRepository = arborEventRepository;
     }
 
     public async Task<List<FamilyListModel>> LoadAllFamilies()
@@ -84,6 +91,8 @@ public class FamilyService : ITransient
             model.Children.Add(fcm);
         }
 
+        model.Events = await _familyEventService.GetEventsForFamily(familyId);
+
         return model;
     }
 
@@ -134,8 +143,85 @@ public class FamilyService : ITransient
             }
         }
 
+        foreach (var familyEvent in model.Events)
+        {
+
+            if (familyEvent.ListType != EventListType.Family) continue;
+            
+            var arborEvent = new ArborEvent();
+            if (familyEvent.Id == Guid.Empty)
+            {
+                arborEvent.Id = Guid.NewGuid();
+                FamilyEvent fe = new FamilyEvent();
+                fe.Id = Guid.NewGuid();
+                fe.Family = f;
+                fe.Event = arborEvent;
+                fe.EventRole = (int)familyEvent.Role;
+                f.Events.Add(fe);
+                familyEvent.Id = arborEvent.Id;
+                
+            }
+            else 
+            {
+                arborEvent = f.Events.FirstOrDefault(x => x.EventId == familyEvent.Id)?.Event ?? throw new Exception("Event not found");
+            }
+            arborEvent.Description = familyEvent.Description;
+            arborEvent.EventDate = ToArborDate(familyEvent.Date);
+            arborEvent.EventType = (int)familyEvent.Type;
+            arborEvent.PlaceId = familyEvent.PlaceId;
+            
+        }
+
+        
+
         await _familyRepository.UpdateAsync(f);
 
+        List<ArborEvent> deleteArborEvent = new();
+        
+
+        foreach (var deletedEvent in model.DeletedEvents)
+        {
+            if (deletedEvent.ListType != EventListType.Family) continue;
+            
+            var familyEvent = f.Events.FirstOrDefault(x => x.EventId == deletedEvent.Id) ?? throw new Exception("Event not found");
+            deleteArborEvent.Add(await _arborEventRepository.GetByIdAsync(familyEvent.Event.Id));
+            
+            f.Events.Remove(familyEvent);
+            
+            
+        }
+        
+        
+        await _familyRepository.UpdateAsync(f);
+
+        if (deleteArborEvent.Count > 0)
+        {
+            await _arborEventRepository.DeleteRangeAsync(deleteArborEvent);    
+        }
+        
+        
+        
         return model;
+    }
+    
+    private ArborDate ToArborDate(ArborDateModel arborDateModel)
+    {
+        return new ArborDate
+        {
+            Text = arborDateModel.Text,
+            Calendar = (int)arborDateModel.Calendar,
+            Day = arborDateModel.Day,
+            Day2 = arborDateModel.Day2,
+            Modifier = (int)arborDateModel.Modifier,
+            Month = arborDateModel.Month,
+            Month2 = arborDateModel.Month2,
+            Year = arborDateModel.Year,
+            Year2 = arborDateModel.Year2,
+            NewYear = (int)arborDateModel.NewYear,
+            Quality = (int)arborDateModel.Quality,
+            SlashDate1 = arborDateModel.SlashDate1,
+            SortValue = arborDateModel.SortValue,
+            SlashDate2 = arborDateModel.SlashDate2
+        };
     }
 }
