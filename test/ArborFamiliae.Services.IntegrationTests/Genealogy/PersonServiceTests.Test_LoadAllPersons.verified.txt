@@ -4,6 +4,8 @@
     Surname: van Meissen,
     FirstName: Albrecht II,
     Gender: Male,
+    BirthDate: 1240,
+    DeathDate: 1314-11-20,
     FullName: van Meissen, Albrecht II,
     Id: Guid_1
   },

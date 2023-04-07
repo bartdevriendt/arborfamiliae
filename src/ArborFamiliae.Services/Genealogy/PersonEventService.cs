@@ -56,7 +56,7 @@ public class PersonEventService : ITransient
             model.PlaceId = arborEvent.PlaceId;
             model.PlaceName = arborEvent.Place?.Name;
             model.ListType = EventListType.Person;
-            if (arborEvent.EventDate != null)
+            if (arborEvent.EventDate != null && arborEvent.EventDate.Text != null)
             {
                 model.Date = _dateParserService.ParseDate(arborEvent.EventDate.Text);    
             }
