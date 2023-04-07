@@ -62,11 +62,14 @@ public class PlaceService : IPlaceService
             ParentPlaceName = place.EnclosedBy?.Name
         };
     }
-    
+
     public async Task<PlaceAddEditModel?> GetPlaceByArborId(string arborId)
     {
-        var place = await _placeReadRepository.FirstOrDefaultAsync(new PlaceByArborIdSpecification(arborId));
-        if (place == null) return null;
+        var place = await _placeReadRepository.FirstOrDefaultAsync(
+            new PlaceByArborIdSpecification(arborId)
+        );
+        if (place == null)
+            return null;
         return new PlaceAddEditModel
         {
             Id = place.Id,
@@ -113,6 +116,7 @@ public class PlaceService : IPlaceService
         }
 
         model.Id = p.Id;
+        model.ArborId = p.ArborId;
         return model;
     }
 }

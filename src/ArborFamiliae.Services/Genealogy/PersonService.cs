@@ -197,7 +197,10 @@ namespace ArborFamiliae.Services.Genealogy
                     arborEvent = p.Events.FirstOrDefault(x => x.EventId == personEvent.Id)?.Event ?? throw new Exception("Event not found");
                 }
                 arborEvent.Description = personEvent.Description;
-                arborEvent.EventDate = ToArborDate(personEvent.Date);
+                if (personEvent.Date != null)
+                {
+                    arborEvent.EventDate = ToArborDate(personEvent.Date);    
+                }
                 arborEvent.EventType = (int)personEvent.Type;
                 arborEvent.PlaceId = personEvent.PlaceId;
             

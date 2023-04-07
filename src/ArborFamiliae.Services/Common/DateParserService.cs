@@ -54,9 +54,16 @@ public class DateParserService : IDateParserService
         }
         else
         {
-            int year = Convert.ToInt32(text);
-            qual = DateQuality.QUAL_ESTIMATED;
-            result.Year = year;
+            if (!String.IsNullOrEmpty(text))
+            {
+                int year = Convert.ToInt32(text);
+                qual = DateQuality.QUAL_ESTIMATED;
+                result.Year = year;
+            }
+            else
+            {
+                Console.WriteLine("Unknown date: {text}");
+            }
         }
 
         return result;
