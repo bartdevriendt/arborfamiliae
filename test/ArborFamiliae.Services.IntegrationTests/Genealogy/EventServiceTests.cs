@@ -1,4 +1,4 @@
-﻿using ArborFamiliae.Services.Genealogy;
+﻿using ArborFamiliae.Shared.Services;
 
 namespace ArborFamiliae.Services.IntegrationTests.Genealogy;
 
@@ -8,8 +8,8 @@ public class EventServiceTests : TestBase
     public async Task Test_LoadAllEventsForPerson()
     {
         // arrange
-        var eventService = GetService<PersonEventService>();
-        var personService = GetService<PersonService>();
+        var eventService = GetService<IPersonEventService>();
+        var personService = GetService<IPersonService>();
 
         var persons = await personService.GetAllPersons();
 

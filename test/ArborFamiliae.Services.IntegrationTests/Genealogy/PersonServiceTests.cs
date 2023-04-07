@@ -1,5 +1,6 @@
 ﻿using ArborFamiliae.Domain.Person;
 using ArborFamiliae.Services.Genealogy;
+using ArborFamiliae.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArborFamiliae.Services.IntegrationTests.Genealogy;
@@ -10,7 +11,7 @@ public class PersonServiceTests : TestBase
     public async Task Test_LoadAllPersons()
     {
         // arrange
-        var personService = GetService<PersonService>();
+        var personService = GetService<IPersonService>();
         // act
         var persons = await personService.GetAllPersons();
 
@@ -24,7 +25,7 @@ public class PersonServiceTests : TestBase
         // arrange
         var dbContext = GetDbContext();
         var personOrig = await dbContext.Persons.OrderBy(x => x.ArborId).FirstOrDefaultAsync();
-        var personService = GetService<PersonService>();
+        var personService = GetService<IPersonService>();
 
         // act
         var person = await personService.GetPersonById(personOrig.Id);
@@ -40,7 +41,7 @@ public class PersonServiceTests : TestBase
         // arrange
         var dbContext = GetDbContext();
         var personOrig = await dbContext.Persons.OrderBy(x => x.ArborId).FirstOrDefaultAsync();
-        var personService = GetService<PersonService>();
+        var personService = GetService<IPersonService>();
 
         // act
         var person = await personService.GetPersonByArborId(personOrig.ArborId);
@@ -63,7 +64,7 @@ public class PersonServiceTests : TestBase
         model.PreferredNick = "TestNick";
         model.PreferredTitle = "TestTitle";
         model.PreferredSurnamePrefix = "TestSurnamePrefix";
-        var personService = GetService<PersonService>();
+        var personService = GetService<IPersonService>();
         // act
         var added = await personService.AddEditPerson(model);
         var person = await personService.GetPersonById(added.Id);
@@ -77,7 +78,7 @@ public class PersonServiceTests : TestBase
         // arrange
         var dbContext = GetDbContext();
         var personOrig = await dbContext.Persons.OrderBy(x => x.ArborId).FirstOrDefaultAsync();
-        var personService = GetService<PersonService>();
+        var personService = GetService<IPersonService>();
         var model = await personService.GetPersonById(personOrig.Id);
         model.PreferredCall = "TestCall";
         model.PreferredSurname = "TestSurname";
