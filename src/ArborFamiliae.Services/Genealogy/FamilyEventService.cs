@@ -5,20 +5,21 @@ using ArborFamiliae.Services.Common;
 using ArborFamiliae.Services.Resources;
 using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
+using ArborFamiliae.Shared.Services;
 using Microsoft.Extensions.Localization;
 
 namespace ArborFamiliae.Services.Genealogy;
 
-public class FamilyEventService : ITransient
+public class FamilyEventService : IFamilyEventService
 {
     
     
     private IReadRepository<Family> _familyRepository;
     private IStringLocalizer<ArborFamiliaeResources> _stringLocalizer;
-    private PersonEventService _personEventService;
-    private DateParserService _dateParserService;
+    private IPersonEventService _personEventService;
+    private IDateParserService _dateParserService;
 
-    public FamilyEventService(IReadRepository<Family> familyRepository, IStringLocalizer<ArborFamiliaeResources> stringLocalizer, PersonEventService personEventService, DateParserService dateParserService)
+    public FamilyEventService(IReadRepository<Family> familyRepository, IStringLocalizer<ArborFamiliaeResources> stringLocalizer, IPersonEventService personEventService, IDateParserService dateParserService)
     {
         _familyRepository = familyRepository;
         _stringLocalizer = stringLocalizer;

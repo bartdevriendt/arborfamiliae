@@ -3,11 +3,12 @@ using System.Reflection;
 using ArborFamiliae.Domain.Enums;
 using ArborFamiliae.Services.Resources;
 using ArborFamiliae.Shared.Interfaces;
+using ArborFamiliae.Shared.Services;
 using Microsoft.Extensions.Localization;
 
 namespace ArborFamiliae.Services.Common;
 
-public class EnumService : IScoped
+public class EnumService : IEnumService
 {
     private IStringLocalizer<ArborFamiliaeResources> _stringLocalizer;
 

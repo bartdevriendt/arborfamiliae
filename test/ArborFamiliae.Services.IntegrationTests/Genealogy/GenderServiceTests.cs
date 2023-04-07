@@ -1,4 +1,4 @@
-﻿using ArborFamiliae.Services.Genealogy;
+﻿using ArborFamiliae.Shared.Services;
 
 namespace ArborFamiliae.Services.IntegrationTests.Genealogy;
 
@@ -8,7 +8,7 @@ public class GenderServiceTests : TestBase
     public async Task Test_LoadAllGenders()
     {
         // arrange
-        var genderService = GetService<GenderService>();
+        var genderService = GetService<IGenderService>();
 
         // act
         var genders = await genderService.GetGenders();

@@ -1,7 +1,8 @@
 ﻿@page "/family/add"
 @inherits BasePageComponent
 @using ArborFamiliae.Domain.Family
-@inject FamilyService FamilyService
+@inject IFamilyService FamilyService
+
 <h3>@Loc["Add Family"]</h3>
 
 <FamilyEditForm Model="_model" FamilySave="FamilySave">

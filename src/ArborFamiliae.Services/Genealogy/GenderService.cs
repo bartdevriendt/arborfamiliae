@@ -2,11 +2,12 @@
 using ArborFamiliae.Data.Models;
 using ArborFamiliae.Domain.Person;
 using ArborFamiliae.Shared.Interfaces;
+using ArborFamiliae.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArborFamiliae.Services.Genealogy;
 
-public class GenderService : ITransient
+public class GenderService : IGenderService
 {
     private ArborFamiliaeContext context;
 
