@@ -102,6 +102,32 @@ namespace ArborFamiliae.Services.Genealogy
 
             return result;
         }
+        
+        public async Task<PersonAddEditModel?> GetPersonByArborId(string arborId)
+        {
+            var p = await _personReadRepository.FirstOrDefaultAsync(new PersonByArborIdSpecification(arborId));
+            if (p == null) return null;
+            
+            PersonAddEditModel result = new()
+            {
+                Id = p.Id,
+                Gender = p.GenderId,
+                PreferredTitle = p.PrimaryName.Title,
+                PreferredNick = p.PrimaryName.Nickname,
+                PreferredSuffix = p.PrimaryName.Suffix,
+                PreferredSurname = p.PrimaryName.PrimarySurname.SurnameValue,
+                PreferredCall = p.PrimaryName.Call,
+                PreferredNameType = (NameType)p.PrimaryName.NameType,
+                PreferredSurnamePrefix = p.PrimaryName.PrimarySurname.Prefix,
+                PreferredGivenName = p.PrimaryName.FirstName,
+                ArborId = p.ArborId
+            };
+
+            result.Events = await _personEventService.GetEventsForPerson(result.Id); 
+
+            return result;
+        }
+
 
         public async Task<PersonAddEditModel> AddEditPerson(PersonAddEditModel model)
         {

@@ -95,6 +95,62 @@ public class FamilyService : ITransient
 
         return model;
     }
+    
+    public async Task<FamilyAddEditModel?> GetFamilyByArborId(string arborId)
+    {
+        var family = await _familyRepository.FirstOrDefaultAsync(
+            new FamilyByArborIdSpecification(arborId)
+        );
+
+        if (family == null) return null;
+        
+        var model = new FamilyAddEditModel();
+
+        model.FatherId = family.FatherId;
+        model.MotherId = family.MotherId;
+        model.ArborId = family.ArborId;
+        if (family.Father != null)
+        {
+            model.FatherDisplayName =
+                family.Father?.DisplayName + " [" + family.Father?.ArborId + "]";
+            model.FatherBirthDate = family.Father?.BirthDate;
+            model.FatherDeathDate = family.Father?.DeathDate;
+        }
+
+        if (family.Mother != null)
+        {
+            model.MotherDisplayName =
+                family.Mother?.DisplayName + " [" + family.Mother?.ArborId + "]";
+            model.MotherBirthDate = family.Mother?.BirthDate;
+            model.MotherDeathDate = family.Mother?.DeathDate;
+        }
+        model.Id = family.Id;
+
+        int order = 1;
+        foreach (FamilyChild fc in family.Children)
+        {
+            FamilyChildAddEditModel fcm =
+                new()
+                {
+                    Id = fc.Id,
+                    Order = order++,
+                    Name = fc.Child.DisplayName,
+                    Gender = fc.Child.Gender.Description,
+                    BirthDate = fc.Child.BirthDate,
+                    PaternalRelation = "",
+                    MaternalRelation = "",
+                    PersonId = fc.ChildId,
+                    FamiliyId = fc.FamilyId,
+                    ArborId = fc.Child.ArborId
+                };
+
+            model.Children.Add(fcm);
+        }
+
+        model.Events = await _familyEventService.GetEventsForFamily(model.Id);
+
+        return model;
+    }
 
     public async Task<FamilyAddEditModel> AddEditFamily(FamilyAddEditModel model)
     {

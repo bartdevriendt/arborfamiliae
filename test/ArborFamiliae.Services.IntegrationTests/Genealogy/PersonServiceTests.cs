@@ -32,6 +32,22 @@ public class PersonServiceTests : TestBase
         // assert
         await Verify(person).ToTask();
     }
+    
+    
+    [Test]
+    public async Task Test_LoadPersonByArborId()
+    {
+        // arrange
+        var dbContext = GetDbContext();
+        var personOrig = await dbContext.Persons.OrderBy(x => x.ArborId).FirstOrDefaultAsync();
+        var personService = GetService<PersonService>();
+
+        // act
+        var person = await personService.GetPersonByArborId(personOrig.ArborId);
+
+        // assert
+        await Verify(person).ToTask();
+    }
 
     [Test]
     public async Task Test_AddPerson()
