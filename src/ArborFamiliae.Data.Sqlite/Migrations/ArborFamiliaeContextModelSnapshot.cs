@@ -95,6 +95,29 @@ namespace ArborFamiliae.Data.Sqlite.Migrations
                     b.ToTable("FamilyChildren");
                 });
 
+            modelBuilder.Entity("ArborFamiliae.Data.Models.FamilyEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("EventRole")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("FamilyId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("FamilyId");
+
+                    b.ToTable("FamilyEvents");
+                });
+
             modelBuilder.Entity("ArborFamiliae.Data.Models.Gender", b =>
                 {
                     b.Property<Guid>("Id")
@@ -324,6 +347,25 @@ namespace ArborFamiliae.Data.Sqlite.Migrations
                     b.Navigation("Family");
                 });
 
+            modelBuilder.Entity("ArborFamiliae.Data.Models.FamilyEvent", b =>
+                {
+                    b.HasOne("ArborFamiliae.Data.Models.ArborEvent", "Event")
+                        .WithMany("FamilyEvents")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ArborFamiliae.Data.Models.Family", "Family")
+                        .WithMany("Events")
+                        .HasForeignKey("FamilyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Family");
+                });
+
             modelBuilder.Entity("ArborFamiliae.Data.Models.Name", b =>
                 {
                     b.HasOne("ArborFamiliae.Data.Models.Person", "Person")
@@ -387,12 +429,16 @@ namespace ArborFamiliae.Data.Sqlite.Migrations
 
             modelBuilder.Entity("ArborFamiliae.Data.Models.ArborEvent", b =>
                 {
+                    b.Navigation("FamilyEvents");
+
                     b.Navigation("PersonEvents");
                 });
 
             modelBuilder.Entity("ArborFamiliae.Data.Models.Family", b =>
                 {
                     b.Navigation("Children");
+
+                    b.Navigation("Events");
                 });
 
             modelBuilder.Entity("ArborFamiliae.Data.Models.Name", b =>

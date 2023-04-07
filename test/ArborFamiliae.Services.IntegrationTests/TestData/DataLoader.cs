@@ -56,6 +56,7 @@ public class DataLoader
             arborEvent.Place = null;
             arborEvent.IsPrivate = pe["private"].Value<bool>();
             arborEvent.EventDate = ConvertToDate(pe["date"]);
+            
             personEvent.Event = arborEvent;
 
             _context.PersonEvents.Add(personEvent);
@@ -148,7 +149,7 @@ public class DataLoader
             Year = token["year"].Value<int>(),
             Year2 = token["year2"].Value<int>(),
             NewYear = token["newYear"].Value<int>(),
-            Text = token["text"].HasValues ? token["text"].Value<string?>() : null,
+            Text = token["text"].Value<string?>(),
             SlashDate2 = token["slashDate2"].Value<bool>(),
             SlashDate1 = token["slashDate1"].Value<bool>(),
         };

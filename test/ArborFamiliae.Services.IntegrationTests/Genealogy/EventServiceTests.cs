@@ -8,7 +8,7 @@ public class EventServiceTests : TestBase
     public async Task Test_LoadAllEventsForPerson()
     {
         // arrange
-        var eventService = GetService<EventService>();
+        var eventService = GetService<PersonEventService>();
         var personService = GetService<PersonService>();
 
         var persons = await personService.GetAllPersons();

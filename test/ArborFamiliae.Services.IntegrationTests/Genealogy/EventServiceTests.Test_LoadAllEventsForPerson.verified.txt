@@ -1,22 +1,48 @@
 ﻿[
   {
-    Id: Guid_1,
+    Category: Personal,
+    RoleDescription: CUSTOM,
+    Type: BIRTH,
+    TypeDescription: Birth,
+    Date: {
+      Year: 1240,
+      SlashDate1: false,
+      SlashDate2: false,
+      Text: 1240,
+      IsCompound: false,
+      IsReguler: true,
+      IsYearValid: true,
+      IsMonthValid: false,
+      IsDayValid: false
+    },
+    DateText: 1240,
     ArborId: E00001,
     Description: ,
-    Type: BIRTH,
-    Participant: van Meissen, Albrecht II,
-    IsPrivate: false,
-    Role: CUSTOM,
-    Category: Personal
+    Participants: van Meissen, Albrecht II,
+    Id: Guid_1
   },
   {
-    Id: Guid_2,
+    Category: Personal,
+    RoleDescription: CUSTOM,
+    Type: DEATH,
+    TypeDescription: DEATH,
+    Date: {
+      Year: 1314,
+      Month: 11,
+      Day: 20,
+      SlashDate1: false,
+      SlashDate2: false,
+      Text: 1314-11-20,
+      IsCompound: false,
+      IsReguler: true,
+      IsYearValid: true,
+      IsMonthValid: true,
+      IsDayValid: true
+    },
+    DateText: 1314-11-20,
     ArborId: E00002,
     Description: ,
-    Type: DEATH,
-    Participant: van Meissen, Albrecht II,
-    IsPrivate: false,
-    Role: CUSTOM,
-    Category: Personal
+    Participants: van Meissen, Albrecht II,
+    Id: Guid_2
   }
 ]

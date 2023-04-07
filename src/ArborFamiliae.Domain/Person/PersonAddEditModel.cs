@@ -23,7 +23,8 @@ namespace ArborFamiliae.Domain.Person
 
         public string ArborId { get; set; }
 
-        public List<EventListModel> Events { get; set; }
+        public List<EventAddEditModel> Events { get; set; } = new();
+        public List<EventAddEditModel> DeletedEvents { get; set; } = new();
         public List<NameListModel> Names { get; set; }
         public List<CitationListModel> SourceCitations { get; set; }
         public List<AttributeListModel> Attributes { get; set; }

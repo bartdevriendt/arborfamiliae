@@ -1,8 +1,10 @@
 ﻿@using ArborFamiliae.Domain.Events
 @using ArborFamiliae.Domain.Enums
+@using Syncfusion.Blazor.Navigations.Internal
 @using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
 @using SelectionType = Syncfusion.Blazor.Grids.SelectionType
-@inject EventService _eventService
+@using System.Windows.Forms
+@inject PersonEventService PersonEventService
 
 
 <TwoRowLayout>
@@ -14,19 +16,26 @@
         </SfToolbar>
     </Row1>
     <Row2>
-        <SfGrid DataSource="_events" AllowGrouping="true">
+        <SfGrid @ref="_eventGrid" DataSource="Events" AllowGrouping="true">
             <GridSelectionSettings Mode="SelectionMode.Row" Type="SelectionType.Single"></GridSelectionSettings>
             <GridGroupSettings Columns="@_groupColumns"></GridGroupSettings>
+            <GridEvents TValue="EventAddEditModel" CommandClicked="OnCommandClicked"></GridEvents>
             <GridColumns>
                 <GridColumn Field="Category" HeaderText="@Loc["Category"]" AllowGrouping="true"></GridColumn>
-                <GridColumn Field="Type" HeaderText="@Loc["Type"]"></GridColumn>
+                <GridColumn Field="TypeDescription" HeaderText="@Loc["Type"]"></GridColumn>
                 <GridColumn Field="Description" HeaderText="@Loc["Description"]"></GridColumn>
-                <GridColumn Field="Date" HeaderText="@Loc["Date"]"></GridColumn>
-                <GridColumn Field="Place" HeaderText="@Loc["Place"]"></GridColumn>
-                <GridColumn Field="Participant" HeaderText="@Loc["Main Participants"]"></GridColumn>
-                <GridColumn Field="Role" HeaderText="@Loc["Role"]"></GridColumn>
+                <GridColumn Field="DateText" HeaderText="@Loc["Date"]"></GridColumn>
+                <GridColumn Field="PlaceName" HeaderText="@Loc["Place"]"></GridColumn>
+                <GridColumn Field="Participants" HeaderText="@Loc["Main Participants"]"></GridColumn>
+                <GridColumn Field="RoleDescription" HeaderText="@Loc["Role"]"></GridColumn>
                 <GridColumn Field="ArborId" HeaderText="@Loc["ID"]"></GridColumn>
                 <GridColumn Field="Age" HeaderText="@Loc["Age"]"></GridColumn>
+                <GridColumn HeaderText="">
+                    <GridCommandColumns>
+                        <GridCommandColumn Title="Edit" ButtonOption="@(new CommandButtonOptions() { Content = "", CssClass = "bi bi-pencil" })"></GridCommandColumn>
+                        <GridCommandColumn Title="Delete" ButtonOption="@(new CommandButtonOptions() { Content = "", CssClass = "bi bi-trash" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
             </GridColumns>
         </SfGrid>
     </Row2>
@@ -43,10 +52,34 @@
 
 
 @code {
+
+    SfGrid<EventAddEditModel> _eventGrid;
+
+    private bool isNew = false;
+    
     [Parameter]
     public Guid PersonId { get; set; }
 
-    private List<EventListModel> _events = new();
+    public enum EventListMode
+    {
+        Person,
+        Family
+    }
+    
+    [Parameter]
+    public EventListMode EventMode { get; set; }
+    
+    [Parameter]
+    public EventCallback<EventAddEditModel> EventDeleted { get; set; }
+
+
+    [Parameter]
+    public List<EventAddEditModel> Events { get; set; } = new();
+    
+    
+    [Parameter]
+    public EventCallback<List<EventAddEditModel>> EventsChanged { get; set; }
+    
     private EventAddEditModel _addEditModel = new();
 
     private string[] _groupColumns = new[] { "Category" };
@@ -57,35 +90,74 @@
     
     protected override async Task OnInitializedAsync()
     {
-        await LoadEvents();
+        
+        
     }
-
-    private async Task LoadEvents()
-    {
-        _events = await _eventService.GetEventsForPerson(PersonId);
-    }
-    
+   
     private void AddNewEvent()
     {
-        _addEditModel.Role = EventRole.PRIMARY;
+
+        _addEditModel = new();
+        isNew = true;
         
+        if (EventMode == EventListMode.Person)
+        {
+            _addEditModel.Role = EventRole.PRIMARY;
+            _addEditModel.ListType = EventListType.Person;
+            _addEditModel.Category = "Personal";
+        }
+        else
+        {
+            _addEditModel.Role = EventRole.FAMILY;
+            _addEditModel.ListType = EventListType.Family;
+            _addEditModel.Category = "Family";
+        }
+
         PopupVisible = true;
     }
 
     private async Task OnEventSave()
     {
-        _addEditModel = await _eventService.AddEditEventForPerson(PersonId, _addEditModel);
         PopupVisible = false;
-        await LoadEvents();
+
+        if (isNew)
+        {
+            Events.Add(_addEditModel);    
+        }
         
-        
+        _addEditModel.DateText = _addEditModel.Date?.Text;
+        _addEditModel.TypeDescription = _addEditModel.Type.ToString();
+        await _eventGrid.Refresh();
     }
 
     private async Task RowDoubleClick()
     {
 
-        _addEditModel = await _eventService.GetEventById(((EventListModel)SelectedEvent).Id);
+        _addEditModel = await PersonEventService.GetEventById(((EventListModel)SelectedEvent).Id);
         PopupVisible = true;
+    }
+
+    private async Task OnCommandClicked(CommandClickEventArgs<EventAddEditModel> obj)
+    {
+        if (obj.CommandColumn.Title == "Edit")
+        {
+            isNew = false;
+            if (obj.RowData.ListType == EventListType.Family && EventMode == EventListMode.Family ||
+                obj.RowData.ListType == EventListType.Person && EventMode == EventListMode.Person)
+            {
+                _addEditModel = obj.RowData;
+                PopupVisible = true;
+            }
+        }
+        else if(obj.CommandColumn.Title == "Delete")
+        {
+            if (obj.RowData.ListType == EventListType.Family && EventMode == EventListMode.Family ||
+                obj.RowData.ListType == EventListType.Person && EventMode == EventListMode.Person)
+            {
+                await EventDeleted.InvokeAsync(obj.RowData);
+                await _eventGrid.Refresh();
+            }
+        }
     }
 
 }

@@ -12,6 +12,7 @@ public class ArborFamiliaeContext : DbContext
     public DbSet<Gender> Genders { get; set; }
     public DbSet<Person> Persons { get; set; }
     public DbSet<PersonEvent> PersonEvents { get; set; }
+    public DbSet<FamilyEvent> FamilyEvents { get; set; }
     public DbSet<Family> Families { get; set; }
     public DbSet<FamilyChild> FamilyChildren { get; set; }
 

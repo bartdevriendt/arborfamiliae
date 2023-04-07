@@ -54,4 +54,7 @@
     <data name="New" xml:space="preserve">
         <value>New</value>
     </data>
+    <data name="BIRTH" xml:space="preserve">
+        <value>Birth</value>
+    </data>
 </root>

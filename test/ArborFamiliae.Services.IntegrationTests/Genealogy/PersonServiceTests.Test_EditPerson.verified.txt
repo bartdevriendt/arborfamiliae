@@ -9,6 +9,54 @@
   PreferredSurname: TestSurname,
   Gender: Guid_1,
   ArborId: I00001,
+  Events: [
+    {
+      Category: Personal,
+      RoleDescription: CUSTOM,
+      Type: BIRTH,
+      TypeDescription: Birth,
+      Date: {
+        Year: 1240,
+        SlashDate1: false,
+        SlashDate2: false,
+        Text: 1240,
+        IsCompound: false,
+        IsReguler: true,
+        IsYearValid: true,
+        IsMonthValid: false,
+        IsDayValid: false
+      },
+      DateText: 1240,
+      ArborId: E00001,
+      Description: ,
+      Participants: van Meissen, Albrecht II,
+      Id: Guid_2
+    },
+    {
+      Category: Personal,
+      RoleDescription: CUSTOM,
+      Type: DEATH,
+      TypeDescription: DEATH,
+      Date: {
+        Year: 1314,
+        Month: 11,
+        Day: 20,
+        SlashDate1: false,
+        SlashDate2: false,
+        Text: 1314-11-20,
+        IsCompound: false,
+        IsReguler: true,
+        IsYearValid: true,
+        IsMonthValid: true,
+        IsDayValid: true
+      },
+      DateText: 1314-11-20,
+      ArborId: E00002,
+      Description: ,
+      Participants: van Meissen, Albrecht II,
+      Id: Guid_3
+    }
+  ],
   DisplayName: TestSurname, TestGiven,
-  Id: Guid_2
+  Id: Guid_4
 }
