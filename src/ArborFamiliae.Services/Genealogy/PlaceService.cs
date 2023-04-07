@@ -2,6 +2,7 @@
 using ArborFamiliae.Domain.Enums;
 using ArborFamiliae.Domain.Places;
 using ArborFamiliae.Services.Resources;
+using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
 using Microsoft.Extensions.Localization;
 
@@ -47,6 +48,24 @@ public class PlaceService : IScoped
     public async Task<PlaceAddEditModel> GetPlaceById(Guid id)
     {
         var place = await _placeReadRepository.GetByIdAsync(id);
+        return new PlaceAddEditModel
+        {
+            Id = place.Id,
+            ArborId = place.ArborId,
+            Code = place.Code,
+            Name = place.Name,
+            PlaceType = (PlaceType)place.PlaceType,
+            Latitude = place.Latitude,
+            Longitude = place.Longitude,
+            ParentPlaceId = place.EnclosedById,
+            ParentPlaceName = place.EnclosedBy?.Name
+        };
+    }
+    
+    public async Task<PlaceAddEditModel?> GetPlaceByArborId(string arborId)
+    {
+        var place = await _placeReadRepository.FirstOrDefaultAsync(new PlaceByArborIdSpecification(arborId));
+        if (place == null) return null;
         return new PlaceAddEditModel
         {
             Id = place.Id,
