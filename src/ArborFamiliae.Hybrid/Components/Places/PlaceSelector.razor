@@ -1,6 +1,6 @@
 ﻿@using ArborFamiliae.Domain.Places
 @using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
-@inject PlaceService PlaceService
+@inject IPlaceService PlaceService
 
 
  <SfTextBox @ref="placeSelection" @bind-Value="Text" Created="OnCreated" Readonly="true"></SfTextBox>

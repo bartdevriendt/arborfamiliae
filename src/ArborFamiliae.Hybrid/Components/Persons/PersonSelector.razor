@@ -2,8 +2,8 @@
 @using ArborFamiliae.Domain.Enums
 @using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
 @using SelectionType = Syncfusion.Blazor.Grids.SelectionType
-@inject PersonService PersonService
-@inject GenderService GenderService
+@inject IPersonService PersonService
+@inject IGenderService GenderService
 
 
 <SfTextBox @ref="personSelection" @bind-Value="Text" Created="OnCreated" Readonly="true"></SfTextBox>

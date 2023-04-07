@@ -1,6 +1,6 @@
 ﻿@using ArborFamiliae.Domain.Events
 @using ArborFamiliae.Services.Common
-@inject DateParserService DateParserService
+@inject IDateParserService DateParserService
  
 <SfTextBox Value="@Text"
            ValueExpression="@(() => Text)"

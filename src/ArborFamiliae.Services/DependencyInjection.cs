@@ -14,10 +14,10 @@ namespace ArborFamiliae.Services
                 scan =>
                     scan.FromAssemblyOf<IServicesMarker>()
                         .AddClasses(classes => classes.AssignableTo<ITransient>())
-                        .AsSelf()
+                        .AsImplementedInterfaces()
                         .WithTransientLifetime()
                         .AddClasses(classes => classes.AssignableTo<IScoped>())
-                        .AsSelf()
+                        .AsImplementedInterfaces()
                         .WithScopedLifetime()
             );
 

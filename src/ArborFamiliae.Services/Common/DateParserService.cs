@@ -1,9 +1,10 @@
 ﻿using ArborFamiliae.Domain.Events;
 using ArborFamiliae.Shared.Interfaces;
+using ArborFamiliae.Shared.Services;
 
 namespace ArborFamiliae.Services.Common;
 
-public class DateParserService : ITransient
+public class DateParserService : IDateParserService
 {
     public ArborDateModel? ParseDate(string text)
     {

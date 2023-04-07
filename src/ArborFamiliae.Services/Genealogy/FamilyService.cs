@@ -4,17 +4,18 @@ using ArborFamiliae.Domain.Events;
 using ArborFamiliae.Domain.Family;
 using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
+using ArborFamiliae.Shared.Services;
 
 
 namespace ArborFamiliae.Services.Genealogy;
 
-public class FamilyService : ITransient
+public class FamilyService : IFamilyService
 {
     private IRepository<Family> _familyRepository;
-    private FamilyEventService _familyEventService;
+    private IFamilyEventService _familyEventService;
     private IRepository<ArborEvent> _arborEventRepository;
         
-    public FamilyService(IRepository<Family> familyRepository, FamilyEventService familyEventService, IRepository<ArborEvent> arborEventRepository)
+    public FamilyService(IRepository<Family> familyRepository, IFamilyEventService familyEventService, IRepository<ArborEvent> arborEventRepository)
     {
         _familyRepository = familyRepository;
         _familyEventService = familyEventService;

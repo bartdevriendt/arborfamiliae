@@ -4,11 +4,12 @@ using ArborFamiliae.Domain.Places;
 using ArborFamiliae.Services.Resources;
 using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
+using ArborFamiliae.Shared.Services;
 using Microsoft.Extensions.Localization;
 
 namespace ArborFamiliae.Services.Genealogy;
 
-public class PlaceService : IScoped
+public class PlaceService : IPlaceService
 {
     private IReadRepository<Place> _placeReadRepository;
     private IRepository<Place> _placeRepository;
