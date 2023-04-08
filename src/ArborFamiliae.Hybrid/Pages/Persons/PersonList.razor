@@ -16,10 +16,13 @@
         </SfToolbar>
     </Row1>
     <Row2>
-        <SfGrid DataSource="_personList">
+        <SfGrid DataSource="_personList" AllowGrouping="true">
             <GridEvents CommandClicked="OnCommandClicked" TValue="PersonListModel"></GridEvents>
+            <GridGroupSettings Columns="@_groupColumns" ShowDropArea="false"></GridGroupSettings>
+                                     
             <GridColumns>
                 <GridColumn HeaderText="@Loc["Name"]" Field="@nameof(PersonListModel.FullName)"></GridColumn>
+                <GridColumn HeaderText="@Loc["Surname"]" Field="@nameof(PersonListModel.Surname)"></GridColumn>
                 <GridColumn HeaderText="ID" Field="@nameof(PersonListModel.ArborId)"></GridColumn>
                 <GridColumn HeaderText="@Loc["Gender"]" Field="@nameof(PersonListModel.Gender)"></GridColumn>
                 <GridColumn HeaderText="@Loc["Birth Date"]" Field="@nameof(PersonListModel.BirthDate)"></GridColumn>
@@ -41,6 +44,7 @@
 @code {
 
     private List<PersonListModel> _personList;
+    private string[] _groupColumns = new[] { "Surname" };
     
     protected override async Task OnInitializedAsync()
     {

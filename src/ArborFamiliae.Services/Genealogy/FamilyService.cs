@@ -129,20 +129,17 @@ public class FamilyService : IFamilyService
         int order = 1;
         foreach (FamilyChild fc in family.Children)
         {
-            FamilyChildAddEditModel fcm =
-                new()
-                {
-                    Id = fc.Id,
-                    Order = order++,
-                    Name = fc.Child.DisplayName,
-                    Gender = fc.Child.Gender.Description,
-                    BirthDate = fc.Child.BirthDate,
-                    PaternalRelation = "",
-                    MaternalRelation = "",
-                    PersonId = fc.ChildId,
-                    FamiliyId = fc.FamilyId,
-                    ArborId = fc.Child.ArborId
-                };
+            FamilyChildAddEditModel fcm = new();
+            fcm.Id = fc.Id;
+            fcm.Order = order++;
+            fcm.Name = fc.Child.DisplayName;
+            fcm.Gender = fc.Child.Gender.Description;
+            fcm.BirthDate = fc.Child.BirthDate;
+            fcm.PaternalRelation = "";
+            fcm.MaternalRelation = "";
+            fcm.PersonId = fc.ChildId;
+            fcm.FamiliyId = fc.FamilyId;
+            fcm.ArborId = fc.Child.ArborId;
 
             model.Children.Add(fcm);
         }
@@ -176,8 +173,7 @@ public class FamilyService : IFamilyService
             f = _unitOfWork.Family.Add(f);
         }
 
-        model.Id = f.Id;
-        model.ArborId = f.ArborId;
+        
 
         foreach (var child in model.Children)
         {
@@ -190,8 +186,6 @@ public class FamilyService : IFamilyService
                     ChildId = child.PersonId.Value
                 };
                 f.Children.Add(familyChild);
-
-                child.Id = familyChild.Id;
             }
         }
 
@@ -225,6 +219,9 @@ public class FamilyService : IFamilyService
         }
 
         _unitOfWork.Save();
+        
+        model.Id = f.Id;
+        model.ArborId = f.ArborId;
 
         List<ArborEvent> deleteArborEvent = new();
 
