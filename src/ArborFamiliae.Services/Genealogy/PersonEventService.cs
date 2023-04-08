@@ -2,6 +2,7 @@
 using ArborFamiliae.Domain.Enums;
 using ArborFamiliae.Domain.Events;
 using ArborFamiliae.Services.Common;
+using ArborFamiliae.Services.Interfaces.Base;
 using ArborFamiliae.Services.Resources;
 using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
@@ -12,33 +13,31 @@ namespace ArborFamiliae.Services.Genealogy;
 
 public class PersonEventService : IPersonEventService
 {
-    private IRepository<ArborEvent> _eventRepository;
     private IStringLocalizer<ArborFamiliaeResources> _stringLocalizer;
-    private IReadRepository<Person> _personRepository;
-    private IReadRepository<Family> _familyRepository;
     private IDateParserService _dateParserService;
-    
+    private IUnitOfWork _unitOfWork;
+
     public PersonEventService(
-        IRepository<ArborEvent> eventRepository,
         IStringLocalizer<ArborFamiliaeResources> stringLocalizer,
-        IReadRepository<Person> personRepository, IReadRepository<Family> familyRepository, IDateParserService dateParserService)
+        IDateParserService dateParserService,
+        IUnitOfWork unitOfWork
+    )
     {
-        _eventRepository = eventRepository;
         _stringLocalizer = stringLocalizer;
-        _personRepository = personRepository;
-        _familyRepository = familyRepository;
         _dateParserService = dateParserService;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<List<EventAddEditModel>> GetEventsForPerson(Guid personId)
     {
-        var personEvents = await _personRepository.FirstOrDefaultAsync(
+        var personEvents = await _unitOfWork.Person.FirstOrDefaultAsync(
             new PersonEventListSpecification(personId)
         );
 
-        var familiesWithEvents = await _familyRepository.ListAsync(
-            new PersonFamilyEventListSpecification(personId));
-        
+        var familiesWithEvents = await _unitOfWork.Family.ListAsync(
+            new PersonFamilyEventListSpecification(personId)
+        );
+
         var result = new List<EventAddEditModel>();
 
         foreach (var personEvent in personEvents.Events)
@@ -59,7 +58,7 @@ public class PersonEventService : IPersonEventService
             model.ListType = EventListType.Person;
             if (arborEvent.EventDate != null && arborEvent.EventDate.Text != null)
             {
-                model.Date = _dateParserService.ParseDate(arborEvent.EventDate.Text);    
+                model.Date = _dateParserService.ParseDate(arborEvent.EventDate.Text);
             }
             model.DateText = arborEvent.EventDate?.Text;
             model.Participants = personEvents.DisplayName;
@@ -70,37 +69,41 @@ public class PersonEventService : IPersonEventService
         {
             foreach (var familyEvent in family.Events)
             {
-                
                 ArborEvent arborEvent = familyEvent.Event;
-                
+
                 EventAddEditModel model = new EventAddEditModel();
                 model.Id = arborEvent.Id;
                 model.ArborId = arborEvent.ArborId;
                 model.Category = "Family";
                 model.Description = arborEvent.Description;
                 model.Type = (EventType)arborEvent.EventType;
-                model.TypeDescription = _stringLocalizer[((EventType)arborEvent.EventType).ToString()];
+                model.TypeDescription = _stringLocalizer[
+                    ((EventType)arborEvent.EventType).ToString()
+                ];
                 model.Role = (EventRole)familyEvent.EventRole;
-                model.RoleDescription = _stringLocalizer[((EventRole)familyEvent.EventRole).ToString()];
+                model.RoleDescription = _stringLocalizer[
+                    ((EventRole)familyEvent.EventRole).ToString()
+                ];
                 model.PlaceId = arborEvent.PlaceId;
                 model.PlaceName = arborEvent.Place?.Name;
                 model.ListType = EventListType.Family;
                 if (arborEvent.EventDate != null)
                 {
-                    model.Date = _dateParserService.ParseDate(arborEvent.EventDate.Text);    
+                    model.Date = _dateParserService.ParseDate(arborEvent.EventDate.Text);
                 }
                 model.DateText = arborEvent.EventDate?.Text;
-                model.Participants = family.Father?.DisplayName + " and " + family.Mother?.DisplayName;
+                model.Participants =
+                    family.Father?.DisplayName + " and " + family.Mother?.DisplayName;
                 result.Add(model);
-            } 
+            }
         }
-        
+
         return result.OrderBy(x => x.ArborId).ToList();
     }
 
     public async Task<EventAddEditModel> GetEventById(Guid id)
     {
-        var arborEvent = await _eventRepository.GetByIdAsync(id);
+        var arborEvent = _unitOfWork.Event.GetById(id);
         var result = new EventAddEditModel
         {
             Id = arborEvent.Id,
@@ -137,13 +140,13 @@ public class PersonEventService : IPersonEventService
         }
         else
         {
-            arborEvent = await _eventRepository.GetByIdAsync(model.Id);
+            arborEvent = _unitOfWork.Event.GetById(model.Id);
             personEvent = arborEvent.PersonEvents.First(
                 p => p.PersonId == personId && p.EventId == arborEvent.Id
             );
         }
         arborEvent.EventType = (int)model.Type;
-        
+
         arborEvent.Description = model.Description;
         arborEvent.ArborId = model.ArborId;
         arborEvent.PlaceId = model.PlaceId;
@@ -157,12 +160,10 @@ public class PersonEventService : IPersonEventService
 
         if (isNew)
         {
-            await _eventRepository.AddAsync(arborEvent);
+            _unitOfWork.Event.Add(arborEvent);
         }
-        else
-        {
-            await _eventRepository.UpdateAsync(arborEvent);
-        }
+
+        _unitOfWork.Save();
 
         model.Id = arborEvent.Id;
         model.ArborId = arborEvent.ArborId;

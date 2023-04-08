@@ -1,5 +1,6 @@
 ﻿using ArborFamiliae.Data;
 using ArborFamiliae.Services.Common;
+using ArborFamiliae.Services.Interfaces.Base;
 using ArborFamiliae.Services.Sequences;
 using ArborFamiliae.Shared.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +23,7 @@ namespace ArborFamiliae.Services
             );
 
             services.AddScoped<ISequenceGeneratorService, SequenceGeneratorService>();
-            services.AddTransient(typeof(IRepository<>), typeof(ArborRepository<>));
-            services.AddTransient(typeof(IReadRepository<>), typeof(ArborRepository<>));
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddLocalization();
             services.AddLogging();
             return services;

@@ -17,6 +17,7 @@
     
     <ProjectReference Include="..\ArborFamiliae.Data\ArborFamiliae.Data.csproj" />
     <ProjectReference Include="..\ArborFamiliae.Domain\ArborFamiliae.Domain.csproj" />
+    <ProjectReference Include="..\ArborFamiliae.Services.Interfaces\ArborFamiliae.Services.Interfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>

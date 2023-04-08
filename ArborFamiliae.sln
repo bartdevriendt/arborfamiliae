@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Services.Inte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Data.Sqlite", "src\ArborFamiliae.Data.Sqlite\ArborFamiliae.Data.Sqlite.csproj", "{0DF83054-BF1C-4670-A933-08364894085E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Services.Interfaces", "src\ArborFamiliae.Services.Interfaces\ArborFamiliae.Services.Interfaces.csproj", "{F51EDA3E-5238-4FEE-B594-42EB9E0331A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{0DF83054-BF1C-4670-A933-08364894085E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DF83054-BF1C-4670-A933-08364894085E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DF83054-BF1C-4670-A933-08364894085E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F51EDA3E-5238-4FEE-B594-42EB9E0331A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F51EDA3E-5238-4FEE-B594-42EB9E0331A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F51EDA3E-5238-4FEE-B594-42EB9E0331A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F51EDA3E-5238-4FEE-B594-42EB9E0331A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{AFF531E0-986B-472D-B5D2-10DB4FE97DEC} = {27ACFA5A-EAF9-46DD-8A7F-F9382A2AFCEC}
 		{C3C8A428-C45E-4736-86F4-47F8E24E4794} = {6E1D143E-EF8C-4993-891F-C35CC16DBBBB}
 		{0DF83054-BF1C-4670-A933-08364894085E} = {27ACFA5A-EAF9-46DD-8A7F-F9382A2AFCEC}
+		{F51EDA3E-5238-4FEE-B594-42EB9E0331A9} = {27ACFA5A-EAF9-46DD-8A7F-F9382A2AFCEC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64B4EBAC-6347-40D8-B65C-134F8BF9F13C}
