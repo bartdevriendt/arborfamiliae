@@ -23,14 +23,15 @@ namespace ArborFamiliae.Controls
     {
         private BindingList<EventAddEditModel> _events;
 
-        public BindingList<EventAddEditModel> Events { 
-            get => _events; 
+        public BindingList<EventAddEditModel> Events
+        {
+            get => _events;
             set
             {
                 _events = value;
                 eventAddEditModelBindingSource.DataSource = _events;
             }
-        } 
+        }
 
         public ucEventList()
         {
