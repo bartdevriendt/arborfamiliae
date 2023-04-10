@@ -66,6 +66,8 @@ public class DateParserService : IDateParserService
             }
         }
 
+        result.Text = result.ConvertToDisplay();
+
         return result;
     }
 

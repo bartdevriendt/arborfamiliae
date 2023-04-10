@@ -94,7 +94,7 @@ namespace ArborFamiliae.Services.Genealogy
                     ArborId = p.ArborId
                 };
 
-            result.Events = await _personEventService.GetEventsForPerson(id);
+            result.Events = new System.ComponentModel.BindingList<EventAddEditModel>(await _personEventService.GetEventsForPerson(id));
 
             return result;
         }
@@ -123,7 +123,7 @@ namespace ArborFamiliae.Services.Genealogy
                     ArborId = p.ArborId
                 };
 
-            result.Events = await _personEventService.GetEventsForPerson(result.Id);
+            result.Events = new System.ComponentModel.BindingList<EventAddEditModel>(await _personEventService.GetEventsForPerson(result.Id));
 
             return result;
         }

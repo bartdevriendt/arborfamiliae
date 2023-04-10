@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using ArborFamiliae.Domain.Attributes;
 using ArborFamiliae.Domain.Citations;
@@ -23,13 +24,13 @@ namespace ArborFamiliae.Domain.Person
 
         public string ArborId { get; set; }
 
-        public List<EventAddEditModel> Events { get; set; } = new();
-        public List<EventAddEditModel> DeletedEvents { get; set; } = new();
-        public List<NameListModel> Names { get; set; }
-        public List<CitationListModel> SourceCitations { get; set; }
-        public List<AttributeListModel> Attributes { get; set; }
-        public List<AddressListModel> Addresses { get; set; }
-        public List<NoteListModel> Notes { get; set; }
+        public BindingList<EventAddEditModel> Events { get; set; } = new();
+        public BindingList<EventAddEditModel> DeletedEvents { get; set; } = new();
+        public BindingList<NameListModel> Names { get; set; }
+        public BindingList<CitationListModel> SourceCitations { get; set; }
+        public BindingList<AttributeListModel> Attributes { get; set; }
+        public BindingList<AddressListModel> Addresses { get; set; }
+        public BindingList<NoteListModel> Notes { get; set; }
 
         public string DisplayName
         {
