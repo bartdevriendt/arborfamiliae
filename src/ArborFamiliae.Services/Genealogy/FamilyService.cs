@@ -1,4 +1,5 @@
-﻿using ArborFamiliae.Data.Models;
+﻿using System.ComponentModel;
+using ArborFamiliae.Data.Models;
 using ArborFamiliae.Domain.Enums;
 using ArborFamiliae.Domain.Events;
 using ArborFamiliae.Domain.Family;
@@ -35,6 +36,7 @@ public class FamilyService : IFamilyService
             model.ArborId = family.ArborId;
             model.MarriageDate = "";
             model.Id = family.Id;
+            
 
             result.Add(model);
         }
@@ -90,7 +92,7 @@ public class FamilyService : IFamilyService
             model.Children.Add(fcm);
         }
 
-        model.Events = await _familyEventService.GetEventsForFamily(familyId);
+        model.Events = new BindingList<EventAddEditModel>(await _familyEventService.GetEventsForFamily(familyId));
 
         return model;
     }
@@ -144,7 +146,7 @@ public class FamilyService : IFamilyService
             model.Children.Add(fcm);
         }
 
-        model.Events = await _familyEventService.GetEventsForFamily(model.Id);
+        model.Events = new BindingList<EventAddEditModel>(await _familyEventService.GetEventsForFamily(model.Id));
 
         return model;
     }

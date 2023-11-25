@@ -16,6 +16,8 @@ namespace ArborFamiliae.Desktop.Views.Family
         public FamilyDetailView()
         {
             InitializeComponent();
+            
+            
         }
     }
 }

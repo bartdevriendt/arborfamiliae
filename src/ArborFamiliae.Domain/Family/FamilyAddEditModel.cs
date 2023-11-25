@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using ArborFamiliae.Domain.Events;
 
 namespace ArborFamiliae.Domain.Family;
@@ -20,7 +21,7 @@ public class FamilyAddEditModel : BaseDomainModel
 
     public List<FamilyChildAddEditModel> Children { get; set; } = new();
     public List<FamilyChildAddEditModel> DeletedChildren { get; set; } = new();
-    public List<EventAddEditModel> Events { get; set; } = new();
+    public BindingList<EventAddEditModel> Events { get; set; } = new();
 
     public List<EventAddEditModel> DeletedEvents { get; set; } = new();
 }

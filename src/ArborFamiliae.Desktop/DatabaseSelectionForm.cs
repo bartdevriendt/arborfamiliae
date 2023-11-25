@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using ArborFamiliae.Data.InternalModels;
 using ArborFamiliae.Desktop;
 using ArborFamiliae.Services.Common;
+using DevExpress.Mvvm;
 
 namespace ArborFamiliae
 {
@@ -37,7 +38,7 @@ namespace ArborFamiliae
             var database = gridView1.GetRow(gridView1.FocusedRowHandle) as FamilyTreeDatabase;
 
             ServiceContext.BuildServices(database);
-            
+            ServiceContainer.Default.RegisterService(ServiceContext.ServiceProvider);
         }
 
         private void DatabaseSelectionForm_Load(object sender, EventArgs e)

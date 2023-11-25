@@ -1,4 +1,6 @@
-﻿namespace ArborFamiliae.Desktop.Views.Person
+﻿using ArborFamiliae.ViewModels.Person;
+
+namespace ArborFamiliae.Desktop.Views.Person
 {
     partial class PersonDetailView
     {
@@ -36,13 +38,14 @@
             // mvvmContext1
             // 
             mvvmContext1.ContainerControl = this;
-            mvvmContext1.ViewModelType = typeof(ViewModels.Person.PersonDetailViewModel);
+            mvvmContext1.ViewModelType = typeof(PersonDetailViewModel);
             // 
             // PersonDetailView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             Name = "PersonDetailView";
+            Size = new System.Drawing.Size(1272, 831);
             ((System.ComponentModel.ISupportInitialize)mvvmContext1).EndInit();
             ResumeLayout(false);
         }

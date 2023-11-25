@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ArborFamiliae.Desktop.ViewModels.Person;
+using ArborFamiliae.ViewModels.Person;
 using DevExpress.Utils.MVVM.Services;
 using DevExpress.XtraGrid.Views.Grid;
 
@@ -50,6 +50,7 @@ namespace ArborFamiliae.Desktop.Views
             //fluentAPI.BindCommand(sbEditPatient, x => x.Edit);
             //fluentAPI.BindCommand(sbRemovePatient, x => x.Remove);
             //// Initial Loading
+           
             fluentAPI.WithEvent(this, nameof(Load))
                 .EventToCommand(x => x.LoadPersonsAsync);
         }

@@ -1,13 +1,5 @@
-﻿using DevExpress.XtraEditors;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using ArborFamiliae.ViewModels.Person;
+using DevExpress.Utils.MVVM.Services;
 
 namespace ArborFamiliae.Desktop.Views.Person
 {
@@ -16,6 +8,22 @@ namespace ArborFamiliae.Desktop.Views.Person
         public PersonDetailView()
         {
             InitializeComponent();
+            if (!mvvmContext1.IsDesignMode)
+            {
+                InitializeNavigation();
+            }
+        }
+
+        void InitializeNavigation()
+        {
+            var msgService = MessageBoxService.CreateXtraMessageBoxService();
+            mvvmContext1.RegisterService(msgService);
+        }
+
+        void InitializeBindings()
+        {
+            var fluent = mvvmContext1.OfType<PersonDetailViewModel>();
+
         }
     }
 }

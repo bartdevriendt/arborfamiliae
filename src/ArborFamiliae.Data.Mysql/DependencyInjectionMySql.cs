@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ArborFamiliae.Data.Mysql
@@ -23,12 +24,14 @@ namespace ArborFamiliae.Data.Mysql
             {
                 config.UseLazyLoadingProxies();
                 config.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
+                config.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
                 config.UseMySql(
                     builder.ConnectionString,
                     ServerVersion.AutoDetect(builder.ConnectionString),
                     x =>
                     {
                         x.MigrationsAssembly(typeof(DependencyInjectionMySql).Assembly.GetName().Name);
+                        
                     }
                     
                 );

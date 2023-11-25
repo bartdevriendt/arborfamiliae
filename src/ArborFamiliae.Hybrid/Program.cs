@@ -18,7 +18,7 @@ namespace ArborFamiliae.Hybrid
         static void Main()
         {
             
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTQ3MzI4NEAzMjMxMmUzMTJlMzMzNU1wUnBEOGRENWFNb3grdFhyclhiWjV4bHlNUnFTdWVJbC9nZTk1WEdXRE09");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MjkxMzMzOUAzMjMzMmUzMDJlMzBKK3Q5RVVFZy84WVUzREFUdEU5Y0x1aHFib0dmVFE3MU5OQkJJa295L2c4PQ==");
             
             #if DEBUG
             // redirect console output to parent process;

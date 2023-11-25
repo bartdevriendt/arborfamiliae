@@ -1,4 +1,7 @@
-﻿namespace ArborFamiliae.Desktop.Views
+﻿using ArborFamiliae.ViewModels.Person;
+using DevExpress.XtraGrid.Columns;
+
+namespace ArborFamiliae.Desktop.Views
 {
     partial class PersonListView
     {
@@ -34,15 +37,15 @@
             personListModelBindingSource = new System.Windows.Forms.BindingSource(components);
             gcPersons = new DevExpress.XtraGrid.GridControl();
             gvPersons = new DevExpress.XtraGrid.Views.Grid.GridView();
+            colArborId = new GridColumn();
+            colBirthDate = new GridColumn();
+            colDeathDate = new GridColumn();
+            colFirstName = new GridColumn();
+            colFullName = new GridColumn();
+            colGender = new GridColumn();
+            colId = new GridColumn();
+            colSurname = new GridColumn();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            colArborId = new DevExpress.XtraGrid.Columns.GridColumn();
-            colSurname = new DevExpress.XtraGrid.Columns.GridColumn();
-            colFirstName = new DevExpress.XtraGrid.Columns.GridColumn();
-            colGender = new DevExpress.XtraGrid.Columns.GridColumn();
-            colBirthDate = new DevExpress.XtraGrid.Columns.GridColumn();
-            colDeathDate = new DevExpress.XtraGrid.Columns.GridColumn();
-            colFullName = new DevExpress.XtraGrid.Columns.GridColumn();
-            colId = new DevExpress.XtraGrid.Columns.GridColumn();
             searchControl1 = new DevExpress.XtraEditors.SearchControl();
             layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             sbAddPerson = new DevExpress.XtraEditors.SimpleButton();
@@ -69,7 +72,7 @@
             // mvvmContext1
             // 
             mvvmContext1.ContainerControl = this;
-            mvvmContext1.ViewModelType = typeof(ViewModels.Person.PersonListViewModel);
+            mvvmContext1.ViewModelType = typeof(PersonListViewModel);
             // 
             // personListModelBindingSource
             // 
@@ -87,14 +90,12 @@
             // 
             // gvPersons
             // 
+            gvPersons.Columns.AddRange(new GridColumn[] { colArborId, colBirthDate, colDeathDate, colFirstName, colFullName, colGender, colId, colSurname });
             gvPersons.GridControl = gcPersons;
+            gvPersons.GroupCount = 1;
             gvPersons.Name = "gvPersons";
             gvPersons.OptionsBehavior.Editable = false;
-            // 
-            // gridView1
-            // 
-            gridView1.GridControl = gcPersons;
-            gridView1.Name = "gridView1";
+            gvPersons.SortInfo.AddRange(new GridColumnSortInfo[] { new GridColumnSortInfo(colSurname, DevExpress.Data.ColumnSortOrder.Ascending) });
             // 
             // colArborId
             // 
@@ -102,27 +103,6 @@
             colArborId.Name = "colArborId";
             colArborId.Visible = true;
             colArborId.VisibleIndex = 1;
-            // 
-            // colSurname
-            // 
-            colSurname.FieldName = "Surname";
-            colSurname.Name = "colSurname";
-            colSurname.Visible = true;
-            colSurname.VisibleIndex = 1;
-            // 
-            // colFirstName
-            // 
-            colFirstName.FieldName = "FirstName";
-            colFirstName.Name = "colFirstName";
-            colFirstName.Visible = true;
-            colFirstName.VisibleIndex = 2;
-            // 
-            // colGender
-            // 
-            colGender.FieldName = "Gender";
-            colGender.Name = "colGender";
-            colGender.Visible = true;
-            colGender.VisibleIndex = 3;
             // 
             // colBirthDate
             // 
@@ -138,6 +118,13 @@
             colDeathDate.Visible = true;
             colDeathDate.VisibleIndex = 5;
             // 
+            // colFirstName
+            // 
+            colFirstName.FieldName = "FirstName";
+            colFirstName.Name = "colFirstName";
+            colFirstName.Visible = true;
+            colFirstName.VisibleIndex = 2;
+            // 
             // colFullName
             // 
             colFullName.FieldName = "FullName";
@@ -146,10 +133,29 @@
             colFullName.Visible = true;
             colFullName.VisibleIndex = 0;
             // 
+            // colGender
+            // 
+            colGender.FieldName = "Gender";
+            colGender.Name = "colGender";
+            colGender.Visible = true;
+            colGender.VisibleIndex = 3;
+            // 
             // colId
             // 
             colId.FieldName = "Id";
             colId.Name = "colId";
+            // 
+            // colSurname
+            // 
+            colSurname.FieldName = "Surname";
+            colSurname.Name = "colSurname";
+            colSurname.Visible = true;
+            colSurname.VisibleIndex = 2;
+            // 
+            // gridView1
+            // 
+            gridView1.GridControl = gcPersons;
+            gridView1.Name = "gridView1";
             // 
             // searchControl1
             // 

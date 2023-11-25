@@ -19,7 +19,7 @@
         <SfGrid @ref="_personGrid" DataSource="_personList" AllowGrouping="true" EnableVirtualization="true">
             <GridEvents CommandClicked="OnCommandClicked" DataBound="OnDataBound" TValue="PersonListModel"></GridEvents>
             <GridGroupSettings Columns="@_groupColumns" ShowGroupedColumn="true" EnableLazyLoading="true"  ShowDropArea="false"></GridGroupSettings>
-            <GridPageSettings PageSize=40></GridPageSettings>
+            @* <GridPageSettings PageSize=40></GridPageSettings> *@
             <GridColumns>
                 <GridColumn HeaderText="ID" Field="@nameof(PersonListModel.Id)" Visible="false" IsPrimaryKey="true"></GridColumn>
                 <GridColumn HeaderText="@Loc["Name"]" Field="@nameof(PersonListModel.FullName)"></GridColumn>

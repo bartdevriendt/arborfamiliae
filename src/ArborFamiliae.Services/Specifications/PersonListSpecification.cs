@@ -17,5 +17,6 @@ public class PersonListSpecification : Specification<Person>
         Query.Include(p => p.Gender);
 
         Query.OrderBy(p => p.ArborId);
+        Query.AsSplitQuery();
     }
 }

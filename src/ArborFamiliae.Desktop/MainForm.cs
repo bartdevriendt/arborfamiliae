@@ -1,24 +1,13 @@
-﻿using DevExpress.Office.Services.Implementation;
-using DevExpress.Utils.MVVM;
-using DevExpress.XtraBars;
+﻿using DevExpress.Utils.MVVM;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using ArborFamiliae.Desktop.ViewModels;
 using ArborFamiliae.Desktop.Views;
 using DevExpress.Mvvm;
-using DevExpress.Utils;
 using DevExpress.Utils.MVVM.Services;
 using DevExpress.XtraBars.Docking2010.Customization;
 using DevExpress.XtraBars.Docking2010.Views.WindowsUI;
 using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraEditors;
-using DevExpress.XtraSplashScreen;
 
 namespace ArborFamiliae.Desktop
 {
@@ -29,6 +18,7 @@ namespace ArborFamiliae.Desktop
         {
             // Global setting for all dialogs UI
             MVVMContext.RegisterFlyoutDialogService();
+            
             //ServiceContainer.Default.RegisterService(new LoginService());
             //ServiceContainer.Default.RegisterService(new PrintReportService());
         }

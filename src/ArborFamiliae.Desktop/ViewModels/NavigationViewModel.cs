@@ -1,20 +1,17 @@
-﻿using DevExpress.Mvvm.POCO;
-using DevExpress.Mvvm;
-using DevExpress.Office.Services;
-using DevExpress.XtraEditors;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using ArborFamiliae.Desktop.Messages;
 using ArborFamiliae.Desktop.Views;
 using ArborFamiliae.Desktop.Views.Family;
 using ArborFamiliae.Desktop.Views.Person;
-using DevExpress.Xpo;
-using ArborFamiliae.Desktop.ViewModels.Person;
+using DevExpress.Mvvm.POCO;
+using DevExpress.Mvvm;
 using ArborFamiliae.Shared.Services;
+using ArborFamiliae.ViewModels.Base;
+using ArborFamiliae.ViewModels.Messages;
+using ArborFamiliae.ViewModels.Person;
+using DevExpress.XtraEditors;
 
 namespace ArborFamiliae.Desktop.ViewModels
 {
@@ -175,9 +172,6 @@ namespace ArborFamiliae.Desktop.ViewModels
         //ILoginService LoginService {
         //    get { return ServiceContainer.Default.GetService(typeof(ILoginService), "") as ILoginService; }
         //}
-    }
-    public interface IEditViewModel {
-        bool CanNavigateFrom();
     }
     public class NavigationContext {
         readonly BreadCrumbNodeCollection nodes;
