@@ -22,6 +22,7 @@ public partial class PersonListViewModel : ArborViewModelBase
         LoadPersonsAsync();
     }
 
+    public string Test { get; set; } = "";
     [GenerateProperty] private BindingList<PersonListModel>? persons;
     [GenerateProperty] private PersonListModel? selectedEntity;
 
@@ -56,8 +57,24 @@ public partial class PersonListViewModel : ArborViewModelBase
     }
     [GenerateCommand]
     public void Edit() {
-        if(SelectedEntity != null)
-            NavigationService.Navigate("PersonDetailView", SelectedEntity.Id);
+        if (SelectedEntity != null)
+        {
+            
+            
+            
+            // var doc = DocumentManagerService.CreateDocument("PersonDetailView", SelectedEntity.Id, this);
+            // doc.Show();
+            
+            var result = DialogService.ShowDialog(MessageButton.OKCancel, "Person", "PersonDetailView", SelectedEntity.Id, this);
+            if (result == MessageResult.OK)
+            {
+                MessageBoxService.Show("After show: " + Test, "Test", MessageButton.OK, MessageIcon.Information, MessageResult.OK);
+
+            }
+            
+        }
+            //NavigationService.Navigate("PersonDetailView", SelectedEntity.Id);
+            
     }
 
    

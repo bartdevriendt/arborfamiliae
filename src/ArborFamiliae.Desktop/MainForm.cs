@@ -44,10 +44,12 @@ namespace ArborFamiliae.Desktop
             mvvmContext.RegisterDefaultService(navigationService);
             // Flyout Service for all child views
             var flyoutService = WindowedDocumentManagerService.CreateFlyoutFormService();
+            flyoutService.DocumentShowMode = WindowedDocumentManagerService.FormShowMode.Dialog;
             flyoutService.FormStyle = (form) =>
             {
                 var flyout = form as FlyoutDialog;
                 flyout.Properties.Style = FlyoutStyle.Popup;
+                
             };
             mvvmContext.RegisterDefaultService("Flyout", flyoutService);
         }

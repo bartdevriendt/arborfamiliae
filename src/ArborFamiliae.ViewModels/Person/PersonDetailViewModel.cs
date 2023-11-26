@@ -10,10 +10,10 @@ namespace ArborFamiliae.ViewModels.Person;
 [GenerateViewModel]
 public partial class PersonDetailViewModel : ArborDetailViewModelBase
 {
-
+    
     public Guid PersonId => Id;
 
-    public PersonAddEditModel Person { get; set; }  
+    [GenerateProperty] private PersonAddEditModel? person;
 
     IPersonService PersonService {
         get
@@ -22,6 +22,7 @@ public partial class PersonDetailViewModel : ArborDetailViewModelBase
             return provider.GetService(typeof(IPersonService)) as IPersonService;
         }
     }
+    [GenerateCommand]
     
     public Task LoadPersonAsync()
     {
@@ -30,7 +31,7 @@ public partial class PersonDetailViewModel : ArborDetailViewModelBase
             Person = new PersonAddEditModel();
             return Task.CompletedTask;
         }
-            
+        
         var dispatcher = this.GetService<IDispatcherService>();
         return Task.Run(() =>
         {
@@ -40,6 +41,8 @@ public partial class PersonDetailViewModel : ArborDetailViewModelBase
             {
                 dispatcher.Invoke(() => Person = r.Result);
             });
+
+        
     }
 
 }

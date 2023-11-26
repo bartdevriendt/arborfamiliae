@@ -7,7 +7,12 @@ namespace ArborFamiliae.ViewModels.Base;
 public class ArborViewModelBase: ISupportServices 
 
 {
-    
+    protected IWindowService WindowService {
+        get { return this.GetService<IWindowService>(); }
+    }
+    protected IDialogService DialogService {
+        get { return this.GetService<IDialogService>(); }
+    }
     protected IDocumentManagerService DocumentManagerService {
         get { return this.GetService<IDocumentManagerService>(); }
     }
