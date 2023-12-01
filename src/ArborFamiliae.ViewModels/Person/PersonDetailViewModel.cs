@@ -1,4 +1,5 @@
-﻿using ArborFamiliae.Domain.Person;
+﻿using System.ComponentModel;
+using ArborFamiliae.Domain.Person;
 using ArborFamiliae.Shared.Services;
 using ArborFamiliae.ViewModels.Base;
 using DevExpress.Mvvm;
@@ -8,14 +9,24 @@ using DevExpress.Mvvm.POCO;
 namespace ArborFamiliae.ViewModels.Person;
 
 [GenerateViewModel]
-public partial class PersonDetailViewModel : ArborDetailViewModelBase
+public partial class PersonDetailViewModel : ArborDetailViewModelBase, IDocumentContent
 {
     
     public Guid PersonId => Id;
 
-    [GenerateProperty] private PersonAddEditModel? person;
+    [GenerateProperty(OnChangedMethod = "OnPersonLoaded")] private PersonAddEditModel? person;
 
+    private void OnPersonLoaded()
+    {
+        RaisePropertyChanged(new PropertyChangedEventArgs(nameof(Title)));
+    }
 
+    [GenerateCommand]
+    public void DataUpdated()
+    {
+        OnPersonLoaded();
+    }
+    
     [GenerateCommand]
     public Task LoadPersonAsync()
     {
@@ -36,4 +47,18 @@ public partial class PersonDetailViewModel : ArborDetailViewModelBase
         
     }
 
+    public void OnClose(CancelEventArgs e)
+    {
+        
+    }
+
+    public void OnDestroy()
+    {
+        
+    }
+
+    public IDocumentOwner DocumentOwner { get; set; }
+    public object Title => Person != null ? Person.DisplayName : "New Person";
+    
+    
 }

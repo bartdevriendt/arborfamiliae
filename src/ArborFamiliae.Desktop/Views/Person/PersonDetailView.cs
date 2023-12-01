@@ -32,13 +32,19 @@ namespace ArborFamiliae.Desktop.Views.Person
         {
             var fluent = mvvmContext1.OfType<PersonDetailViewModel>();
             fluent.SetBinding(personAddEditModelBindingSource, pbs => pbs.DataSource, x => x.Person);
+            fluent.WithEvent(personAddEditModelBindingSource.CurrencyManager, nameof(personAddEditModelBindingSource.CurrencyManager.ItemChanged))
+                .EventToCommand(x => x.DataUpdated);
             fluent.WithEvent(this, nameof(Load))
                 .EventToCommand(x => x.LoadPersonAsync);
+            
+            fluent.SetBinding(this, uc => uc.Text, x => x.Title);
         }
 
         private void button1_Click(object sender, System.EventArgs e)
         {
             Console.WriteLine("Hello World!");
         }
+        
+        
     }
 }

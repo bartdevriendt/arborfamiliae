@@ -10,7 +10,7 @@ using DevExpress.Mvvm.POCO;
 namespace ArborFamiliae.ViewModels.Person;
 
 [GenerateViewModel]
-public partial class PersonListViewModel : ArborViewModelBase
+public partial class PersonListViewModel : ArborViewModelBase, IDocumentContent
 {
 
     public PersonListViewModel()
@@ -53,17 +53,30 @@ public partial class PersonListViewModel : ArborViewModelBase
     [GenerateCommand]
     public void New()
     {
-        //NavigationService.Navigate("PersonDetailView", Guid.Empty);
+        NavigationService.Navigate("PersonDetailView", Guid.Empty);
         
-        DialogService.ShowDialog(MessageButton.OKCancel, "Person", "PersonDetailView", Guid.Empty, this);
+        //DialogService.ShowDialog(MessageButton.OKCancel, "Person", "PersonDetailView", Guid.Empty, this);
     }
     [GenerateCommand]
     public void Edit() {
         if (SelectedEntity != null)
         {
-            DialogService.ShowDialog(MessageButton.OKCancel, "Person", "PersonDetailView", SelectedEntity.Id, this);
+            NavigationService.Navigate("PersonDetailView", SelectedEntity.Id);
+            //DialogService.ShowDialog(MessageButton.OKCancel, "Person", "PersonDetailView", SelectedEntity.Id, this);
         }
     }
 
-   
+
+    public void OnClose(CancelEventArgs e)
+    {
+        
+    }
+
+    public void OnDestroy()
+    {
+        
+    }
+
+    public IDocumentOwner DocumentOwner { get; set; }
+    public object Title => "Person List";
 }

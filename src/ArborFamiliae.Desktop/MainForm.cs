@@ -1,5 +1,7 @@
 ﻿using DevExpress.Utils.MVVM;
 using System;
+using System.Linq;
+using System.Windows.Forms;
 using ArborFamiliae.Desktop.ViewModels;
 using ArborFamiliae.Desktop.Views;
 using DevExpress.Mvvm;
@@ -7,11 +9,14 @@ using DevExpress.Utils.MVVM.Services;
 using DevExpress.XtraBars.Docking2010.Customization;
 using DevExpress.XtraBars.Docking2010.Views.WindowsUI;
 using DevExpress.XtraBars.Navigation;
+using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraEditors;
+using DevExpress.XtraTab;
+using DevExpress.XtraTab.ViewInfo;
 
 namespace ArborFamiliae.Desktop
 {
-    public partial class MainForm : DevExpress.XtraBars.FluentDesignSystem.FluentDesignForm
+    public partial class MainForm : RibbonForm
     {
 
         static MainForm()
@@ -27,6 +32,9 @@ namespace ArborFamiliae.Desktop
         public MainForm()
         {
             InitializeComponent();
+
+            xtraTabControl1.CloseButtonClick += XtraTabControl1OnCloseButtonClick;
+            xtraTabControl1.SelectedPageChanged += XtraTabControl1OnSelectedPageChanged;
             
             ServiceContext.BuildServices();
             
@@ -37,10 +45,32 @@ namespace ArborFamiliae.Desktop
             }
         }
 
+        private void XtraTabControl1OnSelectedPageChanged(object sender, TabPageChangedEventArgs e)
+        {
+            if(e.Page == null)
+                ribbonControl1.UnMergeRibbon();
+            else {
+                var view = ((XtraTabPage)e.Page).Controls[0] as UserControl;
+                var childRibbon = view.Controls.OfType<Control>()
+                    .FirstOrDefault(c => c is RibbonControl) as RibbonControl;
+                if(childRibbon != null)
+                    ribbonControl1.MergeRibbon(childRibbon);
+            }
+        }
+
+        private void XtraTabControl1OnCloseButtonClick(object sender, EventArgs e)
+        {
+            PageEventArgs ea = e as PageEventArgs;
+            if(ea != null) {
+                XtraTabPage page = ea.Page as XtraTabPage;
+                if(page != null) page.Dispose();
+            }
+        }
+
         void InitializeNavigation()
         {
             // Main Navigation Service for all child views
-            var navigationService = NavigationService.Create(navigationFrame);
+            var navigationService = NavigationService.Create(xtraTabControl1);
             mvvmContext.RegisterDefaultService(navigationService);
             // Flyout Service for all child views
             var flyoutService = WindowedDocumentManagerService.CreateFlyoutFormService();
@@ -61,27 +91,28 @@ namespace ArborFamiliae.Desktop
             // Navigation Items
             //fluentApi.BindCommand(loginButtonItem, x => x.OpenLoginView);
             //fluentApi.SetBinding(usersViewItem, x => x.Visible, x => x.ShowUserCollectionView);
-            fluentApi.WithEvent<ElementClickEventArgs>(accordionControl1, nameof(accordionControl1.ElementClick))
-                .EventToCommand(x => x.NavigateTo, args => CreateNavigateArgs(args));
-            // BreadCrumb Navigation
-            fluentApi.SetBinding(breadCrumbEdit1, x => x.SelectedNode, x => x.SelectedNode);
-            fluentApi.SetBinding(breadCrumbEdit1, x => x.EditValue, x => x.NavigationPath);
-            fluentApi.SetBinding(pnlNavigationBar, x => x.Visible, x => x.NavigationBarVisible);
-            var navigationContext = new NavigationContext(breadCrumbEdit1.Properties.Nodes);
-            navigationContext.MainForm = this;
+            //fluentApi.WithEvent<ElementClickEventArgs>(accordionControl1, nameof(accordionControl1.ElementClick))
+            //    .EventToCommand(x => x.NavigateTo, args => CreateNavigateArgs(args));
+            //// BreadCrumb Navigation
+            //fluentApi.SetBinding(breadCrumbEdit1, x => x.SelectedNode, x => x.SelectedNode);
+            //fluentApi.SetBinding(breadCrumbEdit1, x => x.EditValue, x => x.NavigationPath);
+            //fluentApi.SetBinding(pnlNavigationBar, x => x.Visible, x => x.NavigationBarVisible);
+            //var navigationContext = new NavigationContext(breadCrumbEdit1.Properties.Nodes);
+            //navigationContext.MainForm = this;
             fluentApi.WithEvent(this, nameof(Load))
-                .EventToCommand(x => x.Load, (EventArgs args) => navigationContext);
-            fluentApi.WithEvent<BreadCrumbNodeClickEventArgs>(breadCrumbEdit1.Properties, nameof(breadCrumbEdit1.Properties.NodeClick))
-                .EventToCommand(x => x.NavigateTo, args => CreateNavigateArgs(args));
-            // UI synchronization
-            accordionControl1.SelectedElement = accPerson;
-            fluentApi.SetTrigger(x => x.CurrentViewType, viewType =>
-            {
-                if (viewType == nameof(PersonListView))
-                {
-                    accordionControl1.SelectedElement = accPerson;
-                }
-            });
+                .EventToCommand(x => x.Load);
+            fluentApi.BindCommand(bbiPersons, x => x.ShowPage, x => "PersonListView");
+            //fluentApi.WithEvent<BreadCrumbNodeClickEventArgs>(breadCrumbEdit1.Properties, nameof(breadCrumbEdit1.Properties.NodeClick))
+            //    .EventToCommand(x => x.NavigateTo, args => CreateNavigateArgs(args));
+            //// UI synchronization
+            //accordionControl1.SelectedElement = accPerson;
+            //fluentApi.SetTrigger(x => x.CurrentViewType, viewType =>
+            //{
+            //    if (viewType == nameof(PersonListView))
+            //    {
+            //        accordionControl1.SelectedElement = accPerson;
+            //    }
+            //});
             //fluentApi.SetTrigger(x => x.OverlayFormTrigger, showOverlay =>
             //{
             //    if (showOverlay)

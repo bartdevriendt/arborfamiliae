@@ -57,11 +57,11 @@ public partial class MainFormViewModel : IDisposable
     }
     
     [GenerateCommand]
-    public void Load(NavigationContext navigationContext) {
+    public void Load() {
         navigationRootNode = NavigationTreeBuilder.Create()
             .AddRoute($@"{ArborFamiliae.ViewModels.Base.Views.PersonListView}[People]\{ArborFamiliae.ViewModels.Base.Views.PersonDetailView}[PersonName]")
             .AddRoute($@"{nameof(FamilyListView)}[Families]\{nameof(FamilyDetailView)}[FamilyName]");
-        navigationContext.Assign(navigationRootNode);
+        //navigationContext.Assign(navigationRootNode);
         CurrentNavigationNode = navigationRootNode;
         NavigationService.CurrentChanged += OnNavigationServiceCurrentChanged;
         NavigateTo(nameof(PersonListView));
@@ -89,6 +89,13 @@ public partial class MainFormViewModel : IDisposable
         }
 
     }
+
+    [GenerateCommand]
+    public void ShowPage(string viewType)
+    {
+        NavigateTo(viewType);
+    }
+
     void OnNavigationServiceCurrentChanged(object sender, System.EventArgs e) {
         if(NavigationService.Current == null) 
             return;
