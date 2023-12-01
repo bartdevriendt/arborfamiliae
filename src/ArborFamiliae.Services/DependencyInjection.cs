@@ -3,6 +3,7 @@ using ArborFamiliae.Services.Common;
 using ArborFamiliae.Services.Interfaces.Base;
 using ArborFamiliae.Services.Sequences;
 using ArborFamiliae.Shared.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ArborFamiliae.Services
@@ -23,6 +24,7 @@ namespace ArborFamiliae.Services
             );
 
             services.AddScoped<ISequenceGeneratorService, SequenceGeneratorService>();
+            services.AddTransient<IDbContextFactory<ArborFamiliaeContext>, ArborContextFactory>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddLocalization();
             services.AddLogging();

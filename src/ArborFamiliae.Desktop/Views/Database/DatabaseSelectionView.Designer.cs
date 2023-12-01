@@ -1,13 +1,16 @@
-﻿namespace ArborFamiliae
+﻿using ArborFamiliae.Data.InternalModels;
+using ArborFamiliae.ViewModels.Database;
+
+namespace ArborFamiliae.Desktop.Views.Database
 {
-    partial class DatabaseSelectionForm
+    partial class DatabaseSelectionView
     {
-        /// <summary>
+        /// <summary> 
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
+        /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -20,93 +23,69 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Component Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            btnOk = new DevExpress.XtraEditors.SimpleButton();
-            layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            btnNewDatabase = new DevExpress.XtraEditors.SimpleButton();
+            mvvmContext1 = new DevExpress.Utils.MVVM.MVVMContext(components);
             gridControl1 = new DevExpress.XtraGrid.GridControl();
             familyTreeDatabaseBindingSource = new System.Windows.Forms.BindingSource(components);
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             colDatabaseType = new DevExpress.XtraGrid.Columns.GridColumn();
             colName = new DevExpress.XtraGrid.Columns.GridColumn();
             colServer = new DevExpress.XtraGrid.Columns.GridColumn();
+            colUsername = new DevExpress.XtraGrid.Columns.GridColumn();
             colDatabase = new DevExpress.XtraGrid.Columns.GridColumn();
+            layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            btnAddDatabase = new DevExpress.XtraEditors.SimpleButton();
             Root = new DevExpress.XtraLayout.LayoutControlGroup();
             layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
-            ((System.ComponentModel.ISupportInitialize)layoutControl1).BeginInit();
-            layoutControl1.SuspendLayout();
+            emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            ((System.ComponentModel.ISupportInitialize)mvvmContext1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)familyTreeDatabaseBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControl1).BeginInit();
+            layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Root).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)layoutControlItem2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)emptySpaceItem1).BeginInit();
             SuspendLayout();
             // 
-            // btnOk
+            // mvvmContext1
             // 
-            btnOk.Location = new System.Drawing.Point(409, 452);
-            btnOk.Name = "btnOk";
-            btnOk.Size = new System.Drawing.Size(393, 22);
-            btnOk.StyleController = layoutControl1;
-            btnOk.TabIndex = 0;
-            btnOk.Text = "Open";
-            btnOk.Click += btnOk_Click;
-            // 
-            // layoutControl1
-            // 
-            layoutControl1.Controls.Add(btnNewDatabase);
-            layoutControl1.Controls.Add(gridControl1);
-            layoutControl1.Controls.Add(btnOk);
-            layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            layoutControl1.Location = new System.Drawing.Point(0, 0);
-            layoutControl1.Name = "layoutControl1";
-            layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(1491, 225, 650, 400);
-            layoutControl1.Root = Root;
-            layoutControl1.Size = new System.Drawing.Size(814, 486);
-            layoutControl1.TabIndex = 1;
-            layoutControl1.Text = "layoutControl1";
-            // 
-            // btnNewDatabase
-            // 
-            btnNewDatabase.Location = new System.Drawing.Point(12, 452);
-            btnNewDatabase.Name = "btnNewDatabase";
-            btnNewDatabase.Size = new System.Drawing.Size(393, 22);
-            btnNewDatabase.StyleController = layoutControl1;
-            btnNewDatabase.TabIndex = 5;
-            btnNewDatabase.Text = "New ...";
-            btnNewDatabase.Click += btnNewDatabase_Click;
+            mvvmContext1.ContainerControl = this;
             // 
             // gridControl1
             // 
             gridControl1.DataSource = familyTreeDatabaseBindingSource;
-            gridControl1.Location = new System.Drawing.Point(12, 12);
+            gridControl1.Location = new System.Drawing.Point(12, 38);
             gridControl1.MainView = gridView1;
             gridControl1.Name = "gridControl1";
-            gridControl1.Size = new System.Drawing.Size(790, 436);
-            gridControl1.TabIndex = 4;
+            gridControl1.Size = new System.Drawing.Size(1049, 743);
+            gridControl1.TabIndex = 0;
             gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
             // familyTreeDatabaseBindingSource
             // 
-            familyTreeDatabaseBindingSource.DataSource = typeof(Models.FamilyTreeDatabase);
+            familyTreeDatabaseBindingSource.DataSource = typeof(FamilyTreeDatabase);
             // 
             // gridView1
             // 
-            gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { colDatabaseType, colName, colServer, colDatabase });
+            gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { colDatabaseType, colName, colServer, colUsername, colDatabase });
+            gridView1.CustomizationFormBounds = new System.Drawing.Rectangle(1396, 629, 264, 272);
             gridView1.GridControl = gridControl1;
             gridView1.Name = "gridView1";
+            gridView1.OptionsBehavior.AllowFixedGroups = DevExpress.Utils.DefaultBoolean.False;
+            gridView1.OptionsBehavior.Editable = false;
+            gridView1.OptionsCustomization.AllowGroup = false;
             gridView1.OptionsView.ShowGroupPanel = false;
             // 
             // colDatabaseType
@@ -130,87 +109,115 @@
             colServer.Visible = true;
             colServer.VisibleIndex = 2;
             // 
+            // colUsername
+            // 
+            colUsername.FieldName = "Username";
+            colUsername.Name = "colUsername";
+            colUsername.Visible = true;
+            colUsername.VisibleIndex = 3;
+            // 
             // colDatabase
             // 
             colDatabase.FieldName = "Database";
             colDatabase.Name = "colDatabase";
             colDatabase.Visible = true;
-            colDatabase.VisibleIndex = 3;
+            colDatabase.VisibleIndex = 4;
+            // 
+            // layoutControl1
+            // 
+            layoutControl1.Controls.Add(btnAddDatabase);
+            layoutControl1.Controls.Add(gridControl1);
+            layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            layoutControl1.Location = new System.Drawing.Point(0, 0);
+            layoutControl1.Name = "layoutControl1";
+            layoutControl1.Root = Root;
+            layoutControl1.Size = new System.Drawing.Size(1073, 793);
+            layoutControl1.TabIndex = 1;
+            layoutControl1.Text = "layoutControl1";
+            // 
+            // btnAddDatabase
+            // 
+            btnAddDatabase.Location = new System.Drawing.Point(12, 12);
+            btnAddDatabase.Name = "btnAddDatabase";
+            btnAddDatabase.Size = new System.Drawing.Size(155, 22);
+            btnAddDatabase.StyleController = layoutControl1;
+            btnAddDatabase.TabIndex = 2;
+            btnAddDatabase.Text = "Add New";
             // 
             // Root
             // 
             Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             Root.GroupBordersVisible = false;
-            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem1, layoutControlItem2, layoutControlItem3 });
+            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem1, layoutControlItem3, emptySpaceItem1 });
             Root.Name = "Root";
-            Root.Size = new System.Drawing.Size(814, 486);
+            Root.Size = new System.Drawing.Size(1073, 793);
             Root.TextVisible = false;
             // 
             // layoutControlItem1
             // 
-            layoutControlItem1.Control = btnOk;
-            layoutControlItem1.Location = new System.Drawing.Point(397, 440);
+            layoutControlItem1.Control = gridControl1;
+            layoutControlItem1.Location = new System.Drawing.Point(0, 26);
             layoutControlItem1.Name = "layoutControlItem1";
-            layoutControlItem1.Size = new System.Drawing.Size(397, 26);
+            layoutControlItem1.Size = new System.Drawing.Size(1053, 747);
             layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             layoutControlItem1.TextVisible = false;
             // 
-            // layoutControlItem2
-            // 
-            layoutControlItem2.Control = gridControl1;
-            layoutControlItem2.Location = new System.Drawing.Point(0, 0);
-            layoutControlItem2.Name = "layoutControlItem2";
-            layoutControlItem2.Size = new System.Drawing.Size(794, 440);
-            layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
-            layoutControlItem2.TextVisible = false;
-            // 
             // layoutControlItem3
             // 
-            layoutControlItem3.Control = btnNewDatabase;
-            layoutControlItem3.Location = new System.Drawing.Point(0, 440);
+            layoutControlItem3.Control = btnAddDatabase;
+            layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             layoutControlItem3.Name = "layoutControlItem3";
-            layoutControlItem3.Size = new System.Drawing.Size(397, 26);
+            layoutControlItem3.Size = new System.Drawing.Size(159, 26);
             layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             layoutControlItem3.TextVisible = false;
             // 
-            // DatabaseSelectionForm
+            // emptySpaceItem1
             // 
-            AcceptButton = btnOk;
+            emptySpaceItem1.AllowHotTrack = false;
+            emptySpaceItem1.Location = new System.Drawing.Point(159, 0);
+            emptySpaceItem1.Name = "emptySpaceItem1";
+            emptySpaceItem1.Size = new System.Drawing.Size(894, 26);
+            emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // DatabaseSelectionView
+            // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(814, 486);
             Controls.Add(layoutControl1);
-            Name = "DatabaseSelectionForm";
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "Select family tree";
-            Load += DatabaseSelectionForm_Load;
-            ((System.ComponentModel.ISupportInitialize)layoutControl1).EndInit();
-            layoutControl1.ResumeLayout(false);
+            Name = "DatabaseSelectionView";
+            Size = new System.Drawing.Size(1073, 793);
+            ((System.ComponentModel.ISupportInitialize)mvvmContext1).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridControl1).EndInit();
             ((System.ComponentModel.ISupportInitialize)familyTreeDatabaseBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControl1).EndInit();
+            layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)Root).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)layoutControlItem2).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)emptySpaceItem1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private DevExpress.XtraEditors.SimpleButton btnOk;
-        private DevExpress.XtraLayout.LayoutControl layoutControl1;
+        private DevExpress.Utils.MVVM.MVVMContext mvvmContext1;
         private DevExpress.XtraGrid.GridControl gridControl1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraLayout.LayoutControl layoutControl1;
+        private DevExpress.XtraEditors.SimpleButton btnOk;
+        private DevExpress.XtraEditors.SimpleButton btnCancel;
         private DevExpress.XtraLayout.LayoutControlGroup Root;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private System.Windows.Forms.BindingSource familyTreeDatabaseBindingSource;
         private DevExpress.XtraGrid.Columns.GridColumn colDatabaseType;
         private DevExpress.XtraGrid.Columns.GridColumn colName;
         private DevExpress.XtraGrid.Columns.GridColumn colServer;
+        private DevExpress.XtraGrid.Columns.GridColumn colUsername;
         private DevExpress.XtraGrid.Columns.GridColumn colDatabase;
-        private DevExpress.XtraEditors.SimpleButton btnNewDatabase;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
+        private DevExpress.XtraEditors.SimpleButton btnAddDatabase;
     }
 }

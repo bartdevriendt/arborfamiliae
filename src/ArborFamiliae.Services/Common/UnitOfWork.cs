@@ -17,17 +17,17 @@ public class UnitOfWork : IUnitOfWork
     private readonly ISequenceGeneratorService _sequenceGeneratorService;
 
     public UnitOfWork(
-        ArborFamiliaeContext context,
+        IDbContextFactory<ArborFamiliaeContext> contextFactory,
         ISequenceGeneratorService sequenceGeneratorService
     )
     {
-        _context = context;
+        _context = contextFactory.CreateDbContext();
         _sequenceGeneratorService = sequenceGeneratorService;
-        Person = new PersonRepository(context, SpecificationEvaluator.Default);
-        Event = new EventRepository(context, SpecificationEvaluator.Default);
-        Place = new PlaceRepository(context, SpecificationEvaluator.Default);
-        Family = new FamilyRepository(context, SpecificationEvaluator.Default);
-        Gender = new GenderRepository(context, SpecificationEvaluator.Default);
+        Person = new PersonRepository(contextFactory, SpecificationEvaluator.Default);
+        Event = new EventRepository(contextFactory, SpecificationEvaluator.Default);
+        Place = new PlaceRepository(contextFactory, SpecificationEvaluator.Default);
+        Family = new FamilyRepository(contextFactory, SpecificationEvaluator.Default);
+        Gender = new GenderRepository(contextFactory, SpecificationEvaluator.Default);
     }
 
     public void Dispose()

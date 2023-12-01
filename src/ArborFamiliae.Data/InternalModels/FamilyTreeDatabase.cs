@@ -30,4 +30,6 @@ public class FamilyTreeDatabase : IEquatable<FamilyTreeDatabase>
     {
         return HashCode.Combine(DatabaseType, Name);
     }
+    
+    public static FamilyTreeDatabase? CurrentDatabase { get; set; }
 }

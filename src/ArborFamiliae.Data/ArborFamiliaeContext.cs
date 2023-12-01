@@ -6,7 +6,7 @@ namespace ArborFamiliae.Data;
 
 public class ArborFamiliaeContext : DbContext
 {
-    public ArborFamiliaeContext(DbContextOptions<ArborFamiliaeContext> options) : base(options) { }
+    public ArborFamiliaeContext(DbContextOptions options) : base(options) { }
 
     public DbSet<ArborEvent> Events { set; get; }
     public DbSet<Gender> Genders { get; set; }

@@ -17,10 +17,7 @@ namespace ArborFamiliae.Desktop
         static MainForm()
         {
             // Global setting for all dialogs UI
-            MVVMContext.RegisterFlyoutDialogService();
-            
-            //ServiceContainer.Default.RegisterService(new LoginService());
-            //ServiceContainer.Default.RegisterService(new PrintReportService());
+            MVVMContext.RegisterXtraFormService();
         }
         protected override FormShowMode ShowMode
         {
@@ -30,6 +27,9 @@ namespace ArborFamiliae.Desktop
         public MainForm()
         {
             InitializeComponent();
+            
+            ServiceContext.BuildServices();
+            
             if (!mvvmContext.IsDesignMode)
             {
                 InitializeNavigation();
@@ -55,7 +55,7 @@ namespace ArborFamiliae.Desktop
         }
         void InitializeBindings()
         {
-            var fluentApi = mvvmContext.OfType<NavigationViewModel>();
+            var fluentApi = mvvmContext.OfType<MainFormViewModel>();
             //UI
             //fluentApi.BindCommand(darkThemeBBI, x => x.ChangeTheme);
             // Navigation Items
@@ -68,6 +68,7 @@ namespace ArborFamiliae.Desktop
             fluentApi.SetBinding(breadCrumbEdit1, x => x.EditValue, x => x.NavigationPath);
             fluentApi.SetBinding(pnlNavigationBar, x => x.Visible, x => x.NavigationBarVisible);
             var navigationContext = new NavigationContext(breadCrumbEdit1.Properties.Nodes);
+            navigationContext.MainForm = this;
             fluentApi.WithEvent(this, nameof(Load))
                 .EventToCommand(x => x.Load, (EventArgs args) => navigationContext);
             fluentApi.WithEvent<BreadCrumbNodeClickEventArgs>(breadCrumbEdit1.Properties, nameof(breadCrumbEdit1.Properties.NodeClick))

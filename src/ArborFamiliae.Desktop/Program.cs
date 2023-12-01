@@ -25,7 +25,6 @@ namespace ArborFamiliae.Desktop
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MVVMContext.RegisterFlyoutDialogService();
             XtraMessageBoxServiceHelper.RegisterXtraMessageBoxService();
             DevExpress.XtraEditors.WindowsFormsSettings.LoadApplicationSettings();
             //SplashScreenManager.ShowFluentSplashScreen(logoImageOptions: new ImageOptions() {
@@ -36,7 +35,7 @@ namespace ArborFamiliae.Desktop
             LayoutControl.AllowCustomizationDefaultValue = false;
             DevExpress.XtraEditors.WindowsFormsSettings.FilterCriteriaDisplayStyle = DevExpress.XtraEditors.FilterCriteriaDisplayStyle.Visual;
 
-            Application.Run(new DatabaseSelectionForm());
+            Application.Run(new MainForm());
         }
     }
 }
