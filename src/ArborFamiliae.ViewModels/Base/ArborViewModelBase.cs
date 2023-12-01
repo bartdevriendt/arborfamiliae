@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using ArborFamiliae.Shared.Services;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Mvvm.POCO;
@@ -29,6 +30,16 @@ public class ArborViewModelBase: ISupportServices
     {
         get { return ServiceContainer.GetService<IServiceProvider>(); }
     }
+    
+    
+    protected IPersonService? PersonService {
+        get
+        {
+            var provider = ServiceProvider;
+            return provider.GetService(typeof(IPersonService)) as IPersonService;
+        }
+    }
+    
     
     IServiceContainer serviceContainer = null;
     protected IServiceContainer ServiceContainer {

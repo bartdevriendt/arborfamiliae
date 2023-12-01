@@ -15,15 +15,8 @@ public partial class PersonDetailViewModel : ArborDetailViewModelBase
 
     [GenerateProperty] private PersonAddEditModel? person;
 
-    IPersonService PersonService {
-        get
-        {
-            var provider = ServiceProvider;
-            return provider.GetService(typeof(IPersonService)) as IPersonService;
-        }
-    }
+
     [GenerateCommand]
-    
     public Task LoadPersonAsync()
     {
         if (PersonId == Guid.Empty)
@@ -33,10 +26,8 @@ public partial class PersonDetailViewModel : ArborDetailViewModelBase
         }
         
         var dispatcher = this.GetService<IDispatcherService>();
-        return Task.Run(() =>
-        {
-            return PersonService.GetPersonById(PersonId);
-        }).ContinueWith(
+        return Task.Run(() => PersonService?.GetPersonById(PersonId))
+            .ContinueWith(
             r =>
             {
                 dispatcher.Invoke(() => Person = r.Result);

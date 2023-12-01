@@ -53,28 +53,16 @@ public partial class PersonListViewModel : ArborViewModelBase
     [GenerateCommand]
     public void New()
     {
-        NavigationService.Navigate("PersonDetailView", Guid.Empty);
+        //NavigationService.Navigate("PersonDetailView", Guid.Empty);
+        
+        DialogService.ShowDialog(MessageButton.OKCancel, "Person", "PersonDetailView", Guid.Empty, this);
     }
     [GenerateCommand]
     public void Edit() {
         if (SelectedEntity != null)
         {
-            
-            
-            
-            // var doc = DocumentManagerService.CreateDocument("PersonDetailView", SelectedEntity.Id, this);
-            // doc.Show();
-            
-            var result = DialogService.ShowDialog(MessageButton.OKCancel, "Person", "PersonDetailView", SelectedEntity.Id, this);
-            if (result == MessageResult.OK)
-            {
-                MessageBoxService.Show("After show: " + Test, "Test", MessageButton.OK, MessageIcon.Information, MessageResult.OK);
-
-            }
-            
+            DialogService.ShowDialog(MessageButton.OKCancel, "Person", "PersonDetailView", SelectedEntity.Id, this);
         }
-            //NavigationService.Navigate("PersonDetailView", SelectedEntity.Id);
-            
     }
 
    
