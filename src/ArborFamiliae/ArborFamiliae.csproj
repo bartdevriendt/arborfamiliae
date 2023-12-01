@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DevExpress.Win.Design" Version="22.2.*" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ArborFamiliae.Data.Mysql\ArborFamiliae.Data.Mysql.csproj" />
+    <ProjectReference Include="..\ArborFamiliae.Domain\ArborFamiliae.Domain.csproj" />
+    <ProjectReference Include="..\ArborFamiliae.Services\ArborFamiliae.Services.csproj" />
+  </ItemGroup>
+
+</Project>

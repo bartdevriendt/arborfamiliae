@@ -1,6 +1,6 @@
-﻿using ArborFamiliae.Data;
-using ArborFamiliae.Data.Models;
+﻿using ArborFamiliae.Data.Models;
 using ArborFamiliae.Domain.Person;
+using ArborFamiliae.Services.Interfaces.Base;
 using ArborFamiliae.Shared.Interfaces;
 using ArborFamiliae.Shared.Services;
 using Microsoft.EntityFrameworkCore;
@@ -9,19 +9,21 @@ namespace ArborFamiliae.Services.Genealogy;
 
 public class GenderService : IGenderService
 {
-    private ArborFamiliaeContext context;
+    private IUnitOfWork _unitOfWork;
 
-    public GenderService(ArborFamiliaeContext context)
+    public GenderService(IUnitOfWork unitOfWork)
     {
-        this.context = context;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<List<GenderModel>> GetGenders()
     {
-        return await (
-            from Gender g in context.Genders
+        var genders = await _unitOfWork.Gender.ListAsync();
+
+        return (
+            from Gender g in genders
             orderby g.SortOrder
             select new GenderModel { Description = g.Description, Id = g.Id }
-        ).ToListAsync();
+        ).ToList();
     }
 }

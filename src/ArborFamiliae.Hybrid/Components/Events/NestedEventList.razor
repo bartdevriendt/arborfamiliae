@@ -4,6 +4,7 @@
 @using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
 @using SelectionType = Syncfusion.Blazor.Grids.SelectionType
 @using System.Windows.Forms
+@using System.ComponentModel
 @inject IPersonEventService PersonEventService
 
 
@@ -74,11 +75,11 @@
 
 
     [Parameter]
-    public List<EventAddEditModel> Events { get; set; } = new();
+    public BindingList<EventAddEditModel> Events { get; set; } = new();
     
     
     [Parameter]
-    public EventCallback<List<EventAddEditModel>> EventsChanged { get; set; }
+    public EventCallback<BindingList<EventAddEditModel>> EventsChanged { get; set; }
     
     private EventAddEditModel _addEditModel = new();
 

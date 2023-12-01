@@ -1,6 +1,7 @@
 ﻿using ArborFamiliae.Data.Models;
 using ArborFamiliae.Domain.Enums;
 using ArborFamiliae.Domain.Places;
+using ArborFamiliae.Services.Interfaces.Base;
 using ArborFamiliae.Services.Resources;
 using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
@@ -11,25 +12,21 @@ namespace ArborFamiliae.Services.Genealogy;
 
 public class PlaceService : IPlaceService
 {
-    private IReadRepository<Place> _placeReadRepository;
-    private IRepository<Place> _placeRepository;
-
     private IStringLocalizer<ArborFamiliaeResources> _stringLocalizer;
+    private IUnitOfWork _unitOfWork;
 
     public PlaceService(
-        IReadRepository<Place> placeReadRepository,
         IStringLocalizer<ArborFamiliaeResources> stringLocalizer,
-        IRepository<Place> placeRepository
+        IUnitOfWork unitOfWork
     )
     {
-        _placeReadRepository = placeReadRepository;
         _stringLocalizer = stringLocalizer;
-        _placeRepository = placeRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<List<PlaceListModel>> GetAllPlaces()
     {
-        var places = await _placeReadRepository.ListAsync();
+        var places = await _unitOfWork.Place.ListAsync();
         return places
             .Select(
                 p =>
@@ -48,7 +45,7 @@ public class PlaceService : IPlaceService
 
     public async Task<PlaceAddEditModel> GetPlaceById(Guid id)
     {
-        var place = await _placeReadRepository.GetByIdAsync(id);
+        var place = _unitOfWork.Place.GetById(id);
         return new PlaceAddEditModel
         {
             Id = place.Id,
@@ -62,11 +59,14 @@ public class PlaceService : IPlaceService
             ParentPlaceName = place.EnclosedBy?.Name
         };
     }
-    
+
     public async Task<PlaceAddEditModel?> GetPlaceByArborId(string arborId)
     {
-        var place = await _placeReadRepository.FirstOrDefaultAsync(new PlaceByArborIdSpecification(arborId));
-        if (place == null) return null;
+        var place = await _unitOfWork.Place.FirstOrDefaultAsync(
+            new PlaceByArborIdSpecification(arborId)
+        );
+        if (place == null)
+            return null;
         return new PlaceAddEditModel
         {
             Id = place.Id,
@@ -93,7 +93,7 @@ public class PlaceService : IPlaceService
         }
         else
         {
-            p = await _placeReadRepository.GetByIdAsync(model.Id);
+            p = _unitOfWork.Place.GetById(model.Id);
         }
 
         p.Code = model.Code;
@@ -105,14 +105,13 @@ public class PlaceService : IPlaceService
 
         if (isNew)
         {
-            await _placeRepository.AddAsync(p);
-        }
-        else
-        {
-            await _placeRepository.UpdateAsync(p);
+            _unitOfWork.Place.Add(p);
         }
 
+        _unitOfWork.Save();
+
         model.Id = p.Id;
+        model.ArborId = p.ArborId;
         return model;
     }
 }

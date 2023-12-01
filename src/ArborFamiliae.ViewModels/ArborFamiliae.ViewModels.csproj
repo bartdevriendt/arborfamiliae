@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <PropertyGroup>
+        <IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="DevExpress.Mvvm" Version="23.2.2-beta" />
+      <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ArborFamiliae.Services.Interfaces\ArborFamiliae.Services.Interfaces.csproj" />
+    </ItemGroup>
+
+</Project>

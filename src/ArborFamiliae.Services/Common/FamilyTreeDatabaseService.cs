@@ -1,9 +1,10 @@
 ﻿using ArborFamiliae.Data.InternalModels;
+using ArborFamiliae.Services.Interfaces.Database;
 using Newtonsoft.Json;
 
 namespace ArborFamiliae.Services.Common;
 
-public class FamilyTreeDatabaseService
+public class FamilyTreeDatabaseService : IFamilyTreeDatabaseService
 {
     public void StoreDatabase(FamilyTreeDatabase database)
     {

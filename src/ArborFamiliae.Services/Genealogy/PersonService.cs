@@ -2,6 +2,7 @@
 using ArborFamiliae.Domain.Enums;
 using ArborFamiliae.Domain.Events;
 using ArborFamiliae.Domain.Person;
+using ArborFamiliae.Services.Interfaces.Base;
 using ArborFamiliae.Services.Specifications;
 using ArborFamiliae.Shared.Interfaces;
 using ArborFamiliae.Shared.Services;
@@ -10,18 +11,13 @@ namespace ArborFamiliae.Services.Genealogy
 {
     public class PersonService : IPersonService
     {
-        private IReadRepository<Person> _personReadRepository;
-        private IRepository<Person> _personRepository;
         private IPersonEventService _personEventService;
-        private IRepository<ArborEvent> _arborEventRepository;
-        public PersonService(
-            IReadRepository<Person> personReadRepository,
-            IRepository<Person> personRepository, IPersonEventService personEventService, IRepository<ArborEvent> arborEventRepository)
+        private IUnitOfWork _unitOfWork;
+
+        public PersonService(IPersonEventService personEventService, IUnitOfWork unitOfWork)
         {
-            _personReadRepository = personReadRepository;
-            _personRepository = personRepository;
             _personEventService = personEventService;
-            _arborEventRepository = arborEventRepository;
+            _unitOfWork = unitOfWork;
         }
 
         private List<PersonListModel> ConvertToDomain(List<Person> persons)
@@ -61,74 +57,76 @@ namespace ArborFamiliae.Services.Genealogy
             }
 
             result = result.OrderBy(p => p.Surname).ToList();
-            
+
             return result;
         }
 
         public async Task<List<PersonListModel>> GetPersonsFiltered(Guid? gender)
         {
-            var persons = await _personReadRepository.ListAsync(
-                new PersonListSpecification(gender)
-            );
+            var persons = await _unitOfWork.Person.ListAsync(new PersonListSpecification(gender));
 
             return ConvertToDomain(persons);
         }
 
         public async Task<List<PersonListModel>> GetAllPersons()
         {
-            var persons = await _personReadRepository.ListAsync(new PersonListSpecification());
+            var persons = await _unitOfWork.Person.ListAsync(new PersonListSpecification());
 
             return ConvertToDomain(persons);
         }
 
         public async Task<PersonAddEditModel> GetPersonById(Guid id)
         {
-            var p = await _personReadRepository.GetByIdAsync(id);
-            PersonAddEditModel result = new()
-            {
-                Id = p.Id,
-                Gender = p.GenderId,
-                PreferredTitle = p.PrimaryName.Title,
-                PreferredNick = p.PrimaryName.Nickname,
-                PreferredSuffix = p.PrimaryName.Suffix,
-                PreferredSurname = p.PrimaryName.PrimarySurname.SurnameValue,
-                PreferredCall = p.PrimaryName.Call,
-                PreferredNameType = (NameType)p.PrimaryName.NameType,
-                PreferredSurnamePrefix = p.PrimaryName.PrimarySurname.Prefix,
-                PreferredGivenName = p.PrimaryName.FirstName,
-                ArborId = p.ArborId
-            };
+            var p = _unitOfWork.Person.GetById(id);
+            PersonAddEditModel result =
+                new()
+                {
+                    Id = p.Id,
+                    Gender = p.GenderId,
+                    PreferredTitle = p.PrimaryName.Title,
+                    PreferredNick = p.PrimaryName.Nickname,
+                    PreferredSuffix = p.PrimaryName.Suffix,
+                    PreferredSurname = p.PrimaryName.PrimarySurname.SurnameValue,
+                    PreferredCall = p.PrimaryName.Call,
+                    PreferredNameType = (NameType)p.PrimaryName.NameType,
+                    PreferredSurnamePrefix = p.PrimaryName.PrimarySurname.Prefix,
+                    PreferredGivenName = p.PrimaryName.FirstName,
+                    ArborId = p.ArborId
+                };
 
-            result.Events = await _personEventService.GetEventsForPerson(id); 
+            result.Events = new System.ComponentModel.BindingList<EventAddEditModel>(await _personEventService.GetEventsForPerson(id));
 
             return result;
         }
-        
+
         public async Task<PersonAddEditModel?> GetPersonByArborId(string arborId)
         {
-            var p = await _personReadRepository.FirstOrDefaultAsync(new PersonByArborIdSpecification(arborId));
-            if (p == null) return null;
-            
-            PersonAddEditModel result = new()
-            {
-                Id = p.Id,
-                Gender = p.GenderId,
-                PreferredTitle = p.PrimaryName.Title,
-                PreferredNick = p.PrimaryName.Nickname,
-                PreferredSuffix = p.PrimaryName.Suffix,
-                PreferredSurname = p.PrimaryName.PrimarySurname.SurnameValue,
-                PreferredCall = p.PrimaryName.Call,
-                PreferredNameType = (NameType)p.PrimaryName.NameType,
-                PreferredSurnamePrefix = p.PrimaryName.PrimarySurname.Prefix,
-                PreferredGivenName = p.PrimaryName.FirstName,
-                ArborId = p.ArborId
-            };
+            var p = await _unitOfWork.Person.FirstOrDefaultAsync(
+                new PersonByArborIdSpecification(arborId)
+            );
+            if (p == null)
+                return null;
 
-            result.Events = await _personEventService.GetEventsForPerson(result.Id); 
+            PersonAddEditModel result =
+                new()
+                {
+                    Id = p.Id,
+                    Gender = p.GenderId,
+                    PreferredTitle = p.PrimaryName.Title,
+                    PreferredNick = p.PrimaryName.Nickname,
+                    PreferredSuffix = p.PrimaryName.Suffix,
+                    PreferredSurname = p.PrimaryName.PrimarySurname.SurnameValue,
+                    PreferredCall = p.PrimaryName.Call,
+                    PreferredNameType = (NameType)p.PrimaryName.NameType,
+                    PreferredSurnamePrefix = p.PrimaryName.PrimarySurname.Prefix,
+                    PreferredGivenName = p.PrimaryName.FirstName,
+                    ArborId = p.ArborId
+                };
+
+            result.Events = new System.ComponentModel.BindingList<EventAddEditModel>(await _personEventService.GetEventsForPerson(result.Id));
 
             return result;
         }
-
 
         public async Task<PersonAddEditModel> AddEditPerson(PersonAddEditModel model)
         {
@@ -147,7 +145,7 @@ namespace ArborFamiliae.Services.Genealogy
             }
             else
             {
-                p = await _personReadRepository.GetByIdAsync(model.Id);
+                p = _unitOfWork.Person.GetById(model.Id);
             }
 
             p.GenderId = model.Gender;
@@ -164,21 +162,19 @@ namespace ArborFamiliae.Services.Genealogy
 
             if (isNew)
             {
-                await _personRepository.AddAsync(p);
+                _unitOfWork.Person.Add(p);
             }
-            else
-            {
-                await _personRepository.UpdateAsync(p);
-            }
+
+            _unitOfWork.Save();
 
             model.Id = p.Id;
             model.ArborId = p.ArborId;
-            
+
             foreach (var personEvent in model.Events)
             {
+                if (personEvent.ListType != EventListType.Person)
+                    continue;
 
-                if (personEvent.ListType != EventListType.Person) continue;
-            
                 var arborEvent = new ArborEvent();
                 if (personEvent.Id == Guid.Empty)
                 {
@@ -190,49 +186,51 @@ namespace ArborFamiliae.Services.Genealogy
                     fe.EventRole = (int)personEvent.Role;
                     p.Events.Add(fe);
                     personEvent.Id = arborEvent.Id;
-                
                 }
-                else 
+                else
                 {
-                    arborEvent = p.Events.FirstOrDefault(x => x.EventId == personEvent.Id)?.Event ?? throw new Exception("Event not found");
+                    arborEvent =
+                        p.Events.FirstOrDefault(x => x.EventId == personEvent.Id)?.Event
+                        ?? throw new Exception("Event not found");
                 }
                 arborEvent.Description = personEvent.Description;
-                arborEvent.EventDate = ToArborDate(personEvent.Date);
+                if (personEvent.Date != null)
+                {
+                    arborEvent.EventDate = ToArborDate(personEvent.Date);
+                }
                 arborEvent.EventType = (int)personEvent.Type;
                 arborEvent.PlaceId = personEvent.PlaceId;
-            
             }
 
-        
-
-            await _personRepository.UpdateAsync(p);
+            _unitOfWork.Save();
 
             List<ArborEvent> deleteArborEvent = new();
-        
 
             foreach (var deletedEvent in model.DeletedEvents)
             {
-                if (deletedEvent.ListType != EventListType.Person) continue;
-            
-                var familyEvent = p.Events.FirstOrDefault(x => x.EventId == deletedEvent.Id) ?? throw new Exception("Event not found");
-                deleteArborEvent.Add(await _arborEventRepository.GetByIdAsync(familyEvent.Event.Id));
-            
+                if (deletedEvent.ListType != EventListType.Person)
+                    continue;
+
+                var familyEvent =
+                    p.Events.FirstOrDefault(x => x.EventId == deletedEvent.Id)
+                    ?? throw new Exception("Event not found");
+                deleteArborEvent.Add(_unitOfWork.Event.GetById(familyEvent.Event.Id));
+
                 p.Events.Remove(familyEvent);
-            
-            
             }
-        
-        
-            await _personRepository.UpdateAsync(p);
+
+            _unitOfWork.Save();
 
             if (deleteArborEvent.Count > 0)
             {
-                await _arborEventRepository.DeleteRangeAsync(deleteArborEvent);    
+                _unitOfWork.Event.RemoveRange(deleteArborEvent);
             }
+
+            _unitOfWork.Save();
 
             return model;
         }
-        
+
         private ArborDate ToArborDate(ArborDateModel arborDateModel)
         {
             return new ArborDate
@@ -254,6 +252,4 @@ namespace ArborFamiliae.Services.Genealogy
             };
         }
     }
-    
-    
 }
