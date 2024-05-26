@@ -28,5 +28,7 @@ public class FamilyListSpecification : Specification<Family>
                 .ThenInclude(c => c.Names)
                 .ThenInclude(e => e.Surnames);
         }
+
+        Query.AsSplitQuery();
     }
 }

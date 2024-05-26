@@ -1,5 +1,6 @@
 ﻿@using ArborFamiliae.Domain.Events
 @using ArborFamiliae.Domain.Person
+@using ArborFamiliae.Blazor.WinForms.Components.Events
 
 @inject IGenderService GenderService
 
@@ -36,18 +37,11 @@
                 </DxFormLayoutGroup>
                 @if (IsEdit)
                 {
-                @* <SfTab> *@
-                @*     <TabItems> *@
-                @*         <TabItem> *@
-                @*             <ChildContent> *@
-                @*                 <TabHeader Text="@Loc["Events"]"></TabHeader> *@
-                @*             </ChildContent> *@
-                @*             <ContentTemplate> *@
-                @*                 <NestedEventList @bind-Events="Model.Events" EventMode="NestedEventList.EventListMode.Person" EventDeleted="OnEventDeleted"></NestedEventList> *@
-                @*             </ContentTemplate> *@
-                @*         </TabItem> *@
-                @*     </TabItems> *@
-                @* </SfTab> *@
+                    <DxTabs>
+                        <DxTabPage Text="@Loc["Events"]">
+                            <NestedEventList @bind-Events="Model.Events" EventMode="NestedEventList.EventListMode.Person" EventDeleted="OnEventDeleted"></NestedEventList>
+                        </DxTabPage>
+                    </DxTabs>
                 }
             </DxFormLayout>
         </Row1>

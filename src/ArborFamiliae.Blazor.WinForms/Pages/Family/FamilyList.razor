@@ -1,0 +1,71 @@
+﻿@page "/family/list"
+@using ArborFamiliae.Domain.Family
+@inherits BasePageComponent
+@inject IFamilyService FamilyService
+
+<h3>@Loc["Families"]</h3>
+
+<TwoRowLayout>
+    <Row1>
+        <DxToolbar>
+            <Items>
+                <DxToolbarItem RenderStyle="ButtonRenderStyle.Primary" Text="@Loc["Add Family"]" Click="@(() => NavigationManager.NavigateTo("/family/add"))"></DxToolbarItem>
+            </Items>
+        </DxToolbar>
+    </Row1>
+    <Row2>
+        <DxGrid Data="@_familyList"
+                PageSize="20"
+                PageSizeSelectorVisible="true"
+                PageSizeSelectorItems="@(new int[] { 10, 20, 50, 100 })"
+                PageSizeSelectorAllRowsItemVisible="true"
+                ShowGroupPanel="true"
+                ShowSearchBox="true"
+                SearchBoxNullText="@Loc["Search"]"
+                SelectionMode="GridSelectionMode.Single"
+                @bind-SelectedDataItem="_selectedFamily"
+                AllowSelectRowByClick="true"
+                KeyFieldName="ArborId"
+                RowDoubleClick="OnRowDoubleClick"
+
+        >
+            <Columns>
+                <DxGridDataColumn FieldName="ArborId" Caption="ID"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="@nameof(FamilyListModel.Father)"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="@nameof(FamilyListModel.Mother)"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="@nameof(FamilyListModel.Relationship)"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="@nameof(FamilyListModel.MarriageDate)"></DxGridDataColumn>
+            </Columns>
+        </DxGrid>
+    </Row2>
+</TwoRowLayout>
+
+@code {
+    private List<FamilyListModel> _familyList = new();
+    private object _selectedFamily;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _familyList = await FamilyService.LoadAllFamilies();
+    }
+
+    private void OnAdd()
+    {
+        NavigationManager.NavigateTo("/family/add");
+    }
+    
+    // public void OnCommandClicked(CommandClickEventArgs<FamilyListModel> args)
+    // {
+    //     if (args.CommandColumn.Title == "Edit")
+    //     {
+    //         NavigationManager.NavigateTo($"/family/{args.RowData.Id}/edit");    
+    //     }
+    //     
+    // }
+    
+    private void OnRowDoubleClick(GridRowClickEventArgs rowClickEventArgs)
+    {
+        string id = rowClickEventArgs.Grid.GetRowValue(rowClickEventArgs.VisibleIndex, "ArborId") as string;
+        NavigationManager.NavigateTo($"/family/{id}/edit");
+    }
+}

@@ -1,0 +1,47 @@
+﻿@using System.ComponentModel
+@using ArborFamiliae.Domain.Events
+
+@inject IPersonEventService PersonEventService
+
+<TwoRowLayout>
+    <Row1></Row1>
+    <Row2>
+        <DxGrid Data="Events">
+            <Columns>
+                <DxGridDataColumn FieldName="@nameof(EventAddEditModel.Category)" Caption="@Loc["Category"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="@nameof(EventAddEditModel.TypeDescription)" Caption="@Loc["Type"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="@nameof(EventAddEditModel.Description)" Caption="@Loc["Description"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="@nameof(EventAddEditModel.DateText)" Caption="@Loc["Date"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="@nameof(EventAddEditModel.PlaceName)" Caption="@Loc["Place"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="@nameof(EventAddEditModel.Participants)" Caption="@Loc["Main Participants"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="@nameof(EventAddEditModel.RoleDescription)" Caption="@Loc["Role"]"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="@nameof(EventAddEditModel.ArborId)" Caption="@Loc["ID"]"></DxGridDataColumn>
+            </Columns>
+        </DxGrid>
+    </Row2>
+</TwoRowLayout>
+
+@code {
+    [Parameter]
+    public Guid PersonId { get; set; }
+    
+    public enum EventListMode
+    {
+        Person,
+        Family
+    }
+
+    [Parameter]
+    public EventListMode EventMode { get; set; }
+    
+    [Parameter]
+    public EventCallback<EventAddEditModel> EventDeleted { get; set; }
+
+
+    [Parameter]
+    public BindingList<EventAddEditModel> Events { get; set; } = new();
+    
+    
+    [Parameter]
+    public EventCallback<BindingList<EventAddEditModel>> EventsChanged { get; set; }
+}

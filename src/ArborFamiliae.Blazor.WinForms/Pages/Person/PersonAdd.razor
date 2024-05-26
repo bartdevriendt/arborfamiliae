@@ -1,0 +1,26 @@
+﻿@page "/person/add"
+@using ArborFamiliae.Blazor.WinForms.Components.Person
+@using ArborFamiliae.Domain.Person
+@inherits BasePageComponent
+@inject IPersonService PersonService
+
+<h3>@Loc["Add Person"]</h3>
+
+<PersonEditComponent Model="@model" PersonSave="OnSave">
+    
+</PersonEditComponent>
+
+@code {
+    private PersonAddEditModel model = new PersonAddEditModel();
+    
+    protected override void OnInitialized()
+    {
+        model = new PersonAddEditModel();
+    }
+
+    private async Task OnSave()
+    {
+        await PersonService.AddEditPerson(model);
+        NavigationManager.NavigateTo("/person/list");
+    }
+}
