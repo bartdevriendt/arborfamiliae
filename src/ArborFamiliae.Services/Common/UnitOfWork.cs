@@ -75,6 +75,12 @@ public class UnitOfWork : IUnitOfWork
             }
         }
 
+        Person.Save();
+        Event.Save();
+        Place.Save();
+        Family.Save();
+        
+
         return _context.SaveChanges();
     }
 }

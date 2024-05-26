@@ -3,6 +3,7 @@ using ArborFamiliae.Data;
 using ArborFamiliae.Shared.Interfaces.Base;
 using Ardalis.Specification;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace ArborFamiliae.Services.Common;
 
@@ -38,7 +39,7 @@ public class GenericRepository<T> : IGenericRepository<T>
         return _context.Set<T>().Where(expression);
     }
 
-    public T GetById(Guid id)
+    public T? GetById(Guid id)
     {
         return _context.Set<T>().Find(id);
     }
@@ -143,6 +144,11 @@ public class GenericRepository<T> : IGenericRepository<T>
     public async Task<bool> AnyAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Set<T>().AnyAsync(cancellationToken);
+    }
+
+    public async void Save()
+    {
+        _context.SaveChanges();
     }
 
     protected virtual IQueryable<T> ApplySpecification(

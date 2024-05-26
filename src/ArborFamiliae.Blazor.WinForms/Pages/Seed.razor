@@ -1,0 +1,15 @@
+﻿@page "/seed"
+@inherits BasePageComponent
+@using ArborFamiliae.Data
+@inject ArborFamiliaeContext Context
+
+<h3>Seed</h3>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        //logging.LogInformation("Seed database");
+        ArborFamiliaeContext.InitializeAsync(Context);
+        NavigationManager.NavigateTo("/");
+    }
+}

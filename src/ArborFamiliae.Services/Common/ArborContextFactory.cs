@@ -3,19 +3,28 @@ using ArborFamiliae.Data.InternalModels;
 using ArborFamiliae.Data.Mysql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace ArborFamiliae.Services.Common;
 
 public class ArborContextFactory : IDbContextFactory<ArborFamiliaeContext>
 {
+    private ILoggerFactory _loggerFactory;
+
+    public ArborContextFactory(ILoggerFactory loggerFactory)
+    {
+        _loggerFactory = loggerFactory;
+    }
+
     public ArborFamiliaeContext CreateDbContext()
     {
         var config = new DbContextOptionsBuilder();
         config.UseLazyLoadingProxies();
         config.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
-                
+        config.EnableSensitiveDataLogging();
         config.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
-
+        config.UseLoggerFactory(_loggerFactory);
+        
         if (FamilyTreeDatabase.CurrentDatabase != null)
         {
                     
@@ -32,6 +41,8 @@ public class ArborContextFactory : IDbContextFactory<ArborFamiliaeContext>
                     x => { x.MigrationsAssembly(typeof(DependencyInjectionMySql).Assembly.GetName().Name); }
 
                 );
+
+                
             }
         }
 

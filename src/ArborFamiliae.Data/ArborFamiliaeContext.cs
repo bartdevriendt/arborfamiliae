@@ -1,12 +1,16 @@
 ﻿using ArborFamiliae.Data.Models;
 using ArborFamiliae.Data.ValueConverters;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace ArborFamiliae.Data;
 
 public class ArborFamiliaeContext : DbContext
 {
-    public ArborFamiliaeContext(DbContextOptions options) : base(options) { }
+    public ArborFamiliaeContext(DbContextOptions options) : base(options)
+    {
+        
+    }
 
     public DbSet<ArborEvent> Events { set; get; }
     public DbSet<Gender> Genders { get; set; }

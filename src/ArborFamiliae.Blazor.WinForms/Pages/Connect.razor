@@ -1,0 +1,94 @@
+﻿@page "/connect"
+
+@using System.Collections.ObjectModel
+@using ArborFamiliae.Blazor.WinForms.Services
+@using ArborFamiliae.Data.InternalModels
+@using ArborFamiliae.Hybrid.Shared.Models
+@using ArborFamiliae.Services.Common
+@using Microsoft.Data.Sqlite
+@inherits BasePageComponent
+@layout ConnectLayout
+
+<h3>@Loc["Load family tree"]</h3>
+
+<TwoRowLayout>
+    <Row1>
+        <DxGrid Data="@Databases"
+                KeyFieldName="Name"
+                AllowSelectRowByClick="true"
+                @bind-SelectedDataItem="@SelectedDataItem"
+                SelectionMode="GridSelectionMode.Single">
+
+            <Columns>
+
+                <DxGridDataColumn FieldName="Name"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="DatabaseType"></DxGridDataColumn>
+            </Columns>
+
+        </DxGrid>
+    </Row1>
+    <Row2>
+        <DxButton RenderStyle="ButtonRenderStyle.Primary" Click="LoadDatabase" Text="@Loc["Load Family Tree"]"></DxButton>
+    </Row2>
+</TwoRowLayout>
+
+@code {
+    
+    private FamilyTreeDatabaseService _databaseService;
+
+    private ObservableCollection<FamilyTreeDatabase> Databases { get; set; }
+
+    private FamilyTreeDatabase _addModel = new FamilyTreeDatabase();
+
+    private string[] _treeTypes = new[] { "MySql", "Sqlite" };
+    
+    object SelectedDataItem { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _databaseService = new FamilyTreeDatabaseService();
+        Databases = new ObservableCollection<FamilyTreeDatabase>(_databaseService.LoadDatabases());
+        
+    }
+
+    private async Task LoadDatabase()
+    {
+        if (SelectedDataItem == null)
+        {
+            Snackbar.Add(@Loc["Please select a family tree"], Severity.Error);
+            return;
+        }
+        FamilyTreeDatabase db = SelectedDataItem as FamilyTreeDatabase;
+        
+        LoadDatabase(db);
+    }
+
+    private async Task LoadDatabase(FamilyTreeDatabase db)
+    {
+        
+        if (db.DatabaseType == Provider.MySql.Name)
+        {
+            var builder = new MySqlConnector.MySqlConnectionStringBuilder();
+            builder.Database = db.Database;
+            builder.UserID = db.Username;
+            builder.Password = db.Password;
+            builder.Server = db.Server;
+
+            ConnectionStringService.ConnectionString = builder.ConnectionString;
+            ConnectionStringService.Provider = db.DatabaseType;
+        }
+
+        if (db.DatabaseType == Provider.Sqlite.Name)
+        {
+            var builder = new SqliteConnectionStringBuilder();
+            builder.DataSource = db.FilePath;
+
+            ConnectionStringService.ConnectionString = builder.ConnectionString;
+            ConnectionStringService.Provider = Provider.Sqlite.Name;
+        }
+
+        FamilyTreeDatabase.CurrentDatabase = db;
+        
+        NavigationManager.NavigateTo("/seed", forceLoad: true);
+    }
+}

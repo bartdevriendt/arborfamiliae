@@ -65,4 +65,7 @@ public interface IGenericRepository<T>
     );
 
     Task<bool> AnyAsync(CancellationToken cancellationToken = default);
+
+
+    void Save();
 }

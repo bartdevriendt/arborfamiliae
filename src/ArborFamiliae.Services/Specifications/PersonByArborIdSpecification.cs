@@ -3,7 +3,7 @@ using Ardalis.Specification;
 
 namespace ArborFamiliae.Services.Specifications;
 
-public class PersonByArborIdSpecification : SingleResultSpecification<Person>
+public sealed class PersonByArborIdSpecification : SingleResultSpecification<Person>
 {
     public PersonByArborIdSpecification(string arborId)
     {
@@ -11,5 +11,6 @@ public class PersonByArborIdSpecification : SingleResultSpecification<Person>
         Query.Include(p => p.Events).ThenInclude(e => e.Event);
         Query.Include(p => p.Names).ThenInclude(n => n.Surnames);
         Query.Include(p => p.Gender);
+        Query.AsSplitQuery();
     }
 }

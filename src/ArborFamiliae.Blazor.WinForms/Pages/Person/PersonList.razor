@@ -1,0 +1,61 @@
+﻿@page "/person/list"
+
+@using System.Collections.ObjectModel
+@using ArborFamiliae.Domain.Person
+@inherits BasePageComponent
+@inject IPersonService PersonService
+
+<h3>@Loc["Persons"] (@_personList.Count)</h3>
+
+<TwoRowLayout>
+    <Row1>
+        <DxToolbar>
+            <Items>
+                <DxToolbarItem RenderStyle="ButtonRenderStyle.Primary" Text="@Loc["Add Person"]" Click="@(() => NavigationManager.NavigateTo("/person/add"))"></DxToolbarItem>
+            </Items>
+        </DxToolbar>
+    </Row1>
+    <Row2>
+        <DxGrid Data="@_personList" 
+                PageSize="20"
+                PageSizeSelectorVisible="true"
+                PageSizeSelectorItems="@(new int[] { 10, 20, 50, 100 })"
+                PageSizeSelectorAllRowsItemVisible="true"
+                ShowGroupPanel="true"
+                ShowSearchBox="true"
+                SearchBoxNullText="@Loc["Search"]"
+                SelectionMode="GridSelectionMode.Single"
+                @bind-SelectedDataItem="_selectedPerson"
+                AllowSelectRowByClick="true"
+                KeyFieldName="ArborId"
+                RowDoubleClick="OnRowDoubleClick"
+                
+                >
+            <Columns>
+                <DxGridDataColumn FieldName="FullName"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="Surname" GroupIndex="0"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="ArborId" Caption="ID"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="Gender"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="BirthDate"></DxGridDataColumn>
+                <DxGridDataColumn FieldName="DeathDate"></DxGridDataColumn>
+            </Columns>
+        </DxGrid>
+    </Row2>
+</TwoRowLayout>
+
+@code {
+
+    private ObservableCollection<PersonListModel> _personList = new();
+    private string[] _groupColumns = new[] { "Surname" };
+    private object _selectedPerson;
+    protected override async Task OnInitializedAsync()
+    {
+        _personList = new ObservableCollection<PersonListModel>(await PersonService.GetAllPersons());
+    }
+    
+    private void OnRowDoubleClick(GridRowClickEventArgs rowClickEventArgs)
+    {
+        string id = rowClickEventArgs.Grid.GetRowValue(rowClickEventArgs.VisibleIndex, "ArborId") as string;
+        NavigationManager.NavigateTo($"/person/{id}/edit");
+    }
+}

@@ -1,0 +1,16 @@
+﻿@page "/"
+@page "/dashboard"
+@using ArborFamiliae.Blazor.WinForms.Services
+@inherits BasePageComponent
+<h3>@Loc["Dashboard"]</h3>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        if (ConnectionStringService.ConnectionString == "")
+        {
+            NavigationManager.NavigateTo("/connect");
+        }
+        
+    }
+}

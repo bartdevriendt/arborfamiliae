@@ -1,0 +1,92 @@
+﻿@using ArborFamiliae.Domain.Events
+@using ArborFamiliae.Domain.Person
+
+@inject IGenderService GenderService
+
+<EditForm Model="@Model" Context="edit_context">
+
+    <TwoRowLayout>
+        
+        <Row1>
+            <DxFormLayout>
+                <DxFormLayoutGroup Caption="@Loc["Preferred"]">
+                    <DxFormLayoutItem ColSpanMd="4" Caption="@Loc["Title"]"><DxTextBox @bind-Text="@Model.PreferredTitle"></DxTextBox></DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="4" Caption="@Loc["Nick"]"><DxTextBox @bind-Text="@Model.PreferredNick"></DxTextBox></DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="4" Caption="@Loc["Call"]"><DxTextBox @bind-Text="@Model.PreferredCall"></DxTextBox></DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="8" Caption="@Loc["Given"]"><DxTextBox @bind-Text="@Model.PreferredGivenName"></DxTextBox></DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="4" Caption="@Loc["Suffix"]"><DxTextBox @bind-Text="@Model.PreferredSuffix"></DxTextBox></DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="4" Caption="@Loc["Surname"]">
+                        <DxTextBox @bind-Text="@Model.PreferredSurnamePrefix"></DxTextBox></DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="4" Caption="&nbsp;">
+                        <DxTextBox @bind-Text="@Model.PreferredSurname"></DxTextBox>
+                    </DxFormLayoutItem>
+                </DxFormLayoutGroup>
+                <DxFormLayoutGroup Caption="@Loc["General"]">
+                    <DxFormLayoutItem Caption="@Loc["Gender"]" ColSpanMd="4">
+                        <DxComboBox Data="@_genders" 
+                                    @bind-Value="@Model.Gender" 
+                                    TextFieldName="@nameof(GenderModel.Description)"
+                                    ValueFieldName="@nameof(GenderModel.Id)">
+                           
+                        </DxComboBox>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="ID" ColSpanMd="4">
+                        <DxTextBox @bind-Text="@Model.ArborId"></DxTextBox>
+                    </DxFormLayoutItem>
+                </DxFormLayoutGroup>
+                @if (IsEdit)
+                {
+                @* <SfTab> *@
+                @*     <TabItems> *@
+                @*         <TabItem> *@
+                @*             <ChildContent> *@
+                @*                 <TabHeader Text="@Loc["Events"]"></TabHeader> *@
+                @*             </ChildContent> *@
+                @*             <ContentTemplate> *@
+                @*                 <NestedEventList @bind-Events="Model.Events" EventMode="NestedEventList.EventListMode.Person" EventDeleted="OnEventDeleted"></NestedEventList> *@
+                @*             </ContentTemplate> *@
+                @*         </TabItem> *@
+                @*     </TabItems> *@
+                @* </SfTab> *@
+                }
+            </DxFormLayout>
+        </Row1>
+        <Row2>
+            <DxButton RenderStyle="ButtonRenderStyle.Primary" Text="@Loc["Save"]" Click="OnSave"></DxButton>
+        </Row2>
+    </TwoRowLayout>
+
+</EditForm>
+
+
+@code {
+    
+    [Parameter]
+    public PersonAddEditModel Model { get; set; } = new PersonAddEditModel();
+
+    [Parameter]
+    public EventCallback PersonSave { get; set; }
+    
+    private List<GenderModel> _genders;
+    
+    public bool IsEdit
+    {
+        get => Model.Id != Guid.Empty;
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _genders = await GenderService.GetGenders();
+    }
+
+    private async Task OnSave()
+    {
+        await PersonSave.InvokeAsync();
+    }
+
+    private async Task OnEventDeleted(EventAddEditModel model)
+    {
+        Model.DeletedEvents.Add(model);
+        Model.Events.Remove(model);
+    }
+}

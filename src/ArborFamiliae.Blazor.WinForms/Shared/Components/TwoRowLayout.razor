@@ -1,0 +1,35 @@
+﻿<DxGridLayout  ColumnSpacing="8px" RowSpacing="8px">
+    
+    <Rows>
+        <DxGridLayoutRow Height="auto"></DxGridLayoutRow>
+        <DxGridLayoutRow Height="auto"></DxGridLayoutRow>
+    </Rows>
+    
+    <Columns>
+        <DxGridLayoutColumn></DxGridLayoutColumn>
+    </Columns>
+    
+    <Items>
+        <DxGridLayoutItem Row="0" Column="0">
+            <Template>
+                @Row1    
+            </Template>
+            
+        </DxGridLayoutItem>
+        <DxGridLayoutItem Row="1" Column="0">
+            <Template>
+                @Row2    
+            </Template>
+            
+        </DxGridLayoutItem>
+    </Items>
+</DxGridLayout>
+
+@code {
+
+    [Parameter]
+    public RenderFragment Row1 { get; set; }
+    
+    [Parameter]
+    public RenderFragment Row2 { get; set; }
+}
