@@ -1,0 +1,156 @@
+﻿@using ArborFamiliae.Domain.Person
+@using ArborFamiliae.Domain.Enums
+@inject IPersonService PersonService
+@inject IGenderService GenderService
+
+
+<DxTextBox @ref="personSelection" @bind-Text="Text" Created="OnCreated" ReadOnly="true">
+    <Buttons>
+        <DxEditorButton IconCssClass="bi bi-hand-index-thumb"
+                        Tooltip="Select person"
+                        Click="OnSelectPerson" />
+    </Buttons>
+</DxTextBox>
+
+<DxPopup @bind-Visible="IsPopupVisible" Width="800" Height="600" HeaderText="@Loc["Select person"]">
+    <BodyContentTemplate>
+        <div class="container-fluid">
+            <div class="row">
+
+            </div>
+            <div class="row">
+                <DxGrid @ref="_personGrid"
+                        Data="_persons"
+                        SelectionMode="GridSelectionMode.Single"
+                        AllowSelectRowByClick="true"
+                        ShowGroupPanel="true"
+                        KeyFieldName="Id"
+                        SelectedDataItem="_selectedPerson"
+                        >
+                    <Columns>
+                        <DxGridDataColumn FieldName="@nameof(PersonListModel.Surname)" GroupIndex="0"></DxGridDataColumn>
+                        <DxGridDataColumn FieldName="@nameof(PersonListModel.FullName)" Caption="@Loc["Name"]"></DxGridDataColumn>
+                        <DxGridDataColumn FieldName="@nameof(PersonListModel.ArborId)" Caption="ID"></DxGridDataColumn>
+                        <DxGridDataColumn FieldName="@nameof(PersonListModel.Gender)" Caption="@Loc["Gender"]"></DxGridDataColumn>
+                        <DxGridDataColumn FieldName="@nameof(PersonListModel.BirthDate)" Caption="@Loc["Birth Date"]"></DxGridDataColumn>
+                        <DxGridDataColumn FieldName="@nameof(PersonListModel.DeathDate)" Caption="@Loc["Death"]"></DxGridDataColumn>
+                    </Columns>
+                </DxGrid>
+            </div>
+            <div class="row">
+                <DxCheckBox Checked="@_showAll" CheckedExpression="@(() => _showAll)" CheckedChanged="@((bool value) => ShowAllChanged(value))"> @Loc["Show All"]</DxCheckBox>
+            </div>
+            <div class="row">
+                <DxButton RenderStyle="ButtonRenderStyle.Primary" Click="OnSelect" Context="button_context">@Loc["Select"]</DxButton>
+            </div>
+        </div>
+    </BodyContentTemplate>
+</DxPopup>
+
+@code {
+
+    DxTextBox personSelection;
+    DxGrid _personGrid;
+
+    [Parameter]
+    public string Text { get; set; } = "";
+    
+    [Parameter]
+    public Guid? PersonId { get; set; }
+    
+    [Parameter]
+    public EventCallback<Guid?> PersonIdChanged { get; set; }
+    
+    [Parameter]
+    public EventCallback<PersonListModel> PersonSelected { get; set; }
+
+    [Parameter]
+    public GenderInternal Gender { get; set; } = GenderInternal.Male;
+
+    private object SelectedPerson;
+
+    private bool _showAll = false;
+    private Guid genderId = Guid.Empty;
+    
+    private List<PersonListModel> _persons = new();
+    
+    private bool IsPopupVisible { get; set; } = false;
+    
+    private object _selectedPerson;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var genders = await GenderService.GetGenders();
+
+        if (Gender == GenderInternal.Male)
+        {
+            genderId = genders.First(g => g.Description == "Male").Id;
+        }
+        else if(Gender == GenderInternal.Female)
+        {
+            genderId = genders.First(g => g.Description == "Female").Id;
+        }
+        
+        
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+
+        if (_showAll || Gender == GenderInternal.All)
+        {
+            _persons = await PersonService.GetAllPersons();
+        }
+        else
+        {
+            _persons = await PersonService.GetPersonsFiltered(genderId);
+        }
+    }
+
+
+    private void OnSelectPerson()
+    {
+        IsPopupVisible = true;
+    }
+
+    private async Task OnSelect()
+    {
+
+        var selection = _selectedPerson;
+        
+        if (selection != null)
+        {
+            IsPopupVisible = false;
+            var person = (PersonListModel)selection;
+            PersonId = person.Id;
+
+            await PersonSelected.InvokeAsync(person);
+
+        }
+        else
+        {
+           
+        } 
+    }
+    
+    public async Task OnCreated()
+
+    {
+
+        //await this.personSelection.AddIconAsync("append", "bi bi-hand-index-thumb", new Dictionary<string, object>() { { "onclick", OnSelectPerson } });
+        // if (AllowAdd)
+        // {
+        //     await this.personSelection.AddIconAsync("append", "bi bi-plus", new Dictionary<string, object>() { { "onclick", OnAddPlace } });    
+        // }
+        
+
+    }
+
+    private async Task ShowAllChanged(bool value)
+    {
+        _showAll = value;
+        await LoadData();
+    }
+
+}

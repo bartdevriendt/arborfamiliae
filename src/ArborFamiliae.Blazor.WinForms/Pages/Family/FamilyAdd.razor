@@ -1,0 +1,22 @@
+﻿@page "/family/add"
+@using ArborFamiliae.Domain.Family
+@using ArborFamiliae.Blazor.WinForms.Components.Family
+@inherits BasePageComponent
+@inject IFamilyService FamilyService
+
+<h3>@Loc["Add Family"]</h3>
+<FamilyEditComponent Model="_model" FamilySave="FamilySave">
+
+</FamilyEditComponent>
+
+@code {
+
+private FamilyAddEditModel _model = new();
+
+private async Task FamilySave()
+{
+await FamilyService.AddEditFamily(_model);
+NavigationManager.NavigateTo("/family/list");
+}
+
+}

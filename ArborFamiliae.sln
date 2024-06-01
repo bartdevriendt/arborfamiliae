@@ -39,7 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{AA78DE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.ViewModels", "src\ArborFamiliae.ViewModels\ArborFamiliae.ViewModels.csproj", "{10111CED-63E4-4A9C-BC67-6FA16D198FC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArborFamiliae.Blazor.WinForms", "src\ArborFamiliae.Blazor.WinForms\ArborFamiliae.Blazor.WinForms.csproj", "{6E70B659-8CF8-48E1-98FC-CAA099FB11C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArborFamiliae.Blazor.WinForms", "src\ArborFamiliae.Blazor.WinForms\ArborFamiliae.Blazor.WinForms.csproj", "{6E70B659-8CF8-48E1-98FC-CAA099FB11C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +103,10 @@ Global
 		{6E70B659-8CF8-48E1-98FC-CAA099FB11C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E70B659-8CF8-48E1-98FC-CAA099FB11C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E70B659-8CF8-48E1-98FC-CAA099FB11C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{144670CB-6396-488C-A76D-2E03A3B69E78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{144670CB-6396-488C-A76D-2E03A3B69E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{144670CB-6396-488C-A76D-2E03A3B69E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{144670CB-6396-488C-A76D-2E03A3B69E78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +129,7 @@ Global
 		{AA78DE84-5A77-448E-B0D3-45A7F4979DD6} = {27ACFA5A-EAF9-46DD-8A7F-F9382A2AFCEC}
 		{10111CED-63E4-4A9C-BC67-6FA16D198FC4} = {AA78DE84-5A77-448E-B0D3-45A7F4979DD6}
 		{6E70B659-8CF8-48E1-98FC-CAA099FB11C7} = {BB2F98DD-71A3-4024-B85C-A0485799D267}
+		{144670CB-6396-488C-A76D-2E03A3B69E78} = {BB2F98DD-71A3-4024-B85C-A0485799D267}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64B4EBAC-6347-40D8-B65C-134F8BF9F13C}

@@ -1,0 +1,31 @@
+﻿@page "/family/{ArborId}/edit"
+@using ArborFamiliae.Blazor.WinForms.Components.Family
+@using ArborFamiliae.Domain.Family
+@inherits BasePageComponent
+@inject IFamilyService FamilyService
+
+<h3>@Loc["Edit Family"]</h3>
+
+<FamilyEditComponent Model="_model" FamilySave="FamilySave">
+    
+</FamilyEditComponent>
+
+@code {
+
+    [Parameter]
+    public string ArborId { get; set; }
+    
+    private FamilyAddEditModel _model = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _model = await FamilyService.GetFamilyByArborId(ArborId);
+    }
+
+    private async Task FamilySave()
+    {
+        await FamilyService.AddEditFamily(_model);
+        NavigationManager.NavigateTo("/family/list");
+    }
+
+}

@@ -1,0 +1,187 @@
+﻿@using ArborFamiliae.Domain.Family
+@using ArborFamiliae.Domain.Events
+@using ArborFamiliae.Domain.Person
+@using ArborFamiliae.Blazor.WinForms.Components.Person
+@using ArborFamiliae.Domain.Enums
+
+<EditForm Model="@Model" Context="edit_context">
+    <TwoRowLayout>
+        <Row1>
+            <DxFormLayout>
+                <DxFormLayoutGroup ColSpanMd="6" Caption="@Loc["Father/partner1"]">
+                    <DxFormLayoutItem Caption="@Loc["Name"]" ColSpanMd="12">
+                        <PersonSelector Text="@Model.FatherDisplayName" @bind-PersonId="@Model.FatherId" Gender="GenderInternal.Male" PersonSelected="FatherSelected"></PersonSelector>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="@Loc["Birth"]" ColSpanMd="12">
+                        <DxTextBox @bind-Text="@Model.FatherBirthDate" ReadOnly="true"></DxTextBox>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
+                        <DxTextBox @bind-Text="@Model.FatherDeathDate" ReadOnly="true"></DxTextBox>
+                    </DxFormLayoutItem>
+                </DxFormLayoutGroup>
+                <DxFormLayoutGroup ColSpanMd="6" Caption="@Loc["Mother/partner2"]">
+                    <DxFormLayoutItem Caption="@Loc["Name"]" ColSpanMd="12">
+                        <PersonSelector Text="@Model.MotherDisplayName" @bind-PersonId="@Model.MotherId" Gender="GenderInternal.Female" PersonSelected="MotherSelected"></PersonSelector>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="@Loc["Birth"]" ColSpanMd="12">
+                        <DxTextBox @bind-Text="@Model.MotherBirthDate" ReadOnly="true"></DxTextBox>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="@Loc["Death"]" ColSpanMd="12">
+                        <DxTextBox @bind-Text="@Model.MotherDeathDate" ReadOnly="true"></DxTextBox>
+                    </DxFormLayoutItem>
+                </DxFormLayoutGroup>
+                <DxFormLayoutGroup ColSpanMd="12">
+                    <DxFormLayoutItem Caption="@Loc["ID"]" ColSpanMd="6">
+                        <DxTextBox ReadOnly="true" @bind-Text="@Model.ArborId"></DxTextBox>
+                    </DxFormLayoutItem>
+                </DxFormLayoutGroup>
+
+                @* <SfTab> *@
+                @*     <TabItems> *@
+                @*         <TabItem> *@
+                @*             <ChildContent> *@
+                @*                 <TabHeader Text="@Loc["Children"]"></TabHeader> *@
+                @*             </ChildContent> *@
+                @*             <ContentTemplate> *@
+                @*                 <TwoRowLayout> *@
+                @*                     <Row1> *@
+                @*                         <SfToolbar> *@
+                @*                             <ToolbarItems> *@
+                @*                                 <ToolbarItem Text="@Loc["Add"]" PrefixIcon="bi bi-hand-index-thumb" OnClick="OnChildLink"></ToolbarItem> *@
+                @*                             </ToolbarItems> *@
+                @*                         </SfToolbar> *@
+                @*                     </Row1> *@
+                @*                     <Row2> *@
+                @*                         <SfGrid @ref="_childGrid" DataSource="@Model.Children"> *@
+                @*                             <GridColumns> *@
+                @*                                 <GridColumn HeaderText="@Loc["Order"]" Field="Order"></GridColumn> *@
+                @*                                 <GridColumn HeaderText="@Loc["ID"]" Field="ArborId"></GridColumn> *@
+                @*                                 <GridColumn HeaderText="@Loc["Name"]" Field="Name"></GridColumn> *@
+                @*                                 <GridColumn HeaderText="@Loc["Gender"]" Field="Gender"></GridColumn> *@
+                @*                                 <GridColumn HeaderText="@Loc["Paternal"]" Field="PaternalRelation"></GridColumn> *@
+                @*                                 <GridColumn HeaderText="@Loc["Maternal"]" Field="MaternalRelation"></GridColumn> *@
+                @*                                 <GridColumn HeaderText="@Loc["BirthDate"]" Field="BirthDate"></GridColumn> *@
+                @*                             </GridColumns> *@
+                @*                         </SfGrid> *@
+                @*                     </Row2> *@
+                @*                 </TwoRowLayout> *@
+                @*             </ContentTemplate> *@
+                @*         </TabItem> *@
+                @*         <TabItem> *@
+                @*             <ChildContent> *@
+                @*                 <TabHeader Text="@Loc["Events"]"></TabHeader> *@
+                @*             </ChildContent> *@
+                @*             <ContentTemplate> *@
+                @*                 <NestedEventList @bind-Events="@Model.Events" EventMode="NestedEventList.EventListMode.Family" EventDeleted="OnEventDeleted"></NestedEventList> *@
+                @*             </ContentTemplate> *@
+                @*         </TabItem> *@
+                @*     </TabItems> *@
+                @* </SfTab> *@
+
+            </DxFormLayout>
+
+        </Row1>
+        <Row2>
+            <DxButton IsPrimary="true" @onclick="OnSave">@Loc["Save"]</DxButton>
+        </Row2>
+    </TwoRowLayout>
+
+
+</EditForm>
+
+<DxPopup @bind-Visible="_isPopupVisible" HeaderText="@Loc["Add child"]">
+    <BodyContentTemplate>
+       
+            <TwoRowLayout>
+                <Row1>
+                    <PersonSelector Gender="GenderInternal.All" @bind-PersonId="@_childModel.PersonId" Text="@_childModel.Name" PersonSelected="PersonSelected"></PersonSelector>
+                </Row1>
+                <Row2>
+                    <DxButton Click="OnChildAddClick"  RenderStyle="ButtonRenderStyle.Primary" Context="button_context">@Loc["Add"]</DxButton>
+                </Row2>
+            </TwoRowLayout>
+       
+    </BodyContentTemplate>
+</DxPopup>
+
+@code {
+
+    DxGrid _childGrid;
+
+    [Parameter] public FamilyAddEditModel Model { get; set; }
+
+    [Parameter] public EventCallback FamilySave { get; set; }
+
+    private Guid _maleGenderId = Guid.Empty;
+    private Guid _femaleGenderId = Guid.Empty;
+
+    private bool _isPopupVisible = false;
+    private FamilyChildAddEditModel _childModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    private void FatherSelected(PersonListModel father)
+    {
+        Model.FatherDisplayName = father.FullName + " [" + father.ArborId + "]";
+        Model.FatherBirthDate = father.BirthDate;
+        Model.FatherDeathDate = father.DeathDate;
+        Model.FatherId = father.Id;
+    }
+
+    private void MotherSelected(PersonListModel mother)
+    {
+        Model.MotherDisplayName = mother.FullName + " [" + mother.ArborId + "]";
+        Model.MotherBirthDate = mother.BirthDate;
+        Model.MotherDeathDate = mother.DeathDate;
+        Model.MotherId = mother.Id;
+    }
+
+    private async Task OnSave()
+    {
+        await FamilySave.InvokeAsync();
+    }
+
+    private void OnChildLink()
+    {
+        _childModel = new FamilyChildAddEditModel();
+        _childModel.FamiliyId = Model.Id;
+        _childModel.Order = Model.Children.Count + 1;
+
+        _isPopupVisible = true;
+    }
+
+    private void OnEventLink()
+    {
+// _childModel = new FamilyChildAddEditModel();
+// _childModel.FamiliyId = Model.Id;
+// _childModel.Order = Model.Children.Count + 1;
+//
+// _isPopupVisible = true;
+    }
+
+    private void PersonSelected(PersonListModel obj)
+    {
+        _childModel.PersonId = obj.Id;
+        _childModel.Name = obj.FullName;
+        _childModel.BirthDate = obj.BirthDate;
+        _childModel.Gender = obj.Gender;
+        _childModel.MaternalRelation = "";
+        _childModel.PaternalRelation = "";
+    }
+
+    private void OnChildAddClick()
+    {
+        Model.Children.Add(_childModel);
+        _isPopupVisible = false;
+        //_childGrid.Refresh();
+    }
+
+    private async Task OnEventDeleted(EventAddEditModel model)
+    {
+        Model.DeletedEvents.Add(model);
+        Model.Events.Remove(model);
+    }
+
+}
