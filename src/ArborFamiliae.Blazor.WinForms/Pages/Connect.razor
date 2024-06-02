@@ -7,6 +7,7 @@
 @using ArborFamiliae.Services.Common
 @using Microsoft.Data.Sqlite
 @using FamilyTreeDatabase = ArborFamiliae.Data.InternalModels.FamilyTreeDatabase
+@using ArborFamiliae.Blazor.WinForms.Components.Controls
 @inherits BasePageComponent
 @layout ConnectLayout
 
@@ -30,6 +31,7 @@
     </Row1>
     <Row2>
         <DxButton RenderStyle="ButtonRenderStyle.Info" Text="@Loc["New family tree"]" Click="NewFamilyTree"></DxButton>
+        <DxButton RenderStyle="ButtonRenderStyle.Danger" Text="@Loc["Delete family tree"]" Click="DeleteFamilyTree"></DxButton>
         <DxButton RenderStyle="ButtonRenderStyle.Primary" Click="LoadDatabase" Text="@Loc["Load Family Tree"]"></DxButton>
     </Row2>
 </TwoRowLayout>
@@ -50,40 +52,37 @@
                                             ValueFieldName="Key"
                                             @bind-Value="_addModel.DatabaseType"></DxComboBox>
                             </DxFormLayoutItem>
-                        </DxFormLayoutGroup>
-                        <DxFormLayoutGroup Caption="@Loc["Database parameters"]" Visible="@(_addModel.DatabaseType == "MySql")">
                             <DxFormLayoutItem Caption="@Loc["Name"]">
                                 <DxTextBox @bind-Text="_addModel.Name"></DxTextBox>
                             </DxFormLayoutItem>
                         </DxFormLayoutGroup>
-                        <DxFormLayoutGroup Caption="@Loc["Database parameters"]" Visible="@(_addModel.DatabaseType == "Sqlite")">
-                            <DxFormLayoutItem Caption="@Loc["File Path"]">
-                                <DxTextBox @bind-Text="_addModel.FilePath"></DxTextBox>
+                        <DxFormLayoutGroup Caption="@Loc["Database parameters"]" Visible="@(_addModel.DatabaseType == "MySql")">
+                           
+                            <DxFormLayoutItem Caption="@Loc["Server"]">
+                                <DxTextBox @bind-Text="_addModel.Server"></DxTextBox>
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="@Loc["Database"]">
+                                <DxTextBox @bind-Text="_addModel.Database"></DxTextBox>
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="@Loc["Username"]">
+                                <DxTextBox @bind-Text="_addModel.Username"></DxTextBox>
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="@Loc["Password"]">
+                                <DxTextBox @bind-Text="_addModel.Password"></DxTextBox>
                             </DxFormLayoutItem>
                         </DxFormLayoutGroup>
-                        
-                        @* <DxFormItem LabelText="@Loc["Database Type"]"> *@
-                        @*     <DxComboBox @bind-SelectedItem="_addModel.DatabaseType" DataSource="_treeTypes"></DxComboBox> *@
-                        @* </DxFormItem> *@
-                        @* <DxFormItem LabelText="@Loc["Server"]"> *@
-                        @*     <DxTextBox @bind-Text="_addModel.Server"></DxTextBox> *@
-                        @* </DxFormItem> *@
-                        @* <DxFormItem LabelText="@Loc["Database"]"> *@
-                        @*     <DxTextBox @bind-Text="_addModel.Database"></DxTextBox> *@
-                        @* </DxFormItem> *@
-                        @* <DxFormItem LabelText="@Loc["Username"]"> *@
-                        @*     <DxTextBox @bind-Text="_addModel.Username"></DxTextBox> *@
-                        @* </DxFormItem> *@
-                        @* <DxFormItem LabelText="@Loc["Password"]"> *@
-                        @*     <DxTextBox @bind-Text="_addModel.Password"></DxTextBox> *@
-                        @* </DxFormItem> *@
+                        <DxFormLayoutGroup Caption="@Loc["Database parameters"]" Visible="@(_addModel.DatabaseType == "Sqlite")">
+                            <DxFormLayoutItem Caption="@Loc["File Path"]" ColSpanMd="12" ColSpanLg="12">
+                                <FileSelector @bind-FileName="_addModel.FilePath" ExtensionFilter="Sqlite Files (*.sqlite)|*.sqlite|All Files|*.*"></FileSelector>
+                            </DxFormLayoutItem>
+                        </DxFormLayoutGroup>
                         
                     </DxFormLayout>
                 </EditForm>
             </Row1>
             <Row2>
-                @* <DxButton RenderStyle="ButtonRenderStyle.Primary" Text="@Loc["Save"]" Click="Save"></DxButton> *@
-                @* <DxButton RenderStyle="ButtonRenderStyle.Danger" Text="@Loc["Cancel"]" Click="Cancel"></DxButton> *@
+                <DxButton RenderStyle="ButtonRenderStyle.Primary" Text="@Loc["Save"]" Click="Save"></DxButton>
+                <DxButton RenderStyle="ButtonRenderStyle.Info" Text="@Loc["Cancel"]" Click="Cancel"></DxButton>
             </Row2>
         </TwoRowLayout>
         
@@ -110,8 +109,10 @@
         _databaseService = new FamilyTreeDatabaseService();
         Databases = new ObservableCollection<FamilyTreeDatabase>(_databaseService.LoadDatabases());
         
-        _databaseTypes.Add(new DatabaseType { Key = "MySql", Description = "MySql" });
-        _databaseTypes.Add(new DatabaseType { Key = "Sqlite", Description = "Sqlite" });
+        
+        
+        _databaseTypes.Add(new DatabaseType { Key = Provider.MySql.Name, Description = Provider.MySql.Name });
+        _databaseTypes.Add(new DatabaseType { Key = Provider.Sqlite.Name, Description = Provider.Sqlite.Name });
         
     }
 
@@ -159,6 +160,31 @@
     private void NewFamilyTree()
     {
         newTreePopupVisible = true;
+    }
+
+    private async Task Save()
+    {
+        _databaseService.StoreDatabase(_addModel);
+        Databases.Add(_addModel);
+        newTreePopupVisible = false;
+    }
+
+    private async Task Cancel()
+    {
+        newTreePopupVisible = false;
+        _addModel = new FamilyTreeDatabase();
+    }
+
+    private async Task DeleteFamilyTree()
+    {
+        if (SelectedDataItem == null)
+        {
+            Snackbar.Add(@Loc["Please select a family tree"], Severity.Error);
+            return;
+        }
+        FamilyTreeDatabase db = SelectedDataItem as FamilyTreeDatabase;
+        _databaseService.DeleteDatabase(db);
+        Databases.Remove(db);
     }
 
 }

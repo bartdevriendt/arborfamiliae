@@ -23,11 +23,11 @@ public class UnitOfWork : IUnitOfWork
     {
         _context = contextFactory.CreateDbContext();
         _sequenceGeneratorService = sequenceGeneratorService;
-        Person = new PersonRepository(contextFactory, SpecificationEvaluator.Default);
-        Event = new EventRepository(contextFactory, SpecificationEvaluator.Default);
-        Place = new PlaceRepository(contextFactory, SpecificationEvaluator.Default);
-        Family = new FamilyRepository(contextFactory, SpecificationEvaluator.Default);
-        Gender = new GenderRepository(contextFactory, SpecificationEvaluator.Default);
+        Person = new PersonRepository(_context, SpecificationEvaluator.Default);
+        Event = new EventRepository(_context, SpecificationEvaluator.Default);
+        Place = new PlaceRepository(_context, SpecificationEvaluator.Default);
+        Family = new FamilyRepository(_context, SpecificationEvaluator.Default);
+        Gender = new GenderRepository(_context, SpecificationEvaluator.Default);
     }
 
     public void Dispose()

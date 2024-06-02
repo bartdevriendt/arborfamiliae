@@ -1,8 +1,8 @@
 ﻿@using ArborFamiliae.Domain.Family
 @using ArborFamiliae.Domain.Events
 @using ArborFamiliae.Domain.Person
-@using ArborFamiliae.Blazor.WinForms.Components.Person
 @using ArborFamiliae.Domain.Enums
+@using ArborFamiliae.Blazor.WinForms.Components.Controls
 
 <EditForm Model="@Model" Context="edit_context">
     <TwoRowLayout>
@@ -36,6 +36,40 @@
                     </DxFormLayoutItem>
                 </DxFormLayoutGroup>
 
+                <DxTabs>
+                    <DxTabPage Text="@Loc["Children"]">
+                        <TwoRowLayout>
+                            <Row1>
+                                <DxToolbar>
+                                    <Items>
+                                        <DxToolbarItem Text="@Loc["Add"]" IconCssClass="bi bi-plus" Click="OnChildLink"></DxToolbarItem>
+                                        <DxToolbarItem Text="@Loc["Delete"]" IconCssClass="bi bi-trash" Click="OnDeleteChild"></DxToolbarItem>
+                                    </Items>
+                                </DxToolbar>
+                            </Row1>
+                            <Row2>
+                                <DxGrid @ref="_childGrid" 
+                                        Data="@Model.Children"
+                                        KeyFieldName="ArborId"
+                                        AllowSelectRowByClick="true"
+                                        SelectionMode="GridSelectionMode.Single"
+                                        @bind-SelectedDataItem="_selectedChild"
+                                        >
+                                    <Columns>
+                                        <DxGridDataColumn Caption="@Loc["Order"]" FieldName="Order"></DxGridDataColumn>
+                                        <DxGridDataColumn Caption="@Loc["ID"]" FieldName="ArborId"></DxGridDataColumn>
+                                        <DxGridDataColumn Caption="@Loc["Name"]" FieldName="Name"></DxGridDataColumn>
+                                        <DxGridDataColumn Caption="@Loc["Gender"]" FieldName="Gender"></DxGridDataColumn>
+                                        <DxGridDataColumn Caption="@Loc["Paternal"]" FieldName="PaternalRelation"></DxGridDataColumn>
+                                        <DxGridDataColumn Caption="@Loc["Maternal"]" FieldName="MaternalRelation"></DxGridDataColumn>
+                                        <DxGridDataColumn Caption="@Loc["BirthDate"]" FieldName="BirthDate"></DxGridDataColumn>
+                                    </Columns>   
+                                </DxGrid>
+                            </Row2>
+                        </TwoRowLayout>
+                    </DxTabPage>
+                </DxTabs>
+                
                 @* <SfTab> *@
                 @*     <TabItems> *@
                 @*         <TabItem> *@
@@ -118,6 +152,8 @@
     private bool _isPopupVisible = false;
     private FamilyChildAddEditModel _childModel = new();
 
+    private object _selectedChild;    
+
     protected override async Task OnInitializedAsync()
     {
     }
@@ -182,6 +218,18 @@
     {
         Model.DeletedEvents.Add(model);
         Model.Events.Remove(model);
+    }
+
+    private async Task OnDeleteChild()
+    {
+        if (_selectedChild == null)
+        {
+            return;
+        }
+        
+        var child = (FamilyChildAddEditModel)_selectedChild;
+        Model.Children.Remove(child);
+        Model.DeletedChildren.Add(child);
     }
 
 }

@@ -240,6 +240,14 @@ public class FamilyService : IFamilyService
             f.Events.Remove(familyEvent);
         }
 
+
+        foreach (var deletedChild in model.DeletedChildren)
+        {
+            var familyChild = f.Children.FirstOrDefault(x => x.ChildId == deletedChild.PersonId)
+                ?? throw new Exception("Child not found");
+            f.Children.Remove(familyChild);
+        }
+
         _unitOfWork.Save();
 
         if (deleteArborEvent.Count > 0)

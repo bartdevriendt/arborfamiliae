@@ -10,7 +10,7 @@ namespace ArborFamiliae.Services.Repository;
 public class FamilyRepository : GenericRepository<Family>, IFamilyRepository
 {
     public FamilyRepository(
-        IDbContextFactory<ArborFamiliaeContext> context,
+        ArborFamiliaeContext context,
         ISpecificationEvaluator specificationEvaluator
     )
         : base(context, specificationEvaluator) { }

@@ -10,7 +10,7 @@ namespace ArborFamiliae.Services.Repository;
 public class GenderRepository : GenericRepository<Gender>, IGenderRepository
 {
     public GenderRepository(
-        IDbContextFactory<ArborFamiliaeContext> context,
+        ArborFamiliaeContext context,
         ISpecificationEvaluator specificationEvaluator
     )
         : base(context, specificationEvaluator) { }

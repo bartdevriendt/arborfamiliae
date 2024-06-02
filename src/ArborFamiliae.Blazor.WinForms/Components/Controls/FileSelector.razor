@@ -1,0 +1,36 @@
+﻿@using System.Windows.Forms
+@using DialogResult = System.Windows.Forms.DialogResult
+
+<DxTextBox @bind-Text="FileName">
+    <Buttons>
+        <DxEditorButton IconCssClass="bi bi-file" Click="OpenFile"></DxEditorButton>
+    </Buttons>
+</DxTextBox>
+
+@code {
+    
+    [Parameter]
+    public string FileName { get; set; }
+
+    [Parameter]
+    public EventCallback<string> FileNameChanged { get; set; }
+
+    [Parameter]
+    public string ExtensionFilter { get; set; }
+
+    private void OpenFile()
+    {
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        openFileDialog.Filter = ExtensionFilter;
+        openFileDialog.Title = "Select a file";
+        openFileDialog.CheckFileExists = false;
+        
+        
+        if (openFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            FileName = openFileDialog.FileName;
+            FileNameChanged.InvokeAsync(FileName);
+        }
+    }
+
+}

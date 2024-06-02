@@ -1,6 +1,7 @@
 ﻿using ArborFamiliae.Data;
 using ArborFamiliae.Data.InternalModels;
 using ArborFamiliae.Data.Mysql;
+using ArborFamiliae.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
@@ -43,6 +44,11 @@ public class ArborContextFactory : IDbContextFactory<ArborFamiliaeContext>
                 );
 
                 
+            }
+            else if(FamilyTreeDatabase.CurrentDatabase.DatabaseType == "Sqlite"  ) {   
+                var builder = new Microsoft.Data.Sqlite.SqliteConnectionStringBuilder();
+                builder.DataSource = FamilyTreeDatabase.CurrentDatabase.FilePath;
+                config.UseSqlite(builder.ConnectionString, x => { x.MigrationsAssembly(typeof(SqliteMarker).Assembly.GetName().Name); });
             }
         }
 

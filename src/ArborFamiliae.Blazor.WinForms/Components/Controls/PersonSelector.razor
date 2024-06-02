@@ -25,7 +25,7 @@
                         AllowSelectRowByClick="true"
                         ShowGroupPanel="true"
                         KeyFieldName="Id"
-                        SelectedDataItem="_selectedPerson"
+                        @bind-SelectedDataItem="_selectedPerson"
                         >
                     <Columns>
                         <DxGridDataColumn FieldName="@nameof(PersonListModel.Surname)" GroupIndex="0"></DxGridDataColumn>

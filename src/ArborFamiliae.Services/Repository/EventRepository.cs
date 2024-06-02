@@ -10,7 +10,7 @@ namespace ArborFamiliae.Services.Repository;
 public class EventRepository : GenericRepository<ArborEvent>, IEventRepository
 {
     public EventRepository(
-        IDbContextFactory<ArborFamiliaeContext> context,
+        ArborFamiliaeContext context,
         ISpecificationEvaluator specificationEvaluator
     )
         : base(context, specificationEvaluator) { }

@@ -14,11 +14,11 @@ public class GenericRepository<T> : IGenericRepository<T>
     protected readonly ISpecificationEvaluator _specificationEvaluator;
 
     public GenericRepository(
-        IDbContextFactory<ArborFamiliaeContext> context,
+        ArborFamiliaeContext context,
         ISpecificationEvaluator specificationEvaluator
     )
     {
-        this._context = context.CreateDbContext();
+        this._context = context;
         _specificationEvaluator = specificationEvaluator;
     }
 
