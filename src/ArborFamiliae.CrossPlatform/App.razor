@@ -1,0 +1,40 @@
+@using System.Runtime.InteropServices
+@using ArborFamiliae.CrossPlatform.Shared.Layout
+
+<Router AppAssembly="typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <h1>Page not found</h1>
+    </NotFound>
+</Router>
+
+@code {
+
+    private string _currentOS = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _currentOS = GetOS();
+    }
+
+    private string GetOS()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            return "Windows";
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            return "Linux";
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            return "OSX";
+        }
+
+        return "Unknown";
+    }
+}

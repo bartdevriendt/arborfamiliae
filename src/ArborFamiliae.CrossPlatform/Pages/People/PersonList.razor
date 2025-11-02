@@ -1,0 +1,77 @@
+@page "/person/list"
+
+@using ArborFamiliae.Domain.Person
+@using ArborFamiliae.Shared.Services
+@inherits BasePageComponent
+
+@inject IPersonService PersonService
+
+<h3>@Loc["Persons"] (@_personList.Count)</h3>
+
+<TwoRowLayout>
+    <Row1>
+        <SfToolbar>
+            <ToolbarItems>
+                <ToolbarItem Text="@Loc["Add"]" PrefixIcon="bi bi-plus-lg" OnClick="OnAdd"></ToolbarItem>
+            </ToolbarItems>
+        </SfToolbar>
+    </Row1>
+    <Row2>
+        <SfGrid @ref="_personGrid" DataSource="_personList" AllowGrouping="true" >
+            <GridEvents CommandClicked="OnCommandClicked" DataBound="OnDataBound" TValue="PersonListModel"></GridEvents>
+            <GridGroupSettings Columns="@_groupColumns" ShowGroupedColumn="true" EnableLazyLoading="true"  ShowDropArea="false"></GridGroupSettings>
+            @* <GridPageSettings PageSize=40></GridPageSettings> *@
+            <GridColumns>
+                <GridColumn HeaderText="ID" Field="@nameof(PersonListModel.Id)" Visible="false" IsPrimaryKey="true"></GridColumn>
+                <GridColumn HeaderText="@Loc["Name"]" Field="@nameof(PersonListModel.FullName)"></GridColumn>
+                <GridColumn HeaderText="@Loc["Surname"]" Field="@nameof(PersonListModel.Surname)"></GridColumn>
+                <GridColumn HeaderText="ID" Field="@nameof(PersonListModel.ArborId)"></GridColumn>
+                <GridColumn HeaderText="@Loc["Gender"]" Field="@nameof(PersonListModel.Gender)"></GridColumn>
+                <GridColumn HeaderText="@Loc["Birth Date"]" Field="@nameof(PersonListModel.BirthDate)"></GridColumn>
+                <GridColumn HeaderText="@Loc["Death Date"]" Field="@nameof(PersonListModel.DeathDate)"></GridColumn>
+                <GridColumn HeaderText="">
+                    <GridCommandColumns>
+                        <GridCommandColumn Title="Edit" ButtonOption="@(new CommandButtonOptions() { Content = "", CssClass = "bi bi-pencil" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </Row2>
+</TwoRowLayout>
+
+
+
+
+
+@code {
+
+    private SfGrid<PersonListModel> _personGrid;
+
+    private List<PersonListModel> _personList = new();
+    private string[] _groupColumns = new[] { "Surname" };
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _personList = await PersonService.GetAllPersons();
+    }
+
+    private void OnAdd()
+    {
+        NavigationManager.NavigateTo("/person/add");
+    }
+    
+    public void OnCommandClicked(CommandClickEventArgs<PersonListModel> args)
+    {
+        if (args.CommandColumn.Title == "Edit")
+        {
+            NavigationManager.NavigateTo($"/person/{args.RowData.Id}/edit");
+        }
+
+    }
+
+    private async Task OnDataBound()
+    {
+        //await _personGrid.CollapseAllGroupAsync();
+    }
+
+}

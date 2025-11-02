@@ -40,7 +40,7 @@ public class TestingSetup
         _connString = builder.ConnectionString;
 
         var services = new ServiceCollection();
-        services.RegisterServices();
+        services.RegisterArborServices();
         services.AddDbContextFactory<ArborFamiliaeContext>(options =>
         {
             var provider = services.BuildServiceProvider();

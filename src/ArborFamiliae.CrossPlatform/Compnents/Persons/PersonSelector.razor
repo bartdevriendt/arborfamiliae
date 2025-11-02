@@ -1,0 +1,152 @@
+﻿@using ArborFamiliae.Domain.Person
+@using ArborFamiliae.Domain.Enums
+@using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
+@using SelectionType = Syncfusion.Blazor.Grids.SelectionType
+@inject IPersonService PersonService
+@inject IGenderService GenderService
+
+
+<SfTextBox @ref="personSelection" @bind-Value="Text" Created="OnCreated" Readonly="true"></SfTextBox>
+
+<SfDialog @bind-Visible="IsPopupVisible"  Width="800" Height="600" IsModal="true">
+    <DialogTemplates>
+        <Header>
+            @Loc["Select person"]
+        </Header>
+        <Content>
+             <div class="container-fluid">
+                 <div class="row">
+                
+                 </div>
+                 <div class="row">
+                     <SfGrid @ref="_personGrid" DataSource="_persons" AllowGrouping="true">
+                         <GridGroupSettings Columns="_groupColumns" ShowDropArea="false"></GridGroupSettings>
+                         <GridSelectionSettings Mode="SelectionMode.Row" Type="SelectionType.Single"></GridSelectionSettings>
+                         <GridColumns>
+                             <GridColumn Field="@nameof(PersonListModel.Surname)" AllowGrouping="true"></GridColumn>
+                             <GridColumn Field="@nameof(PersonListModel.FullName)" HeaderText="@Loc["Name"]"></GridColumn>
+                             <GridColumn Field="@nameof(PersonListModel.ArborId)" HeaderText="@Loc["ID"]"></GridColumn>
+                             <GridColumn Field="@nameof(PersonListModel.Gender)" HeaderText="@Loc["Gender"]"></GridColumn>
+                             <GridColumn Field="@nameof(PersonListModel.BirthDate)" HeaderText="@Loc["Birth Date"]"></GridColumn>
+                             <GridColumn Field="@nameof(PersonListModel.DeathDate)" HeaderText="@Loc["Death"]"></GridColumn>
+                         </GridColumns>
+                     </SfGrid>
+                 </div>
+                 <div class="row">
+                     <SfCheckBox Checked="@_showAll" Label="@Loc["Show All"]" ValueChange="ShowAllChanged" TChecked="bool" ></SfCheckBox>
+                 </div>
+                 <div class="row">
+                     <SfButton IsPrimary="true" @onclick="OnSelect">@Loc["Select"]</SfButton>
+                 </div>
+             </div>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
+
+@code {
+
+    SfTextBox personSelection;
+    SfGrid<PersonListModel> _personGrid;
+
+    private string[] _groupColumns = new[] { "Surname" };
+
+    [Parameter]
+    public string Text { get; set; } = "";
+    
+    [Parameter]
+    public Guid? PersonId { get; set; }
+    
+    [Parameter]
+    public EventCallback<Guid?> PersonIdChanged { get; set; }
+    
+    [Parameter]
+    public EventCallback<PersonListModel> PersonSelected { get; set; }
+
+    [Parameter]
+    public GenderInternal Gender { get; set; } = GenderInternal.Male;
+
+    private object SelectedPerson;
+
+    private bool _showAll = false;
+    private Guid genderId = Guid.Empty;
+    
+    private List<PersonListModel> _persons = new();
+    
+    private bool IsPopupVisible { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var genders = await GenderService.GetGenders();
+
+        if (Gender == GenderInternal.Male)
+        {
+            genderId = genders.First(g => g.Description == "Male").Id;
+        }
+        else if(Gender == GenderInternal.Female)
+        {
+            genderId = genders.First(g => g.Description == "Female").Id;
+        }
+        
+        
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+
+        if (_showAll || Gender == GenderInternal.All)
+        {
+            _persons = await PersonService.GetAllPersons();
+        }
+        else
+        {
+            _persons = await PersonService.GetPersonsFiltered(genderId);
+        }
+    }
+
+
+    private void OnSelectPerson()
+    {
+        IsPopupVisible = true;
+    }
+
+    private async Task OnSelect()
+    {
+
+        var selection = await _personGrid.GetSelectedRecordsAsync();
+        
+        if (selection.Count >0)
+        {
+            IsPopupVisible = false;
+            var person = selection[0];
+            PersonId = person.Id;
+
+            await PersonSelected.InvokeAsync(person);
+
+        }
+        else
+        {
+           
+        } 
+    }
+    
+    public async Task OnCreated()
+
+    {
+
+        await this.personSelection.AddIconAsync("append", "bi bi-hand-index-thumb", new Dictionary<string, object>() { { "onclick", OnSelectPerson } });
+        // if (AllowAdd)
+        // {
+        //     await this.personSelection.AddIconAsync("append", "bi bi-plus", new Dictionary<string, object>() { { "onclick", OnAddPlace } });    
+        // }
+        
+
+    }
+
+    private async Task ShowAllChanged(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool> obj)
+    {
+        _showAll = !_showAll;
+        await LoadData();
+    }
+
+}

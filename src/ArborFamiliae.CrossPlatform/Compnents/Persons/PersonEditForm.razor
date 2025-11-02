@@ -1,0 +1,129 @@
+﻿@using ArborFamiliae.Domain.Person
+@using ArborFamiliae.Domain.Events
+@inject IGenderService GenderService
+
+<SfDataForm ID="EditPerson" Model="@Model" ColumnCount="1">
+
+    <FormValidator>
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+    </FormValidator>
+
+    <FormItems>
+        <FormGroup LabelText="@Loc["Preferred"]" ColumnCount="12" ColumnSpacing="10px">
+            <FormItem Field="@nameof(PersonAddEditModel.PreferredTitle)" LabelText="@Loc["Title"]" ColumnSpan="4"></FormItem>
+            <FormItem Field="@nameof(PersonAddEditModel.PreferredNick)" LabelText="@Loc["Nick"]" ColumnSpan="4"></FormItem>
+            <FormItem Field="@nameof(PersonAddEditModel.PreferredCall)" LabelText="@Loc["Call"]" ColumnSpan="4"></FormItem>
+            <FormItem Field="@nameof(PersonAddEditModel.PreferredGivenName)" LabelText="@Loc["Given"]" ColumnSpan="8"></FormItem>
+            <FormItem Field="@nameof(PersonAddEditModel.PreferredSuffix)" LabelText="@Loc["Suffix"]" ColumnSpan="4"></FormItem>
+            <FormItem Field="@nameof(PersonAddEditModel.PreferredSurnamePrefix)" LabelText="@Loc["Surname"]" ColumnSpan="4"></FormItem>
+            <FormItem Field="@nameof(PersonAddEditModel.PreferredSurname)" LabelText="&nbsp;" ColumnSpan="4"></FormItem>
+        </FormGroup>
+        <FormGroup LabelText="@Loc["General"]" ColumnCount="12" ColumnSpacing="10px">
+            <FormItem Field="@nameof(PersonAddEditModel.Gender)" ColumnSpan="4">
+                <Template>
+                    <label>@Loc["Gender"]</label>
+                    <SfComboBox DataSource="_genders" TItem="GenderModel" TValue="Guid" @bind-Value="@Model.Gender"
+                                Placeholder="@Loc["Select Gender"]">
+                        <ComboBoxFieldSettings Text="Description" Value="Id"></ComboBoxFieldSettings>
+                    </SfComboBox>
+                </Template>
+            </FormItem>
+            <FormItem Field="@nameof(PersonAddEditModel.ArborId)" LabelText="ID" ColumnSpan="4"></FormItem>
+        </FormGroup>
+    </FormItems>
+    @if (IsEdit)
+    {
+        <SfTab>
+            <TabItems>
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="@Loc["Events"]"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        @* <NestedEventList @bind-Events="Model.Events" EventMode="NestedEventList.EventListMode.Person" EventDeleted="OnEventDeleted"></NestedEventList> *@
+                    </ContentTemplate>
+                </TabItem>
+            </TabItems>
+        </SfTab>
+    }
+
+    <FormButtons>
+        <SfButton IsPrimary="true" @onclick="OnSave">@Loc["Save"]</SfButton>
+    </FormButtons>
+</SfDataForm>
+
+@* <AFFormLayout> *@
+@*     <AFFormLayoutGroup Caption="@Loc["Preferred"]"> *@
+@*         <AFFormLayoutItem ColSpanMd="4" Caption="@Loc["Title"]"><SfTextBox @bind-Value="@Model.PreferredTitle"></SfTextBox></AFFormLayoutItem> *@
+@*         <AFFormLayoutItem ColSpanMd="4" Caption="@Loc["Nick"]"><SfTextBox @bind-Value="@Model.PreferredNick"></SfTextBox></AFFormLayoutItem> *@
+@*         <AFFormLayoutItem ColSpanMd="4" Caption="@Loc["Call"]"><SfTextBox @bind-Value="@Model.PreferredCall"></SfTextBox></AFFormLayoutItem> *@
+@*         <AFFormLayoutItem ColSpanMd="8" Caption="@Loc["Given"]"><SfTextBox @bind-Value="@Model.PreferredGivenName"></SfTextBox></AFFormLayoutItem> *@
+@*         <AFFormLayoutItem ColSpanMd="4" Caption="@Loc["Suffix"]"><SfTextBox @bind-Value="@Model.PreferredSuffix"></SfTextBox></AFFormLayoutItem> *@
+@*         <AFFormLayoutItem ColSpanMd="4" Caption="@Loc["Surname"]"> *@
+@*             <SfTextBox @bind-Value="@Model.PreferredSurnamePrefix" Placeholder="@Loc["prefix"]"></SfTextBox></AFFormLayoutItem> *@
+@*         <AFFormLayoutItem ColSpanMd="4" Caption="&nbsp;"> *@
+@*             <SfTextBox @bind-Value="@Model.PreferredSurname"></SfTextBox> *@
+@*         </AFFormLayoutItem> *@
+@*     </AFFormLayoutGroup> *@
+@*     <AFFormLayoutGroup Caption="@Loc["General"]"> *@
+@*         <AFFormLayoutItem Caption="@Loc["Gender"]" ColSpanMd="4"> *@
+@*             <SfComboBox DataSource="_genders" TItem="GenderModel" TValue="Guid" @bind-Value="@Model.Gender" Placeholder="@Loc["Select Gender"]"> *@
+@*                 <ComboBoxFieldSettings Text="Description" Value="Id"></ComboBoxFieldSettings> *@
+@*             </SfComboBox> *@
+@*         </AFFormLayoutItem> *@
+@*         <AFFormLayoutItem Caption="ID" ColSpanMd="4"> *@
+@*             <SfTextBox @bind-Value="@Model.ArborId"></SfTextBox> *@
+@*         </AFFormLayoutItem> *@
+@*     </AFFormLayoutGroup> *@
+@*     @if (IsEdit) *@
+@*     { *@
+@*         <SfTab> *@
+@*             <TabItems> *@
+@*                 <TabItem> *@
+@*                     <ChildContent> *@
+@*                         <TabHeader Text="@Loc["Events"]"></TabHeader> *@
+@*                     </ChildContent> *@
+@*                     <ContentTemplate> *@
+@*                         <NestedEventList @bind-Events="Model.Events" EventMode="NestedEventList.EventListMode.Person" EventDeleted="OnEventDeleted"></NestedEventList> *@
+@*                     </ContentTemplate> *@
+@*                 </TabItem> *@
+@*             </TabItems> *@
+@*         </SfTab> *@
+@*     } *@
+@* </AFFormLayout> *@
+
+
+
+@* </EditForm> *@
+
+@code {
+
+    [Parameter] public PersonAddEditModel Model { get; set; } = new PersonAddEditModel();
+
+    [Parameter] public EventCallback PersonSave { get; set; }
+
+
+    public bool IsEdit
+    {
+        get => Model.Id != Guid.Empty;
+    }
+
+    private List<GenderModel> _genders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _genders = await GenderService.GetGenders();
+    }
+
+    private async Task OnSave()
+    {
+        await PersonSave.InvokeAsync();
+    }
+
+    private async Task OnEventDeleted(EventAddEditModel model)
+    {
+        Model.DeletedEvents.Add(model);
+        Model.Events.Remove(model);
+    }
+
+}

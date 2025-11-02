@@ -10,7 +10,7 @@ namespace ArborFamiliae.Services
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection RegisterServices(this IServiceCollection services)
+        public static IServiceCollection RegisterArborServices(this IServiceCollection services)
         {
             services.Scan(
                 scan =>

@@ -1,0 +1,20 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            @Row1    
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-12">
+            @Row2    
+        </div>
+    </div>
+</div>
+@code {
+
+    [Parameter]
+    public RenderFragment Row1 { get; set; }
+    
+    [Parameter]
+    public RenderFragment Row2 { get; set; }
+}

@@ -1,0 +1,31 @@
+﻿@page "/person/{PersonId:guid}/edit"
+@using ArborFamiliae.Domain.Person
+@using ArborFamiliae.CrossPlatform.Compnents.Persons
+@inherits BasePageComponent
+@inject IPersonService PersonService
+
+<h3>@Loc["Edit Person"]</h3>
+
+<PersonEditForm Model="model" PersonSave="OnSave">
+    
+</PersonEditForm>
+
+@code {
+    
+    [Parameter]
+    public Guid PersonId { get; set; }
+
+    private PersonAddEditModel model = new PersonAddEditModel();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        model = await PersonService.GetPersonById(PersonId);
+    }
+
+    private async Task OnSave()
+    {
+        await PersonService.AddEditPerson(model);
+        NavigationManager.NavigateTo("/person/list");
+    }
+
+}

@@ -1,0 +1,56 @@
+@page "/"
+@page "/databaseselection"
+@using ArborFamiliae.CrossPlatform.Shared.Layout
+@using ArborFamiliae.Data.InternalModels
+@layout DatabaseSelectionLayout
+
+@inject NavigationManager NavigationManager
+
+<h1>Database Selection</h1>
+
+<p>Please select a database to use</p>
+
+<SfGrid DataSource="@databases">
+    
+    <GridEvents OnRecordDoubleClick="DatabaseRecordDoubleClick" TValue="FamilyTreeDatabase"></GridEvents>
+    <GridColumns>
+        <GridColumn Field="@nameof(FamilyTreeDatabase.Name)"></GridColumn>
+        <GridColumn Field="@nameof(FamilyTreeDatabase.DatabaseType)"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+
+<NavLink href="/home">Home</NavLink>>
+
+@code {
+
+    private List<FamilyTreeDatabase> databases;
+
+    protected override async Task OnInitializedAsync()
+    {
+        databases = ConnectionStringService.GetDatabases();
+    }
+
+    private void DatabaseRecordDoubleClick(RecordDoubleClickEventArgs<FamilyTreeDatabase> args)
+    {
+
+        // ConnectionStringService.Provider = args.RowData.DatabaseType;
+        //
+        // if (ConnectionStringService.Provider == "MySql")
+        // {
+        //     var builder = new MySqlConnector.MySqlConnectionStringBuilder();
+        //     builder.Database = args.RowData.Database;
+        //     builder.UserID = args.RowData.Username;
+        //     builder.Password = args.RowData.Password;
+        //     builder.Server = args.RowData.Server;
+        //     ConnectionStringService.ConnectionString = builder.ToString();
+        // }
+
+        FamilyTreeDatabase.CurrentDatabase = args.RowData;
+        
+        
+        
+        NavigationManager.NavigateTo("/home");
+    }
+
+}
