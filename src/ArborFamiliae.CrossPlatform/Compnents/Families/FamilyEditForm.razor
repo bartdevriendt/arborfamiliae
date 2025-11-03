@@ -1,0 +1,202 @@
+﻿@using ArborFamiliae.Domain.Family
+@using ArborFamiliae.Domain.Enums
+@using ArborFamiliae.Domain.Events
+@using ArborFamiliae.Domain.Person
+@using ArborFamiliae.CrossPlatform.Compnents.Persons
+
+<SfDataForm ID="EditPerson" Model="@Model" ColumnCount="2" ColumnSpacing="20px">
+
+    <FormValidator>
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+    </FormValidator>
+
+    <FormItems>
+        <FormGroup LabelText="@Loc["Father/partner1"]">
+            <FormItem Field="@nameof(FamilyAddEditModel.FatherId)">
+                <Template>
+                    <label>@Loc["Name"]</label>
+                    <PersonSelector Text="@Model.FatherDisplayName" @bind-PersonId="@Model.FatherId"
+                                    Gender="GenderInternal.Male" PersonSelected="FatherSelected"></PersonSelector>
+                </Template>
+            </FormItem>
+            <FormItem Field="@nameof(FamilyAddEditModel.FatherBirthDate)" IsEnabled="false" LabelText="@Loc["Birth"]"></FormItem>
+            <FormItem Field="@nameof(FamilyAddEditModel.FatherDeathDate)" IsEnabled="false" LabelText="@Loc["Death"]"></FormItem>
+            
+        </FormGroup>
+        <FormGroup LabelText="@Loc["Mother/partner2"]" >
+            <FormItem Field="@nameof(FamilyAddEditModel.MotherId)">
+                <Template>
+                    <label>@Loc["Name"]</label>
+                    <PersonSelector Text="@Model.MotherDisplayName" @bind-PersonId="@Model.MotherId"
+                                    Gender="GenderInternal.Female" PersonSelected="MotherSelected"></PersonSelector>
+                </Template>
+            </FormItem>
+            <FormItem Field="@nameof(FamilyAddEditModel.MotherBirthDate)" IsEnabled="false" LabelText="@Loc["Birth"]"></FormItem>
+            <FormItem Field="@nameof(FamilyAddEditModel.MotherDeathDate)" IsEnabled="false" LabelText="@Loc["Death"]"></FormItem>
+        </FormGroup>
+        
+        <FormGroup LabelText="@Loc["General"]" ColumnSpan="2">
+            <FormItem Field="@nameof(FamilyAddEditModel.ArborId)" IsEnabled="false" LabelText="@Loc["ID"]"></FormItem>
+        </FormGroup>
+        
+        <FormGroup LabelText="@Loc["Relations"]" ColumnSpan="2">
+           
+        </FormGroup>
+    </FormItems>
+     <SfTab>
+                <TabItems>
+                    <TabItem>
+                        <ChildContent>
+                            <TabHeader Text="@Loc["Children"]"></TabHeader>
+                        </ChildContent>
+                        <ContentTemplate>
+                            <TwoRowLayout>
+                                <Row1>
+                                    <SfToolbar>
+                                        <ToolbarItems>
+                                            <ToolbarItem Text="@Loc["Add"]" PrefixIcon="bi bi-hand-index-thumb"
+                                                         OnClick="OnChildLink"></ToolbarItem>
+                                        </ToolbarItems>
+                                    </SfToolbar>
+                                </Row1>
+                                <Row2>
+                                    <SfGrid @ref="_childGrid" DataSource="@Model.Children">
+                                        <GridColumns>
+                                            <GridColumn HeaderText="@Loc["Order"]" Field="Order"></GridColumn>
+                                            <GridColumn HeaderText="@Loc["ID"]" Field="ArborId"></GridColumn>
+                                            <GridColumn HeaderText="@Loc["Name"]" Field="Name"></GridColumn>
+                                            <GridColumn HeaderText="@Loc["Gender"]" Field="Gender"></GridColumn>
+                                            <GridColumn HeaderText="@Loc["Paternal"]"
+                                                        Field="PaternalRelation"></GridColumn>
+                                            <GridColumn HeaderText="@Loc["Maternal"]"
+                                                        Field="MaternalRelation"></GridColumn>
+                                            <GridColumn HeaderText="@Loc["BirthDate"]"
+                                                        Field="BirthDate"></GridColumn>
+                                        </GridColumns>
+                                    </SfGrid>
+                                </Row2>
+                            </TwoRowLayout>
+                        </ContentTemplate>
+                    </TabItem>
+                    <TabItem>
+                        <ChildContent>
+                            <TabHeader Text="@Loc["Events"]"></TabHeader>
+                        </ChildContent>
+                        <ContentTemplate>
+                            @* <NestedEventList @bind-Events="@Model.Events" *@
+                            @*                  EventMode="NestedEventList.EventListMode.Family" *@
+                            @*                  EventDeleted="OnEventDeleted"></NestedEventList> *@
+                        </ContentTemplate>
+                    </TabItem>
+                </TabItems>
+            </SfTab>
+    <FormButtons>
+        <SfButton IsPrimary="true" @onclick="OnSave">@Loc["Save"]</SfButton>
+    </FormButtons>
+    
+</SfDataForm>
+
+
+
+
+
+<SfDialog @bind-Visible="_isPopupVisible">
+    <DialogTemplates>
+        <Header>
+            @Loc["Add child"]
+        </Header>
+        <Content>
+            <TwoRowLayout>
+                <Row1>
+                    <PersonSelector Gender="GenderInternal.All" @bind-PersonId="@_childModel.PersonId"
+                                    Text="@_childModel.Name" PersonSelected="PersonSelected"></PersonSelector>
+                </Row1>
+                <Row2>
+                    <SfButton @onclick="OnChildAddClick" IsPrimary="true">@Loc["Add"]</SfButton>
+                </Row2>
+            </TwoRowLayout>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
+
+@code {
+
+    SfGrid<FamilyChildAddEditModel> _childGrid;
+
+    [Parameter] public FamilyAddEditModel Model { get; set; }
+
+    [Parameter] public EventCallback FamilySave { get; set; }
+
+    private Guid _maleGenderId = Guid.Empty;
+    private Guid _femaleGenderId = Guid.Empty;
+
+    private bool _isPopupVisible = false;
+    private FamilyChildAddEditModel _childModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    private void FatherSelected(PersonListModel father)
+    {
+        Model.FatherDisplayName = father.FullName + " [" + father.ArborId + "]";
+        Model.FatherBirthDate = father.BirthDate;
+        Model.FatherDeathDate = father.DeathDate;
+        Model.FatherId = father.Id;
+    }
+
+    private void MotherSelected(PersonListModel mother)
+    {
+        Model.MotherDisplayName = mother.FullName + " [" + mother.ArborId + "]";
+        Model.MotherBirthDate = mother.BirthDate;
+        Model.MotherDeathDate = mother.DeathDate;
+        Model.MotherId = mother.Id;
+    }
+
+    private async Task OnSave()
+    {
+        await FamilySave.InvokeAsync();
+    }
+
+    private void OnChildLink()
+    {
+        _childModel = new FamilyChildAddEditModel();
+        _childModel.FamiliyId = Model.Id;
+        _childModel.Order = Model.Children.Count + 1;
+
+        _isPopupVisible = true;
+    }
+
+    private void OnEventLink()
+    {
+        // _childModel = new FamilyChildAddEditModel();
+        // _childModel.FamiliyId = Model.Id;
+        // _childModel.Order = Model.Children.Count + 1;
+        //
+        // _isPopupVisible = true;
+    }
+
+    private void PersonSelected(PersonListModel obj)
+    {
+        _childModel.PersonId = obj.Id;
+        _childModel.Name = obj.FullName;
+        _childModel.BirthDate = obj.BirthDate;
+        _childModel.Gender = obj.Gender;
+        _childModel.MaternalRelation = "";
+        _childModel.PaternalRelation = "";
+    }
+
+    private void OnChildAddClick()
+    {
+        Model.Children.Add(_childModel);
+        _isPopupVisible = false;
+        _childGrid.Refresh();
+    }
+
+    private async Task OnEventDeleted(EventAddEditModel model)
+    {
+        Model.DeletedEvents.Add(model);
+        Model.Events.Remove(model);
+    }
+
+}

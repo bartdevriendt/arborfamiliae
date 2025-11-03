@@ -1,0 +1,30 @@
+﻿@page "/family/{FamilyId:guid}/edit"
+@inherits BasePageComponent
+@using ArborFamiliae.Domain.Family
+@using ArborFamiliae.CrossPlatform.Compnents.Families
+@inject IFamilyService FamilyService
+<h3>@Loc["Edit Family"]</h3>
+
+<FamilyEditForm Model="_model" FamilySave="FamilySave">
+    
+</FamilyEditForm>
+
+@code {
+
+    [Parameter]
+    public Guid FamilyId { get; set; }
+    
+    private FamilyAddEditModel _model = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _model = await FamilyService.GetFamilyById(FamilyId);
+    }
+
+    private async Task FamilySave()
+    {
+        await FamilyService.AddEditFamily(_model);
+        NavigationManager.NavigateTo("/family/list");
+    }
+
+}

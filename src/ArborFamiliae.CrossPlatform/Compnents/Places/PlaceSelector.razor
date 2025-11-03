@@ -1,0 +1,118 @@
+﻿@using ArborFamiliae.Domain.Places
+@using SelectionMode = Syncfusion.Blazor.Grids.SelectionMode
+@inject IPlaceService PlaceService
+
+
+ <SfTextBox @ref="placeSelection" @bind-Value="Text" Created="OnCreated" Readonly="true"></SfTextBox>
+
+
+<SfDialog @bind-Visible="IsPopupVisible" CloseOnEscape="true" Width="70%" IsModal="true" >
+    <DialogTemplates>
+        <Header>
+            @Loc["Select Place"]
+        </Header>
+        <Content>
+            <div class="container-fluid">
+                <div class="row">
+
+                </div>
+                <div class="row">
+                    <SfTreeGrid @ref="TreeGrid" DataSource="_places" IdMapping="Id" ParentIdMapping="ParentPlaceId" TreeColumnIndex="0" AllowSelection="true">
+                        <TreeGridSelectionSettings Type="Syncfusion.Blazor.Grids.SelectionType.Single" Mode="SelectionMode.Row"></TreeGridSelectionSettings>
+                        <TreeGridEvents RowSelected="RowSelectHandler" TValue="PlaceListModel"></TreeGridEvents>
+                        <TreeGridColumns>
+                            <TreeGridColumn Field="Name" HeaderText="@Loc["Name"]"></TreeGridColumn>
+                            <TreeGridColumn Field="ArborId" HeaderText="ID"></TreeGridColumn>
+                            <TreeGridColumn Field="Type" HeaderText="@Loc["Type"]"></TreeGridColumn>
+                        </TreeGridColumns>
+                    </SfTreeGrid>
+                </div>
+                <div class="row mt-3">
+                    <SfButton IsPrimary="true" @onclick="OnSelect">@Loc["Select Place"]</SfButton>
+                </div>
+            </div>
+        </Content>
+    </DialogTemplates>
+</SfDialog>
+
+@code {
+
+    SfTextBox placeSelection;
+    
+    SfTreeGrid<PlaceListModel> TreeGrid;
+
+    private bool IsPopupVisible { get; set; } = false;
+    
+    [Parameter]
+    public string Text { get; set; }
+    
+    [Parameter]
+    public EventCallback<string> TextChanged { get; set; }
+    
+    [Parameter]
+    public Guid? PlaceId { get; set; }
+    
+    [Parameter]
+    public EventCallback<Guid?> PlaceIdChanged { get; set; }
+
+    [Parameter]
+    public bool AllowAdd { get; set; } = false;
+
+    private List<PlaceListModel> _places;
+
+    private PlaceListModel _selectedPlace;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _places = await PlaceService.GetAllPlaces();
+    }
+
+    private void OnSelectPlace()
+    {
+        IsPopupVisible = true;
+    }
+
+    private async Task RowSelectHandler(RowSelectEventArgs<PlaceListModel> args)
+    {
+        var selection = await TreeGrid.GetSelectedRecordsAsync();
+        _selectedPlace = selection.FirstOrDefault();
+    }
+
+    private async Task OnSelect()
+    {
+        IsPopupVisible = false;
+        if (_selectedPlace != null)
+        {
+            PlaceId = _selectedPlace.Id;
+            Text = _selectedPlace.Name;
+            
+        }
+        else
+        {
+            PlaceId = null;
+            Text = "";
+        }
+
+        await TextChanged.InvokeAsync(Text);
+        await PlaceIdChanged.InvokeAsync(PlaceId);
+    }
+
+    private async Task OnAddPlace()
+    {
+        
+    }
+
+    
+    public async Task OnCreated()
+
+    {
+
+        await this.placeSelection.AddIconAsync("append", "bi bi-hand-index-thumb", new Dictionary<string, object>() { { "onclick", OnSelectPlace } });
+        if (AllowAdd)
+        {
+            await this.placeSelection.AddIconAsync("append", "bi bi-plus", new Dictionary<string, object>() { { "onclick", OnAddPlace } });    
+        }
+        
+
+    }
+}

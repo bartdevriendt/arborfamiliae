@@ -1,0 +1,23 @@
+﻿@page "/family/add"
+@inherits BasePageComponent
+@using ArborFamiliae.Domain.Family
+@using ArborFamiliae.CrossPlatform.Compnents.Families
+@inject IFamilyService FamilyService
+
+<h3>@Loc["Add Family"]</h3>
+
+<FamilyEditForm Model="_model" FamilySave="FamilySave">
+    
+</FamilyEditForm>
+
+@code {
+
+    private FamilyAddEditModel _model = new();
+
+    private async Task FamilySave()
+    {
+        await FamilyService.AddEditFamily(_model);
+        NavigationManager.NavigateTo("/family/list");
+    }
+
+}

@@ -1,0 +1,26 @@
+﻿@page "/place/add"
+@using ArborFamiliae.Domain.Places
+@using ArborFamiliae.CrossPlatform.Compnents.Places
+@inherits BasePageComponent
+@inject IPlaceService PlaceService
+
+<h3>Add new place</h3>
+
+<PlaceEditForm Model="@Model" PlaceSave="OnSave">
+    
+</PlaceEditForm>
+
+@code {
+
+    private PlaceAddEditModel Model { get; set; } = new();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        
+    }
+    private async Task OnSave()
+    {
+        await PlaceService.AddEditPlace(Model);
+        NavigationManager.NavigateTo("/place/list");
+    }
+}

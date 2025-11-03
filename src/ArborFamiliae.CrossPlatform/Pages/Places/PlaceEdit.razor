@@ -1,0 +1,29 @@
+﻿@page "/place/{PlaceId:guid}/edit"
+@using ArborFamiliae.Domain.Places
+@using ArborFamiliae.CrossPlatform.Compnents.Places
+@inherits BasePageComponent
+@inject IPlaceService PlaceService
+
+<h3>Edit place</h3>
+
+<PlaceEditForm Model="@Model" PlaceSave="OnSave">
+    
+</PlaceEditForm>
+
+@code {
+    [Parameter]
+    public Guid PlaceId { get; set; }
+
+    public PlaceAddEditModel Model { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Model = await PlaceService.GetPlaceById(PlaceId);
+    }
+
+    private async Task OnSave()
+    {
+        await PlaceService.AddEditPlace(Model);
+        NavigationManager.NavigateTo("/place/list");
+    }
+}

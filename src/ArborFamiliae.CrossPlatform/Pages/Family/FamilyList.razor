@@ -1,0 +1,61 @@
+﻿@page "/family/list"
+@using ArborFamiliae.Domain.Family
+@inherits BasePageComponent
+@inject IFamilyService FamilyService
+
+<h3>@Loc["Families"]</h3>
+
+<TwoRowLayout>
+    <Row1>
+        <SfToolbar>
+            <ToolbarItems>
+                <ToolbarItem Text="@Loc["Add"]" PrefixIcon="bi bi-plus-lg" OnClick="OnAdd"></ToolbarItem>
+            </ToolbarItems>
+        </SfToolbar>
+    </Row1>
+    <Row2>
+        <SfGrid DataSource="_familyList">
+            <GridEvents CommandClicked="OnCommandClicked" TValue="FamilyListModel"></GridEvents>
+            <GridColumns>
+                <GridColumn HeaderText="ID" Field="@nameof(FamilyListModel.ArborId)"></GridColumn>
+                <GridColumn HeaderText="@Loc["Father"]" Field="@nameof(FamilyListModel.Father)"></GridColumn>
+                <GridColumn HeaderText="@Loc["Mother"]" Field="@nameof(FamilyListModel.Mother)"></GridColumn>
+                <GridColumn HeaderText="@Loc["Relationship"]" Field="@nameof(FamilyListModel.Relationship)"></GridColumn>
+                <GridColumn HeaderText="@Loc["Marriage Date"]" Field="@nameof(FamilyListModel.MarriageDate)"></GridColumn>
+                <GridColumn HeaderText="">
+                    <GridCommandColumns>
+                        <GridCommandColumn Title="Edit" ButtonOption="@(new CommandButtonOptions() { Content = "", CssClass = "bi bi-pencil" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </Row2>
+</TwoRowLayout>
+
+
+
+
+
+@code {
+
+    private List<FamilyListModel> _familyList = new(); 
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _familyList = await FamilyService.LoadAllFamilies();
+    }
+
+    private void OnAdd()
+    {
+        NavigationManager.NavigateTo("/family/add");
+    }
+    
+    public void OnCommandClicked(CommandClickEventArgs<FamilyListModel> args)
+    {
+        if (args.CommandColumn.Title == "Edit")
+        {
+            NavigationManager.NavigateTo($"/family/{args.RowData.Id}/edit");    
+        }
+        
+    }
+}

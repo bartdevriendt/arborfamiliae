@@ -1,0 +1,92 @@
+﻿@using ArborFamiliae.Domain.Places
+@using ArborFamiliae.Services.Common
+@using ArborFamiliae.Domain.Enums
+@inject IEnumService EnumService
+
+<SfDataForm Model="@Model">
+    <FormItems>
+        <FormGroup LabelText="@Loc["Place information"]">
+                <FormItem Field="@nameof(PlaceAddEditModel.Name)" LabelText="@Loc["Name"]"></FormItem>
+                <FormItem Field="@nameof(PlaceAddEditModel.PlaceType)" LabelText="@Loc["Type"]"></FormItem>
+                <FormItem Field="@nameof(PlaceAddEditModel.Latitude)" LabelText="@Loc["Latitude"]">
+                    <Template>
+                        <label>@Loc["Latitude"]</label>
+                        <SfNumericTextBox TValue="float?" @bind-Value="@Model.Latitude" Format="0.00######"></SfNumericTextBox>
+                    </Template>
+                </FormItem>
+                <FormItem Field="@nameof(PlaceAddEditModel.Longitude)" LabelText="@Loc["Longitude"]">
+                    <Template>
+                        <label>@Loc["Longitude"]</label>
+                        <SfNumericTextBox TValue="float?" @bind-Value="@Model.Longitude" Format="0.00######"></SfNumericTextBox>
+                    </Template>
+                </FormItem>
+                <FormItem Field="@nameof(PlaceAddEditModel.ArborId)" LabelText="@Loc["ID"]"></FormItem>
+                <FormItem Field="@nameof(PlaceAddEditModel.Code)" LabelText="@Loc["Code"]"></FormItem>
+                <FormItem Field="@nameof(PlaceAddEditModel.ParentPlaceId)" LabelText="@Loc["Enclosed By"]">
+                    <Template>
+                        <label>@Loc["Enclosed By"]</label>
+                        <PlaceSelector @bind-PlaceId="@Model.ParentPlaceId" @bind-Text="@Model.ParentPlaceName"></PlaceSelector>
+                    </Template>
+                </FormItem>
+                
+            
+        </FormGroup>
+    </FormItems>
+    <FormButtons>
+        <SfButton IsPrimary="true" @onclick="OnSave" CssClass="mt-3">@Loc["Save"]</SfButton>
+    </FormButtons>
+</SfDataForm>
+
+@* <EditForm Model="@Model" Context="edit_context" class=""> *@
+@*     <AFFormLayout> *@
+@*         <AFFormLayoutGroup Caption="Place information"> *@
+@*             <AFFormLayoutItem Caption="@Loc["Name"]" ColSpanMd="8"> *@
+@*                 <SfTextBox @bind-Value="@Model.Name"></SfTextBox> *@
+@*             </AFFormLayoutItem> *@
+@*             <AFFormLayoutItem Caption="@Loc["Type"]" ColSpanMd="4"> *@
+@*                 <SfComboBox DataSource="PlaceTypes" TItem="EnumListType<PlaceType>" TValue="PlaceType" @bind-Value="@Model.PlaceType"> *@
+@*                     <ComboBoxFieldSettings Text="Description" Value="Value"></ComboBoxFieldSettings> *@
+@*                 </SfComboBox> *@
+@*             </AFFormLayoutItem> *@
+@*             <AFFormLayoutItem Caption="@Loc["Latitude"]"> *@
+@*                 <SfNumericTextBox TValue="float?" @bind-Value="@Model.Latitude" Format="0.00######"></SfNumericTextBox> *@
+@*             </AFFormLayoutItem> *@
+@*             <AFFormLayoutItem Caption="@Loc["Longitude"]"> *@
+@*                 <SfNumericTextBox TValue="float?" @bind-Value="@Model.Longitude" Format="0.00######"></SfNumericTextBox> *@
+@*             </AFFormLayoutItem> *@
+@*             <AFFormLayoutItem Caption="@Loc["ID"]" ColSpanMd="4"> *@
+@*                 <SfTextBox @bind-Value="@Model.ArborId"></SfTextBox> *@
+@*             </AFFormLayoutItem> *@
+@*             <AFFormLayoutItem Caption="@Loc["Code"]" ColSpanMd="4"> *@
+@*                 <SfTextBox @bind-Value="@Model.Code"></SfTextBox> *@
+@*             </AFFormLayoutItem> *@
+@*             <AFFormLayoutItem Caption="@Loc["Enclosed By"]" ColSpanMd="4"> *@
+@*                 <PlaceSelector @bind-PlaceId="@Model.ParentPlaceId" @bind-Text="@Model.ParentPlaceName"></PlaceSelector> *@
+@*             </AFFormLayoutItem> *@
+@*         </AFFormLayoutGroup> *@
+@*     </AFFormLayout> *@
+@*     <SfButton IsPrimary="true" @onclick="OnSave" CssClass="mt-3">@Loc["Save"]</SfButton> *@
+@* </EditForm> *@
+
+
+@code {
+    [Parameter]
+    public PlaceAddEditModel Model { get; set; }
+    
+    [Parameter]
+    public EventCallback PlaceSave { get; set; }
+    
+    private List<EnumListType<PlaceType>> PlaceTypes { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        PlaceTypes = EnumService.GetEnumTypes<PlaceType>();
+    }
+
+
+    private async Task OnSave()
+    {
+        await PlaceSave.InvokeAsync();
+        
+    }
+}
